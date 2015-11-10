@@ -17,16 +17,76 @@ using namespace arma;
 TEST_CASE("fn_find_unique_1")
   {
   mat A = 
-    "\
-     0.061198   0.201990   0.019678  -0.493936  -0.126745   0.051408;\
-     0.437242   0.058956  -0.149362  -0.045465   0.296153   0.035437;\
-    -0.492474  -0.031309   0.314156   0.419733   0.068317  -0.454499;\
-     0.336352   0.411541   0.458476  -0.393139  -0.135040   0.373833;\
-     0.239585  -0.428913  -0.406953  -0.291020  -0.353768   0.258704;\
-    ";
+    {
+    {  1,  3,  5,  6,  7 },
+    {  2,  4,  5,  7,  8 },
+    {  3,  5,  5,  6,  9 },
+    };
   
+  uvec indices = find_unique(A);
   
-  // REQUIRE( accu(abs(  )) == Approx(0.0) );
+  uvec indices2 = { 0, 1, 2, 4, 5, 9, 10, 13, 14 };
+  
+  REQUIRE( indices.n_elem == indices2.n_elem );
+  
+  bool same = true;
+  
+  for(uword i=0; i < indices.n_elem; ++i)
+    {
+    if(indices(i) != indices2(i))  { same = false; break; }
+    }
+  
+  REQUIRE( same == true );
+  
+  vec unique_elem = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  
+  REQUIRE( accu(abs( A.elem(indices) - unique_elem )) == Approx(0.0) );
+  
+  // REQUIRE_THROWS(  );
+  }
+
+
+
+TEST_CASE("fn_find_unique_2")
+  {
+  cx_mat A = 
+    {
+    { cx_double(1,-1), cx_double(3, 2), cx_double(5, 2), cx_double(6, 1), cx_double(7,-1) },
+    { cx_double(2, 1), cx_double(4, 4), cx_double(5, 2), cx_double(7,-1), cx_double(8, 1) },
+    { cx_double(3, 2), cx_double(5, 1), cx_double(5, 3), cx_double(6, 1), cx_double(9,-9) }
+    };
+  
+  uvec indices = find_unique(A);
+  
+  uvec indices2 = { 0, 1, 2, 4, 5, 6, 8, 9, 10, 13, 14 };
+  
+  REQUIRE( indices.n_elem == indices2.n_elem );
+  
+  bool same = true;
+  
+  for(uword i=0; i < indices.n_elem; ++i)
+    {
+    if(indices(i) != indices2(i))  { same = false; break; }
+    }
+  
+  REQUIRE( same == true );
+  
+  cx_vec unique_elem =
+    {
+    cx_double(1,-1), 
+    cx_double(2, 1), 
+    cx_double(3, 2), 
+    cx_double(4, 4),
+    cx_double(5, 1),
+    cx_double(5, 2),
+    cx_double(5, 3),
+    cx_double(6, 1),
+    cx_double(7,-1),
+    cx_double(8, 1),
+    cx_double(9,-9)
+    };
+  
+  REQUIRE( accu(abs( A.elem(indices) - unique_elem )) == Approx(0.0) );
   
   // REQUIRE_THROWS(  );
   }
