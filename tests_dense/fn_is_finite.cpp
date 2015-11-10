@@ -25,8 +25,21 @@ TEST_CASE("fn_is_finite_1")
      0.239585  -0.428913  -0.406953  -0.291020  -0.353768   0.258704;\
     ";
   
+  mat B = A;  B(1,1) = datum::inf;
   
-  // REQUIRE( accu(abs(  )) == Approx(0.0) );
+  mat C = A;  C(2,4) = datum::nan;
+  
+  REQUIRE( is_finite(A) == true  );
+  REQUIRE( is_finite(B) == false );
+  REQUIRE( is_finite(C) == false );
+  
+  REQUIRE( is_finite(A+A) == true  );
+  REQUIRE( is_finite(B+B) == false );
+  REQUIRE( is_finite(C+C) == false );
+  
+  REQUIRE( is_finite(2*A) == true  );
+  REQUIRE( is_finite(2*B) == false );
+  REQUIRE( is_finite(2*C) == false );
   
   // REQUIRE_THROWS(  );
   }
