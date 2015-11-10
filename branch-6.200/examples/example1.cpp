@@ -53,6 +53,8 @@ main(int argc, char** argv)
   // submatrices
   cout << "B( span(0,2), span(3,4) ):" << endl << B( span(0,2), span(3,4) ) << endl;
   
+  cout << "B( 0,3, size(3,2) ):" << endl << B( 0,3, size(3,2) ) << endl;
+  
   cout << "B.row(0): " << endl << B.row(0) << endl;
   
   cout << "B.col(1): " << endl << B.col(1) << endl;
