@@ -5758,7 +5758,8 @@ Examples:
 mat A = randu&lt;mat&gt;(5,5);
 
 A.save("A1.mat");  // default save format is arma_binary
-A.save("A2.mat", arma_ascii);
+
+A.save("A2.mat", arma_ascii);  // force saving in arma_ascii format
 
 mat B;
 B.load("A1.mat");  // automatically detect format type
