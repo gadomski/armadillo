@@ -786,11 +786,20 @@ sp_auxlib::run_aupd
     
     resid.set_size(n);
     
-    // "NCV must satisfy the two inequalities 2 <= NCV-NEV and NCV <= N".
-    // "It is recommended that NCV >= 2 * NEV".
-    ncv = 2 + nev;
-    if (ncv < 2 * nev) { ncv = 2 * nev; }
-    if (ncv > n)       { ncv = n; }
+    // http://www.caam.rice.edu/software/ARPACK/UG/node136.html
+    // docs for dsaupd() state: "The only formal requirement is that NCV > NEV. However, it is recommended that NCV .ge. 2*NEV."
+    // 
+    // http://www.caam.rice.edu/software/ARPACK/UG/node137.html
+    // docs for dnaupd() state: "The only formal requirement is that NCV > NEV + 2. However, it is recommended that NCV .ge. 2*NEV+1."
+    // 
+    // http://www.caam.rice.edu/software/ARPACK/UG/node138.html
+    // docs for znaupd() state: "The only formal requirement is that NCV > NEV + 2. However, it is recommended that NCV .ge. 2*NEV+1."
+    
+    ncv = 2 + nev + 1;
+    
+    if (ncv < (2 * nev + 1)) { ncv = 2 * nev + 1; }
+    if (ncv > n            ) { ncv = n;           }
+    
     v.set_size(n * ncv); // Array N by NCV (output).
     rwork.set_size(ncv); // Work array of size NCV for complex calls.
     ldv = n; // "Leading dimension of V exactly as declared in the calling program."
@@ -804,7 +813,7 @@ sp_auxlib::run_aupd
     // IPNTR: integer array of length 14 (output).
     ipntr.set_size(14);
     
-    // Real work array used in the basic Arnoldi iteration for reverse communication.
+    // work array used in the basic Arnoldi iteration for reverse communication.
     workd.set_size(3 * n);
     
     // lworkl must be at least 3 * NCV^2 + 6 * NCV.
