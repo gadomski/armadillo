@@ -788,11 +788,12 @@ sp_auxlib::run_aupd
     
     // Two contraints on NCV: (NCV > NEV + 2) and (NCV <= N)
     // 
-    // We're calling either arpack::saupd() or arpack::naupd(), which have slighly different minimum constraint on NCV:
+    // We're calling either arpack::saupd() or arpack::naupd(),
+    // which have slighly different minimum constraint and recommended value for NCV:
     // http://www.caam.rice.edu/software/ARPACK/UG/node136.html
     // http://www.caam.rice.edu/software/ARPACK/UG/node138.html
     
-    ncv = 2 + nev + 1;
+    ncv = nev + 2 + 1;
     
     if (ncv < (2 * nev + 1)) { ncv = 2 * nev + 1; }
     if (ncv > n            ) { ncv = n;           }
