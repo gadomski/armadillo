@@ -54,6 +54,7 @@ TEST_CASE("fn_symmat_1")
   }
 
 
+
 TEST_CASE("fn_symmat_2")
   {
   mat A = 
