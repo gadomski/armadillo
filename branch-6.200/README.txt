@@ -434,76 +434,20 @@ Main sponsoring organisation:
 Main developers:
 - Conrad Sanderson - http://conradsanderson.id.au
 - Ryan Curtin      - http://www.ratml.org
-- Ian Cullinan
-- Dimitrios Bouzas
-- Stanislav Funiak
 
-Contributors:
+Notable contributors:
 - Matthew Amidon
-- Eric R. Anderson
-- Kipton Barros
-- Benoît Bayol
-- Salim Bcoin
-- Justin Bedo
-- Evan Bollig
-- Darius Braziunas
-- Filip Bruman
-- Ted Campbell
-- James Cline
-- Chris Cooper
+- Dimitrios Bouzas
+- Ian Cullinan
 - Clement Creusot
-- Chris Davey
-- Patrick Dondl
-- Alexandre Drouin
-- Dirk Eddelbuettel
-- Carles Fernandez
-- Romain Francois
+- Alexandre Drouin 
 - Michael McNeil Forbes
-- Piotr Gawron
-- Charles Gretton
-- Franz Gritschneder
-- Benjamin Herzog
 - Szabolcs Horvat
-- Friedrich Hust
-- Ping-Keng Jao
-- Jacques-Henri Jourdan
-- Yaron Keren
-- Kshitij Kulshreshtha
-- Oka Kurniawan
-- Simen Kvaal
-- David Lawrence
-- Jussi Lehtola
-- Jeremy Mason
-- Nikolay Mayorov
-- Carlos Mendes
-- Sergey Nenakhov
-- Artem Novikov
 - Keith O'Hara
-- James Oldfield
-- Martin Orlob
-- Ken Panici
-- Adam Piatyszek
-- Jayden Platell
-- Vikas Reddy
-- Ola Rinta-Koski
-- Boris Sabanin
 - James Sanders
-- Pierre-Andre Savalle
-- Alexander Scherbatey
-- Gerhard Schreiber
-- Shane Stainsby
-- Petter Strandmark
 - Eric Jon Sundstrom
-- Paul Torfs
-- Martin Uhrin
-- Simon Urbanek
-- Unai Uribarri
-- Juergen Wiest
 - Arnold Wiliem
-- Yong Kang Wong
-- Buote Xu
 - George Yammine
-- Sean Young
 
 
 
