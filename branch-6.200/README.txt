@@ -440,7 +440,7 @@ Notable contributors:
 - Dimitrios Bouzas
 - Ian Cullinan
 - Clement Creusot
-- Alexandre Drouin 
+- Alexandre Drouin
 - Michael McNeil Forbes
 - Szabolcs Horvat
 - Keith O'Hara
