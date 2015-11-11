@@ -786,14 +786,11 @@ sp_auxlib::run_aupd
     
     resid.set_size(n);
     
+    // Two contraints on NCV: (NCV > NEV + 2) and (NCV <= N)
+    // 
+    // We're calling either arpack::saupd() or arpack::naupd(), which have slighly different minimum constraint on NCV:
     // http://www.caam.rice.edu/software/ARPACK/UG/node136.html
-    // docs for dsaupd() state: "The only formal requirement is that NCV > NEV. However, it is recommended that NCV .ge. 2*NEV."
-    // 
-    // http://www.caam.rice.edu/software/ARPACK/UG/node137.html
-    // docs for dnaupd() state: "The only formal requirement is that NCV > NEV + 2. However, it is recommended that NCV .ge. 2*NEV+1."
-    // 
     // http://www.caam.rice.edu/software/ARPACK/UG/node138.html
-    // docs for znaupd() state: "The only formal requirement is that NCV > NEV + 2. However, it is recommended that NCV .ge. 2*NEV+1."
     
     ncv = 2 + nev + 1;
     
