@@ -79,7 +79,7 @@ memory::acquire(const uword n_elem)
   #elif defined(_MSC_VER)
     {
     //out_memptr = (eT *) malloc(sizeof(eT)*n_elem);
-    out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );
+    out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );  // lives in malloc.h
     }
   #else
     {
