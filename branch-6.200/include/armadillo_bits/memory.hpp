@@ -78,8 +78,8 @@ memory::acquire(const uword n_elem)
     }
   #elif defined(_MSC_VER)
     {
-    //out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );  // seems to cause problems with ARPACK
-    out_memptr = (eT *) malloc(sizeof(eT)*n_elem);
+    //out_memptr = (eT *) malloc(sizeof(eT)*n_elem);
+    out_memptr = (eT *) _aligned_malloc( sizeof(eT)*n_elem, 16 );
     }
   #else
     {
@@ -133,8 +133,8 @@ memory::release(eT* mem)
     }
   #elif defined(_MSC_VER)
     {
-    //_aligned_free( (void *)(mem) );
-    free( (void *)(mem) );
+    //free( (void *)(mem) );
+    _aligned_free( (void *)(mem) );
     }
   #else
     {
