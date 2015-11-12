@@ -812,7 +812,7 @@ sp_auxlib::run_aupd
     // IPNTR: integer array of length 14 (output).
     ipntr.set_size(14);
     
-    // work array used in the basic Arnoldi iteration for reverse communication.
+    // Real work array used in the basic Arnoldi iteration for reverse communication.
     workd.set_size(3 * n);
     
     // lworkl must be at least 3 * NCV^2 + 6 * NCV.
