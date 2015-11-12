@@ -81,10 +81,11 @@ sp_auxlib::eigs_sym(Col<eT>& eigval, Mat<eT>& eigvec, const SpBase<eT, T1>& X, c
     SpProxy<T1> p(X.get_ref());
     
     // Make sure it's square.
-    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_sym(): given matrix must be square sized");
+    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_sym(): given matrix must be square sized" );
     
     // Make sure we aren't asking for every eigenvalue.
-    arma_debug_check( (n_eigvals + 1 >= p.get_n_rows()), "eigs_sym(): n_eigvals + 1 must be less than the number of rows in the matrix");
+    // The _saupd() functions allow asking for one more eigenvalue than the _naupd() functions.
+    arma_debug_check( (n_eigvals >= p.get_n_rows()), "eigs_sym(): n_eigvals must be less than the number of rows in the matrix" );
     
     // If the matrix is empty, the case is trivial.
     if(p.get_n_cols() == 0) // We already know n_cols == n_rows.
@@ -190,10 +191,10 @@ sp_auxlib::eigs_gen(Col< std::complex<T> >& eigval, Mat< std::complex<T> >& eigv
     SpProxy<T1> p(X.get_ref());
     
     // Make sure it's square.
-    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_gen(): given matrix must be square sized");
+    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_gen(): given matrix must be square sized" );
     
     // Make sure we aren't asking for every eigenvalue.
-    arma_debug_check( (n_eigvals + 1 >= p.get_n_rows()), "eigs_gen(): n_eigvals + 1 must be less than the number of rows in the matrix");
+    arma_debug_check( (n_eigvals + 1 >= p.get_n_rows()), "eigs_gen(): n_eigvals + 1 must be less than the number of rows in the matrix" );
     
     // If the matrix is empty, the case is trivial.
     if(p.get_n_cols() == 0) // We already know n_cols == n_rows.
@@ -258,7 +259,7 @@ sp_auxlib::eigs_gen(Col< std::complex<T> >& eigval, Mat< std::complex<T> >& eigv
         {
         for (uword j = 0; j < uword(n); ++j)
           {
-          eigvec.at(j, i)     = std::complex<T>(z[n * i + j], z[n * (i + 1) + j]);
+          eigvec.at(j, i)     = std::complex<T>(z[n * i + j],  z[n * (i + 1) + j]);
           eigvec.at(j, i + 1) = std::complex<T>(z[n * i + j], -z[n * (i + 1) + j]);
           }
         ++i; // Skip the next one.
@@ -342,10 +343,10 @@ sp_auxlib::eigs_gen(Col< std::complex<T> >& eigval, Mat< std::complex<T> >& eigv
     SpProxy<T1> p(X.get_ref());
     
     // Make sure it's square.
-    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_gen(): given matrix must be square sized");
+    arma_debug_check( (p.get_n_rows() != p.get_n_cols()), "eigs_gen(): given matrix must be square sized" );
     
     // Make sure we aren't asking for every eigenvalue.
-    arma_debug_check( (n_eigvals + 1 >= p.get_n_rows()), "eigs_gen(): n_eigvals + 1 must be less than the number of rows in the matrix");
+    arma_debug_check( (n_eigvals + 1 >= p.get_n_rows()), "eigs_gen(): n_eigvals + 1 must be less than the number of rows in the matrix" );
     
     // If the matrix is empty, the case is trivial.
     if(p.get_n_cols() == 0) // We already know n_cols == n_rows.
