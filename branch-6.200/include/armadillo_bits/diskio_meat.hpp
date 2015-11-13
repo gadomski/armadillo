@@ -616,51 +616,6 @@ diskio::guess_file_type(std::istream& f)
 
 
 
-inline
-char
-diskio::conv_to_hex_char(const u8 x)
-  {
-  char out;
-
-  switch(x)
-    {
-    case  0: out = '0'; break;
-    case  1: out = '1'; break;
-    case  2: out = '2'; break;
-    case  3: out = '3'; break;
-    case  4: out = '4'; break;
-    case  5: out = '5'; break;
-    case  6: out = '6'; break;
-    case  7: out = '7'; break;
-    case  8: out = '8'; break;
-    case  9: out = '9'; break;
-    case 10: out = 'a'; break;
-    case 11: out = 'b'; break;
-    case 12: out = 'c'; break;
-    case 13: out = 'd'; break;
-    case 14: out = 'e'; break;
-    case 15: out = 'f'; break;
-    default: out = '-'; break;
-    }
-
-  return out;  
-  }
-
-
-
-inline
-void
-diskio::conv_to_hex(char* out, const u8 x)
-  {
-  const u8 a = x / 16;
-  const u8 b = x - 16*a;
-
-  out[0] = conv_to_hex_char(a);
-  out[1] = conv_to_hex_char(b);
-  }
-
-
-
 //! Append a quasi-random string to the given filename.
 //! The rand() function is deliberately not used,
 //! as rand() has an internal state that changes
@@ -669,60 +624,19 @@ diskio::conv_to_hex(char* out, const u8 x)
 //! results should be reproducable and not affected 
 //! by saving data.
 inline
+arma_cold
 std::string
 diskio::gen_tmp_name(const std::string& x)
   {
-  const std::string* ptr_x     = &x;
-  const u8*          ptr_ptr_x = reinterpret_cast<const u8*>(&ptr_x);
+  std::stringstream ss;
   
-  const char* extra      = ".tmp_";
-  const uword extra_size = 5;
+  ss << x << ".tmp_";
   
-  const uword tmp_size   = 2*sizeof(u8*) + 2*2;
-        char  tmp[tmp_size];
+  ss.fill('0');
+  ss.setf(std::ios::hex);
+  ss << (&x) << (std::clock());
   
-  uword char_count = 0;
-  
-  for(uword i=0; i<sizeof(u8*); ++i)
-    {
-    conv_to_hex(&tmp[char_count], ptr_ptr_x[i]);
-    char_count += 2;
-    }
-  
-  const uword x_size = static_cast<uword>(x.size());
-  u8 sum = 0;
-  
-  for(uword i=0; i<x_size; ++i)
-    {
-    sum = (sum + u8(x[i])) & 0xff;
-    }
-  
-  conv_to_hex(&tmp[char_count], sum);
-  char_count += 2;
-  
-  conv_to_hex(&tmp[char_count], u8(x_size));
-  
-  
-  std::string out;
-  out.resize(x_size + extra_size + tmp_size);
-  
-  
-  for(uword i=0; i<x_size; ++i)
-    {
-    out[i] = x[i];
-    }
-  
-  for(uword i=0; i<extra_size; ++i)
-    {
-    out[x_size + i] = extra[i];
-    }
-  
-  for(uword i=0; i<tmp_size; ++i)
-    {
-    out[x_size + extra_size + i] = tmp[i];
-    }
-  
-  return out;
+  return ss.str();
   }
 
 
