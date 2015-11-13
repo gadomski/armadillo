@@ -628,13 +628,14 @@ arma_cold
 std::string
 diskio::gen_tmp_name(const std::string& x)
   {
+  union { uword val; void* ptr; } u;
+  
+  u.val = uword(0);
+  u.ptr = const_cast<std::string*>(&x);
+  
   std::stringstream ss;
   
-  ss << x << ".tmp_";
-  
-  ss.fill('0');
-  ss.setf(std::ios::hex);
-  ss << (&x) << (std::clock());
+  ss << x << ".tmp_" << std::hex << std::noshowbase << (&u.val) << (std::clock());
   
   return ss.str();
   }
