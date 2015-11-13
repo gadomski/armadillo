@@ -635,7 +635,7 @@ diskio::gen_tmp_name(const std::string& x)
   
   std::stringstream ss;
   
-  ss << x << ".tmp_" << std::hex << std::noshowbase << (&u.val) << (std::clock());
+  ss << x << ".tmp_" << std::hex << std::noshowbase << (u.val) << (std::clock());
   
   return ss.str();
   }
