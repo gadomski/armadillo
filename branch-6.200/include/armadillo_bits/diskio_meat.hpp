@@ -648,6 +648,7 @@ diskio::gen_tmp_name(const std::string& x)
 //! (i)  overwriting files that are write protected,
 //! (ii) overwriting directories.
 inline
+arma_cold
 bool
 diskio::safe_rename(const std::string& old_name, const std::string& new_name)
   {

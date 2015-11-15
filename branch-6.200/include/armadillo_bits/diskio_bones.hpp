@@ -32,7 +32,7 @@ class diskio
   
   inline arma_cold static std::string gen_tmp_name(const std::string& x);
   
-  inline static bool safe_rename(const std::string& old_name, const std::string& new_name);
+  inline arma_cold static bool safe_rename(const std::string& old_name, const std::string& new_name);
   
   template<typename eT> inline static bool convert_naninf(eT&              val, const std::string& token);
   template<typename  T> inline static bool convert_naninf(std::complex<T>& val, const std::string& token);
