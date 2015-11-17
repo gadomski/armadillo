@@ -1558,35 +1558,34 @@ class Proxy< subview_elem1<eT,T1> >
   static const bool is_row = false;
   static const bool is_col = true;
   
-  arma_aligned const unwrap<T1>            U;
   arma_aligned const subview_elem1<eT,T1>& Q;
+  arma_aligned const Proxy<T1>             R;
   
   inline explicit Proxy(const subview_elem1<eT,T1>& A)
-    : U(A.a.get_ref())
-    , Q(A)
+    : Q(A)
+    , R(A.a.get_ref())
     {
     arma_extra_debug_sigprint();
     
-    arma_debug_check
-      (
-      ( (U.M.is_vec() == false) && (U.M.is_empty() == false) ),
-      "Mat::elem(): given object is not a vector"
-      );
+    const bool R_is_vec   = ((R.get_n_rows() == 1) || (R.get_n_cols() == 1));
+    const bool R_is_empty = (R.get_n_elem() == 0);
+    
+    arma_debug_check( ((R_is_vec == false) && (R_is_empty == false)), "Mat::elem(): given object is not a vector" );
     }
   
-  arma_inline uword get_n_rows() const { return U.M.n_elem; }
-  arma_inline uword get_n_cols() const { return 1;          }
-  arma_inline uword get_n_elem() const { return U.M.n_elem; }
+  arma_inline uword get_n_rows() const { return R.get_n_elem(); }
+  arma_inline uword get_n_cols() const { return 1;              }
+  arma_inline uword get_n_elem() const { return R.get_n_elem(); }
   
-  arma_inline elem_type operator[] (const uword i)                const { const uword ii = U.M[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
-  arma_inline elem_type at         (const uword row, const uword) const { const uword ii = U.M[row]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
-  arma_inline elem_type at_alt     (const uword i)                const { const uword ii = U.M[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type operator[] (const uword i)                const { const uword ii = R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type at         (const uword row, const uword) const { const uword ii = R[row]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type at_alt     (const uword i)                const { const uword ii = R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
   
   arma_inline         ea_type         get_ea() const { return (*this); }
   arma_inline aligned_ea_type get_aligned_ea() const { return (*this); }
   
   template<typename eT2>
-  arma_inline bool is_alias(const Mat<eT2>& X) const { return ( (void_ptr(&X) == void_ptr(&(Q.m))) || (void_ptr(&X) == void_ptr(&(U.M))) ); }
+  arma_inline bool is_alias(const Mat<eT2>& X) const { return ( (void_ptr(&X) == void_ptr(&(Q.m))) || (R.is_alias(X)) ); }
   
   arma_inline bool is_aligned() const { return false; }
   };
