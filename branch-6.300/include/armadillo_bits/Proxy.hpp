@@ -1577,9 +1577,9 @@ class Proxy< subview_elem1<eT,T1> >
   arma_inline uword get_n_cols() const { return 1;              }
   arma_inline uword get_n_elem() const { return R.get_n_elem(); }
   
-  arma_inline elem_type operator[] (const uword i)                const { const uword ii = R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
-  arma_inline elem_type at         (const uword row, const uword) const { const uword ii = R[row]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
-  arma_inline elem_type at_alt     (const uword i)                const { const uword ii = R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type operator[] (const uword i)                const { const uword ii = (Proxy<T1>::prefer_at_accessor) ? R.at(i,  0) : R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type at         (const uword row, const uword) const { const uword ii = (Proxy<T1>::prefer_at_accessor) ? R.at(row,0) : R[row]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
+  arma_inline elem_type at_alt     (const uword i)                const { const uword ii = (Proxy<T1>::prefer_at_accessor) ? R.at(i,  0) : R[i  ]; arma_debug_check( (ii >= Q.m.n_elem), "Mat::elem(): index out of bounds" ); return Q.m[ii]; }
   
   arma_inline         ea_type         get_ea() const { return (*this); }
   arma_inline aligned_ea_type get_aligned_ea() const { return (*this); }
