@@ -15,7 +15,7 @@
 
 #define ARMA_VERSION_MAJOR 6
 #define ARMA_VERSION_MINOR 200
-#define ARMA_VERSION_PATCH 4
+#define ARMA_VERSION_PATCH 5
 #define ARMA_VERSION_NAME  "Midnight Blue Deluxe"
 
 

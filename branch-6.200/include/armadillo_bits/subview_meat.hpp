@@ -127,7 +127,7 @@ subview<eT>::inplace_op(const Base<eT,T1>& in, const char* identifier)
   
   const bool is_alias = P.is_alias(s.m);
   
-  arma_extra_debug_warn(is_alias, "aliasing detected");
+  if(is_alias)  { arma_extra_debug_print("aliasing detected"); }
   
   if( (is_Mat<typename Proxy<T1>::stored_type>::value) || (is_alias) )
     {
