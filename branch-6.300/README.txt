@@ -38,7 +38,7 @@ aiming towards a good balance between speed and ease of use.
 It's useful for algorithm development directly in C++,
 and/or quick conversion of research code into production environments.
 The syntax (API) is deliberately similar to Matlab.
- 
+
 The library provides efficient classes for vectors, matrices and cubes,
 as well as 150+ associated functions (eg. contiguous and non-contiguous
 submatrix views).  Various matrix decompositions are provided through
