@@ -47,7 +47,7 @@ integration with LAPACK, or one of its high performance drop-in replacements
 
 An automatic expression evaluator (via C++ template meta-programming)
 combines several operations (at compile time) to increase efficiency.
- 
+
 The library can be used for machine learning, pattern recognition,
 signal processing, bioinformatics, statistics, econometrics, etc.
 
