@@ -113,36 +113,43 @@ or use Armadillo without installation (detailed in section 5).
 Installation procedure:
 
 * Step 1:
-  If CMake is not already be present on your system, download
-  it from http://www.cmake.org
+  Ensure a C++ compiler is installed on your system.
   
-  On major Linux systems (such as Fedora, Ubuntu, Debian, etc),
-  cmake is available as a pre-built package, though it may need
-  to be explicitly installed (using a tool such as PackageKit,
-  yum, rpm, apt, aptitude).
+  Caveat: on Mac OS X you will need to install Xcode
+  and then type the following command in a terminal window:
+  xcode-select --install
   
 * Step 2:
-  If you have LAPACK or BLAS, install them before installing Armadillo.
-  Under Mac OS X this is not necessary.
+  Ensure the CMake tool is installed on your system.
+  You can download it from http://www.cmake.org
+  or (preferably) install it using your package manager.
   
-  If you have ARPACK and/or SuperLU, install them before installing Armadillo.
+  On Linux-based systems, you can get CMake through
+  PackageKit, yum, dnf, apt, aptitude, ...
+  
+  On Mac OS X systems, you can get CMake through MacPorts or Homebrew.
+  
+* Step 3:
+  Ensure LAPACK and BLAS (or their equivalents) are installed on your system.
+  On Mac OS X this is not necessary.
+  
+  If you are using sparse matrices, also install ARPACK and SuperLU.
   Caveat: only SuperLU version 4.3 can be used!
   
-  On Linux systems it is recommended that the following libraries
-  are present: LAPACK, BLAS, ARPACK, SuperLU and ATLAS.
+  On Linux-based systems, the following libraries are recommended
+  to be present: LAPACK, BLAS, ARPACK, SuperLU and ATLAS.
   LAPACK and BLAS are the most important.  It is also necessary to
   install the corresponding development files for each library.
   For example, when installing the "lapack" package, also install
   the "lapack-devel" or "lapack-dev" package.
   
-  For best performance, we recommend using the multi-threaded
+  Caveat: for better performance, we recommend using the multi-threaded
   OpenBLAS library instead of standard BLAS.
   See http://xianyi.github.com/OpenBLAS/
   
-* Step 3:
-  Open a shell (command line), change into the directory that was
-  created by unpacking the armadillo archive, and type the following
-  commands:
+* Step 4:
+  Open a terminal window, change into the directory that was created
+  by unpacking the armadillo archive, and type the following commands:
   
   cmake .
   make 
@@ -150,7 +157,7 @@ Installation procedure:
   The full stop separated from "cmake" by a space is important.
   CMake will figure out what other libraries are currently installed
   and will modify Armadillo's configuration correspondingly.
-  CMake will also generate a run-time armadillo library, which is a 
+  CMake will also generate a run-time armadillo library, which is a
   wrapper for all the relevant libraries present on your system
   (eg. LAPACK, BLAS, ARPACK, SuperLU, ATLAS).
   
@@ -158,15 +165,14 @@ Installation procedure:
   "CMakeCache.txt" file (not "CMakeLists.txt").
   
   Caveat: out-of-tree builds are currently not fully supported;
-  for example, creating a sub-directory called "build" and running cmake ..
+  eg, creating a sub-directory called "build" and running cmake ..
   from within "build" is currently not supported.
   
-* Step 4:
-  If you have access to root/administrator/superuser privileges,
-  first enable the privileges (eg. through "su" or "sudo")
-  and then type the following command:
+* Step 5:
+  If you have access to root/administrator/superuser privileges
+  (ie. able to use "sudo"), type the following command:
   
-  make install
+  sudo make install
   
   If you don't have root/administrator/superuser privileges, 
   type the following command:
@@ -174,8 +180,8 @@ Installation procedure:
   make install DESTDIR=my_usr_dir
   
   where "my_usr_dir" is for storing C++ headers and library files.
-  Make sure your C++ compiler is configured to use the "lib" and "include"
-  sub-directories present within this directory.
+  Caveat: make sure your C++ compiler is configured to use the
+  "lib" and "include" sub-directories present within this directory.
 
 
 
@@ -251,10 +257,6 @@ The installation is comprised of 3 steps:
 Within the "examples" folder, we have included an MSVC project named "example1_win64"
 which can be used to compile "example1.cpp".  The project needs to be compiled as a
 64 bit program: the active solution platform must be set to x64, instead of win32.
-
-If you're getting messages such as "use of LAPACK needs to be enabled",
-you will need to manually modify "include/armadillo_bits/config.hpp"
-to enable the use of LAPACK.
 
 The MSCV project was tested on 64 bit Windows 7 with Visual C++ 2012.
 You may need to make adaptations for 32 bit systems, later versions of Windows
