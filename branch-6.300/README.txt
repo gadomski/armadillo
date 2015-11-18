@@ -32,28 +32,24 @@ Contents
 1: Introduction
 ===============
 
-Armadillo is a C++ linear algebra library (matrix maths)
+
+Armadillo is a high quality C++ linear algebra library,
 aiming towards a good balance between speed and ease of use.
-The syntax is deliberately similar to Matlab.
-
+It's useful for algorithm development directly in C++,
+and/or quick conversion of research code into production environments.
+The syntax (API) is deliberately similar to Matlab.
+ 
 The library provides efficient classes for vectors, matrices and cubes,
-as well as many functions which operate on the classes
-(eg. contiguous and non-contiguous submatrix views).
+as well as 150+ associated functions (eg. contiguous and non-contiguous
+submatrix views).  Various matrix decompositions are provided through
+integration with LAPACK, or one of its high performance drop-in replacements
+(eg. OpenBLAS, Intel MKL, AMD ACML, Apple Accelerate framework, etc).
 
-Integer, floating point and complex numbers are supported,
-as well as a subset of trigonometric and statistics functions.
-Various matrix decompositions are provided through optional
-integration with LAPACK or high-performance LAPACK-compatible
-libraries (such as Intel MKL or AMD ACML).
-
-A delayed evaluation approach is automatically employed (at compile time)
-to combine several operations into one and reduce (or eliminate)
-the need for temporaries. This is accomplished through recursive
-templates and template meta-programming.
-
-This library is useful for conversion of research code into
-production environments, or if C++ has been decided as the
-language of choice, due to speed and/or integration capabilities.
+An automatic expression evaluator (via C++ template meta-programming)
+combines several operations (at compile time) to increase efficiency.
+ 
+The library can be used for machine learning, pattern recognition,
+signal processing, bioinformatics, statistics, econometrics, etc.
 
 The library is open-source software, and is distributed under a license
 that is useful in both open-source and commercial/proprietary contexts.
