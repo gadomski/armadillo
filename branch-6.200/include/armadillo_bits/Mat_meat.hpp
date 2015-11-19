@@ -833,12 +833,12 @@ Mat<eT>::operator=(const Mat<eT>& in_mat)
       {
       if(x_n_cols_found == false)
         {
-        x_n_cols       = (*it).size();
+        x_n_cols       = uword((*it).size());
         x_n_cols_found = true;
         }
       else
         {
-        arma_check( ((*it).size() != x_n_cols), "Mat::init(): inconsistent number of columns in initialiser list" );
+        arma_check( (uword((*it).size()) != x_n_cols), "Mat::init(): inconsistent number of columns in initialiser list" );
         }
       }
     
