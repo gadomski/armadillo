@@ -1203,10 +1203,31 @@ field<oT>::print(std::ostream& user_stream, const std::string extra_text) const
 
 
 
+//! apply a functor to each object
+template<typename oT>
+template<typename functor>
+inline
+const field<oT>&
+field<oT>::for_each(functor F)
+  {
+  arma_extra_debug_sigprint();
+  
+  const uword N = n_elem;
+  
+  for(uword i=0; i < N; ++i)
+    {
+    F(operator[](i));
+    }
+  
+  return *this;
+  }
+
+
+
 //! fill the field with an object
 template<typename oT>
 inline
-void
+const field<oT>&
 field<oT>::fill(const oT& x)
   {
   arma_extra_debug_sigprint();
@@ -1217,6 +1238,8 @@ field<oT>::fill(const oT& x)
     {
     t[i] = x;
     }
+  
+  return *this;
   }
 
 

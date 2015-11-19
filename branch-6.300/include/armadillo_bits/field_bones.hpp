@@ -146,7 +146,9 @@ class field
   inline void print(                           const std::string extra_text = "") const;
   inline void print(std::ostream& user_stream, const std::string extra_text = "") const;
   
-  inline void fill(const oT& x);
+  template<typename functor> inline const field& for_each(functor F);
+  
+  inline const field& fill(const oT& x);
   
   inline void reset();
   inline void reset_objects();
