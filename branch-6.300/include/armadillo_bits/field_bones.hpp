@@ -66,6 +66,17 @@ class field
   inline void  set_size(const SizeMat&  s);
   inline void  set_size(const SizeCube& s);
   
+  #if defined(ARMA_USE_CXX11)
+  inline                  field(const std::initializer_list<oT>& list);
+  inline const field& operator=(const std::initializer_list<oT>& list);
+  
+  inline                  field(const std::initializer_list< std::initializer_list<oT> >& list);
+  inline const field& operator=(const std::initializer_list< std::initializer_list<oT> >& list);
+  
+  inline                  field(field&& X);
+  inline const field& operator=(field&& X);
+  #endif
+  
   template<typename oT2>
   inline void copy_size(const field<oT2>& x);
   
