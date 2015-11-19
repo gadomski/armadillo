@@ -1,4 +1,4 @@
-// Copyright (C) 2009-2013 National ICT Australia (NICTA)
+// Copyright (C) 2009-2015 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -112,8 +112,8 @@ bool
 solve
   (
          Mat<typename T1::elem_type>&    out,
-  const Base<typename T1::elem_type,T1>& A,
-  const Base<typename T1::elem_type,T2>& B,
+  const Base<typename T1::elem_type,T1>& A_expr,
+  const Base<typename T1::elem_type,T2>& B_expr,
   const bool slow = false,
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
@@ -121,16 +121,14 @@ solve
   arma_extra_debug_sigprint();
   arma_ignore(junk);
   
-  try
-    {
-    out = solve( A.get_ref(), B.get_ref(), slow );
-    }
-  catch(std::runtime_error&)
-    {
-    return false;
-    }
+  typedef typename T1::elem_type eT;
   
-  return true;
+  Mat<eT> A = A_expr.get_ref();
+  
+  const unwrap_check<T2> U(B_expr.get_ref(), out);
+  const Mat<eT>& B     = U.M;
+  
+  return glue_solve::solve_robust(out, A, B, slow);
   }
 
 
@@ -141,8 +139,8 @@ bool
 solve
   (
          Mat<typename T1::elem_type>&    out,
-  const Base<typename T1::elem_type,T1>& A,
-  const Base<typename T1::elem_type,T2>& B,
+  const Base<typename T1::elem_type,T1>& A_expr,
+  const Base<typename T1::elem_type,T2>& B_expr,
   const char* method,
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
@@ -150,16 +148,20 @@ solve
   arma_extra_debug_sigprint();
   arma_ignore(junk);
   
-  try
-    {
-    out = solve( A.get_ref(), B.get_ref(), method );
-    }
-  catch(std::runtime_error&)
-    {
-    return false;
-    }
+  typedef typename T1::elem_type eT;
   
-  return true;
+  const char sig = (method != NULL) ? method[0] : char(0);
+  
+  arma_debug_check( ((sig != 's') && (sig != 'f')), "solve(): unknown method specified" );
+  
+  const bool slow = (sig == 's');
+  
+  Mat<eT> A = A_expr.get_ref();
+  
+  const unwrap_check<T2> U(B_expr.get_ref(), out);
+  const Mat<eT>& B     = U.M;
+  
+  return glue_solve::solve_robust(out, A, B, slow);
   }
 
 
