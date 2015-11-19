@@ -264,6 +264,7 @@ Technical Report, NICTA, 2010.
 <tr><td><a href="#fill">.fill</a></td><td>&nbsp;</td><td>set all elements to specified value</td></tr>
 <tr><td><a href="#imbue">.imbue</a></td><td>&nbsp;</td><td>imbue (fill) with values provided by functor or lambda function</td></tr>
 <tr><td><a href="#transform">.transform</a></td><td>&nbsp;</td><td>transform each element via functor or lambda function</td></tr>
+<tr><td><a href="#for_each">.for_each</a></td><td>&nbsp;</td><td>apply a functor or lambda function to each element</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
 <tr><td><a href="#set_size">.set_size</a></td><td>&nbsp;</td><td>change size without keeping elements (fast)</td></tr>
 <tr><td><a href="#reshape_member">.reshape</a></td><td>&nbsp;</td><td>change size while keeping elements</td></tr>
@@ -2739,7 +2740,7 @@ For matrices, filling is done column-by-column (ie. column 0 is filled, then col
 </li>
 <br>
 <li>
-For cubes, filling is done slice-by-slice; each slice is filled column-by-column
+For cubes, filling is done slice-by-slice, with each slice treated as a matrix
 </li>
 <br>
 <li>
@@ -2793,7 +2794,7 @@ For matrices, transformation is done column-by-column (ie. column 0 is transform
 </li>
 <br>
 <li>
-For cubes, transformation is done slice-by-slice; each slice is transformed column-by-column
+For cubes, transformation is done slice-by-slice, with each slice treated as a matrix
 </li>
 <br>
 <li>
@@ -2813,8 +2814,67 @@ A.transform( [](double val) { return (val + 123.0); } );
 <li>
 See also:
 <ul>
+<li><a href="#imbue">.for_each()</a></li>
 <li><a href="#imbue">.imbue()</a></li>
 <li><a href="#fill">.fill()</a></li>
+<li><a href="#operators">overloaded operators</a></li>
+<li><a href="#misc_fns">miscellaneous element-wise functions</a> &nbsp; (exp, log, pow, sqrt, square, round, ...)</li>
+<li><a href="http://en.wikipedia.org/wiki/Function_object">function object</a> at Wikipedia</li>
+<li><a href="http://en.wikipedia.org/wiki/C%2B%2B11#Lambda_functions_and_expressions">C++11 lambda functions</a> at Wikipedia</li>
+<li><a href="http://www.cprogramming.com/c++11/c++11-lambda-closures.html">lambda function</a> at cprogramming.com</li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+
+<a name="for_each"></a>
+<b>.for_each(&nbsp;</b>functor<b>&nbsp;)</b>
+<br>
+<b>.for_each(&nbsp;</b>lambda_function<b>&nbsp;)</b>&nbsp;&nbsp;&nbsp;<i>(C++11 only)</i>
+<br>
+<ul>
+<li>
+Member functions of <i>Mat</i>, <i>Col</i>, <i>Row</i>, <i>Cube</i> and <i>field</i>
+</li>
+<br>
+<li>
+For each element, pass its reference to a functor or lambda function
+</li>
+<br>
+<li>
+For matrices, the processing is done column-by-column
+</li>
+<br>
+<li>
+For cubes, processing is done slice-by-slice, with each slice treated as a matrix
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+// C++11 only examples
+
+mat A = ones&lt;mat&gt;(4,5);
+
+// add 123 to each element
+A.for_each( [](mat::elem_type&amp; val) { val += 123.0; } );  // NOTE: the '&amp;' is crucial!
+
+
+field&lt;mat&gt; F(2,3);
+
+// set the size of all matrices in field F
+F.for_each( [](mat&amp; X) { X.zeros(4,5); } );  // NOTE: the '&amp;' is crucial!
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#transform">.transform()</a></li>
 <li><a href="#operators">overloaded operators</a></li>
 <li><a href="#misc_fns">miscellaneous element-wise functions</a> &nbsp; (exp, log, pow, sqrt, square, round, ...)</li>
 <li><a href="http://en.wikipedia.org/wiki/Function_object">function object</a> at Wikipedia</li>
@@ -14619,6 +14679,14 @@ List of additions and changes for each version:
 <br>
 <ul>
 
+<a name="version_6300"></a>
+<li>Version 6.300:
+<ul>
+<li>added <a href="#for_each">.for_each()</a> to <i>Mat</i>, <i>Row</i>, <i>Col</i>, <i>Cube</i> and <i>field</i> classes</li>
+<li>faster handling of <a href="#submat">non-contiguous submatrix views</a> in compound expressions
+</ul>
+</li>
+<br>
 <a name="version_6200"></a>
 <li>Version 6.200:
 <ul>
