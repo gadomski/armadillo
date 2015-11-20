@@ -44,15 +44,13 @@ glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,
   
   if(A.n_rows == A.n_cols)
     {
-    status = auxlib::old_solve(out, A, B_expr, slow);
+    status = auxlib::solve_square(out, A, B_expr, slow);
     
     if(status == false)
       {
-      arma_debug_warn("solve(): matrix appears ill-conditioned; using pseudo-inverse to obtain approximate solution");
+      arma_debug_warn("solve(): using pseudo-inverse to obtain approximate solution");
       
-      // need to pass A_expr to glue_solve::solve_pinv(), as auxlib::solve() overwrites A
-      
-      status = glue_solve::solve_pinv(out, A_expr, B_expr);
+      status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as auxlib::solve_square() overwrites A
       }
     }
   else
@@ -103,7 +101,7 @@ glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>&
   
   arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
   
-  return auxlib::old_solve(out, A, B_expr, slow);
+  return auxlib::solve_square(out, A, B_expr, slow);
   }
 
 

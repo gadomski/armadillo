@@ -91,6 +91,11 @@
   #define arma_cgesv  cgesv
   #define arma_zgesv  zgesv
   
+  #define arma_sgesvx sgesvx
+  #define arma_dgesvx dgesvx
+  #define arma_cgesvx cgesvx
+  #define arma_zgesvx zgesvx
+  
   #define arma_sgels  sgels
   #define arma_dgels  dgels
   #define arma_cgels  cgels
@@ -202,6 +207,11 @@
   #define arma_dgesv  DGESV
   #define arma_cgesv  CGESV
   #define arma_zgesv  ZGESV
+  
+  #define arma_sgesvx SGESVX
+  #define arma_dgesvx DGESVX
+  #define arma_cgesvx CGESVX
+  #define arma_zgesvx ZGESVX
   
   #define arma_sgels  SGELS
   #define arma_dgels  DGELS
@@ -341,6 +351,14 @@ extern "C"
   void arma_fortran(arma_dgesv)(blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info);
   void arma_fortran(arma_cgesv)(blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
   void arma_fortran(arma_zgesv)(blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);
+  
+  // solve system of linear equations, using LU decomposition (advanced form, real matrices)
+  void arma_fortran(arma_sgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* af, blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c,  float* b, blas_int* ldb,  float* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_dgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, double* b, blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* iwork, blas_int* info);
+  
+  // solve system of linear equations, using LU decomposition (advanced form, complex matrices)
+  void arma_fortran(arma_cgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, char* equed,  float* r,  float* c, void* b, blas_int* ldb, void* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work,  float* rwork, blas_int* info);
+  void arma_fortran(arma_zgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info);
   
   // solve over/underdetermined system of linear equations
   void arma_fortran(arma_sgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, float*  b, blas_int* ldb, float*  work, blas_int* lwork, blas_int* info);

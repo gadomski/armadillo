@@ -3431,6 +3431,202 @@ auxlib::old_solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
 
 
 
+//! Solve a system of linear equations.
+//! Assumes that A.n_rows = A.n_cols and B.n_rows = A.n_rows
+template<typename T1>
+inline
+bool
+auxlib::solve_square(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool slow)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::pod_type eT;
+  
+  if( (A.n_rows <= 4) && (slow == false) )
+    {
+    Mat<eT> A_inv(A.n_rows, A.n_rows);
+    
+    const bool status = auxlib::inv_noalias_tinymat(A_inv, A, A.n_rows);
+    
+    if(status == true)
+      {
+      const unwrap_check<T1> U( B_expr.get_ref(), out );
+      const Mat<eT>& B     = U.M;
+      
+      arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+      
+      out.set_size(A.n_rows, B.n_cols);
+      
+      if(A.is_empty() || B.is_empty())
+        {
+        out.zeros();
+        return true;
+        }
+      
+      gemm_emul<false,false,false,false>::apply(out, A_inv, B);
+      
+      return true;
+      }
+    }
+  
+  
+  Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::gesvx()
+  
+  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || B.is_empty())
+    {
+    out.zeros(A.n_rows, B.n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A,B);
+    
+    out.set_size(A.n_rows, B.n_cols);
+    
+    char     fact  = 'E';
+    char     trans = 'N';
+    char     equed = char(0);
+    blas_int n     = blas_int(A.n_rows);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldaf  = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(A.n_rows);
+    blas_int ldx   = blas_int(A.n_rows);
+    blas_int info  = blas_int(0);
+    eT       rcond = eT(0);
+    
+    Mat<eT> AF(A.n_rows, A.n_rows);
+    
+    podarray<blas_int>  IPIV(  A.n_rows);
+    podarray<eT>           R(  A.n_rows);
+    podarray<eT>           C(  A.n_rows);
+    podarray<eT>        FERR(  B.n_cols);
+    podarray<eT>        BERR(  B.n_cols);
+    podarray<eT>        WORK(4*A.n_rows);
+    podarray<blas_int> IWORK(  A.n_rows);
+    
+    arma_extra_debug_print("lapack::gesvx()");
+    lapack::gesvx
+      (
+      &fact, &trans, &n, &nrhs,
+      A.memptr(), &lda,
+      AF.memptr(), &ldaf,
+      IPIV.memptr(),
+      &equed,
+      R.memptr(),
+      C.memptr(),
+      B.memptr(), &ldb,
+      out.memptr(), &ldx,
+      &rcond,
+      FERR.memptr(),
+      BERR.memptr(),
+      WORK.memptr(),
+      IWORK.memptr(),
+      &info
+      );
+    
+    if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+//! Solve a system of linear equations.
+//! Assumes that A.n_rows = A.n_cols and B.n_rows = A.n_rows
+template<typename T1>
+inline
+bool
+auxlib::solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool slow)
+  {
+  arma_extra_debug_sigprint();
+  arma_ignore(slow);
+  
+  typedef typename T1::pod_type     T;
+  typedef typename std::complex<T> eT;
+  
+  Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_gesvx()
+  
+  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || B.is_empty())
+    {
+    out.zeros(A.n_rows, B.n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A,B);
+    
+    out.set_size(A.n_rows, B.n_cols);
+    
+    char     fact  = 'E';
+    char     trans = 'N';
+    char     equed = char(0);
+    blas_int n     = blas_int(A.n_rows);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldaf  = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(A.n_rows);
+    blas_int ldx   = blas_int(A.n_rows);
+    blas_int info  = blas_int(0);
+    T        rcond = T(0);
+    
+    Mat<eT> AF(A.n_rows, A.n_rows);
+    
+    podarray<blas_int>  IPIV(  A.n_rows);
+    podarray< T>           R(  A.n_rows);
+    podarray< T>           C(  A.n_rows);
+    podarray< T>        FERR(  B.n_cols);
+    podarray< T>        BERR(  B.n_cols);
+    podarray<eT>        WORK(2*A.n_rows);
+    podarray< T>       RWORK(2*A.n_rows);
+    
+    arma_extra_debug_print("lapack::cx_gesvx()");
+    lapack::cx_gesvx
+      (
+      &fact, &trans, &n, &nrhs,
+      A.memptr(), &lda,
+      AF.memptr(), &ldaf,
+      IPIV.memptr(),
+      &equed,
+      R.memptr(),
+      C.memptr(),
+      B.memptr(), &ldb,
+      out.memptr(), &ldx,
+      &rcond,
+      FERR.memptr(),
+      BERR.memptr(),
+      WORK.memptr(),
+      RWORK.memptr(),
+      &info
+      );
+    
+    if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 //
 // solve_tr
 

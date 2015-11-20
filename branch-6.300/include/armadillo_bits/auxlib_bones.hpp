@@ -225,14 +225,18 @@ class auxlib
   inline static bool old_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow = false);
   
   template<typename eT, typename T1>
-  inline static bool new_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow = false);
-  
-  template<typename eT, typename T1>
   inline static bool old_solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
   
   template<typename eT, typename T1>
   inline static bool old_solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
   
+  template<typename T1>
+  inline static bool solve_square(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool slow = false);
+  
+  template<typename T1>
+  inline static bool solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool slow = false);
+  
+  // TODO: solve_nonsquare()
   
   //
   // solve_tr
