@@ -3179,29 +3179,26 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 
 
 
-//! Solve a system of linear equations.
-//! Assumes that A.n_rows = A.n_cols and B.n_rows = A.n_rows
+//! solve a system of linear equations via LU decomposition
 template<typename eT, typename T1>
 inline
 bool
-auxlib::old_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow)
+auxlib::solve_square(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
-  bool status = false;
-  
   const uword A_n_rows = A.n_rows;
   
-  if( (A_n_rows <= 4) && (slow == false) )
+  if(A_n_rows <= 4)
     {
     Mat<eT> A_inv(A_n_rows, A_n_rows);
     
-    status = auxlib::inv_noalias_tinymat(A_inv, A, A_n_rows);
+    const bool status = auxlib::inv_noalias_tinymat(A_inv, A, A_n_rows);
     
     if(status == true)
       {
-      const unwrap_check<T1> Y( X.get_ref(), out );
-      const Mat<eT>& B     = Y.M;
+      const unwrap_check<T1> U( B_expr.get_ref(), out );
+      const Mat<eT>& B     = U.M;
       
       const uword B_n_rows = B.n_rows;
       const uword B_n_cols = B.n_cols;
@@ -3222,271 +3219,84 @@ auxlib::old_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slo
       }
     }
   
-  if( (A_n_rows > 4) || (status == false) )
+  out = B_expr.get_ref();
+  
+  const uword B_n_rows = out.n_rows;
+  const uword B_n_cols = out.n_cols;
+    
+  arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || out.is_empty())
     {
-    out = X.get_ref();
-    
-    const uword B_n_rows = out.n_rows;
-    const uword B_n_cols = out.n_cols;
-      
-    arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
-      
-    if(A.is_empty() || out.is_empty())
-      {
-      out.zeros(A.n_cols, B_n_cols);
-      return true;
-      }
-    
-    #if defined(ARMA_USE_ATLAS)
-      {
-      arma_debug_assert_atlas_size(A);
-      
-      podarray<int> ipiv(A_n_rows + 2);  // +2 for paranoia: old versions of Atlas might be trashing memory
-      
-      arma_extra_debug_print("atlas::clapack_gesv()");
-      int info = atlas::clapack_gesv<eT>(atlas::CblasColMajor, A_n_rows, B_n_cols, A.memptr(), A_n_rows, ipiv.memptr(), out.memptr(), A_n_rows);
-      
-      return (info == 0);
-      }
-    #elif defined(ARMA_USE_LAPACK)
-      {
-      arma_debug_assert_blas_size(A);
-      
-      blas_int n    = blas_int(A_n_rows);  // assuming A is square
-      blas_int lda  = blas_int(A_n_rows);
-      blas_int ldb  = blas_int(A_n_rows);
-      blas_int nrhs = blas_int(B_n_cols);
-      blas_int info = 0;
-      
-      podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia: some versions of Lapack might be trashing memory
-      
-      arma_extra_debug_print("lapack::gesv()");
-      lapack::gesv<eT>(&n, &nrhs, A.memptr(), &lda, ipiv.memptr(), out.memptr(), &ldb, &info);
-      
-      return (info == 0);
-      }
-    #else
-      {
-      arma_stop("solve(): use of ATLAS or LAPACK must be enabled");
-      return false;
-      }
-    #endif
-    }
-  
-  return true;
-  }
-
-
-
-//! Solve an over-determined system.
-//! Assumes that A.n_rows > A.n_cols and B.n_rows = A.n_rows
-template<typename eT, typename T1>
-inline
-bool
-auxlib::old_solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
-  {
-  arma_extra_debug_sigprint();
-  
-  #if defined(ARMA_USE_LAPACK)
-    {
-    Mat<eT> tmp = X.get_ref();
-    
-    const uword A_n_rows = A.n_rows;
-    const uword A_n_cols = A.n_cols;
-    
-    const uword B_n_rows = tmp.n_rows;
-    const uword B_n_cols = tmp.n_cols;
-      
-    arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-    out.set_size(A_n_cols, B_n_cols);
-    
-    if(A.is_empty() || tmp.is_empty())
-      {
-      out.zeros();
-      return true;
-      }
-    
-    arma_debug_assert_blas_size(A,tmp);
-    
-    char trans = 'N';
-    
-    blas_int  m     = blas_int(A_n_rows);
-    blas_int  n     = blas_int(A_n_cols);
-    blas_int  lda   = blas_int(A_n_rows);
-    blas_int  ldb   = blas_int(A_n_rows);
-    blas_int  nrhs  = blas_int(B_n_cols);
-    blas_int  lwork = 3 * ( (std::max)(blas_int(1), n + (std::max)(n, nrhs)) );
-    blas_int  info  = 0;
-    
-    podarray<eT> work( static_cast<uword>(lwork) );
-    
-    // NOTE: the dgels() function in the lapack library supplied by ATLAS 3.6 seems to have problems
-    
-    arma_extra_debug_print("lapack::gels()");
-    lapack::gels<eT>( &trans, &m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, work.memptr(), &lwork, &info );
-    
-    for(uword col=0; col<B_n_cols; ++col)
-      {
-      arrayops::copy( out.colptr(col), tmp.colptr(col), A_n_cols );
-      }
-    
-    return (info == 0);
-    }
-  #else
-    {
-    arma_ignore(out);
-    arma_ignore(A);
-    arma_ignore(X);
-    arma_stop("solve(): use of LAPACK must be enabled");
-    return false;
-    }
-  #endif
-  }
-
-
-
-//! Solve an under-determined system.
-//! Assumes that A.n_rows < A.n_cols and B.n_rows = A.n_rows
-template<typename eT, typename T1>
-inline
-bool
-auxlib::old_solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
-  {
-  arma_extra_debug_sigprint();
-  
-  #if defined(ARMA_USE_LAPACK)
-    {
-    const unwrap<T1>   Y( X.get_ref() );
-    const Mat<eT>& B = Y.M;
-    
-    const uword A_n_rows = A.n_rows;
-    const uword A_n_cols = A.n_cols;
-    
-    const uword B_n_rows = B.n_rows;
-    const uword B_n_cols = B.n_cols;
-    
-    arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-    // B could be an alias of "out", hence we need to check whether B is empty before setting the size of "out"
-    if(A.is_empty() || B.is_empty())
-      {
-      out.zeros(A_n_cols, B_n_cols);
-      return true;
-      }
-    
-    arma_debug_assert_blas_size(A,B);
-    
-    char trans = 'N';
-    
-    blas_int  m     = blas_int(A_n_rows);
-    blas_int  n     = blas_int(A_n_cols);
-    blas_int  lda   = blas_int(A_n_rows);
-    blas_int  ldb   = blas_int(A_n_cols);
-    blas_int  nrhs  = blas_int(B_n_cols);
-    blas_int  lwork = 3 * ( (std::max)(blas_int(1), m + (std::max)(m,nrhs)) );
-    blas_int  info  = 0;
-    
-    Mat<eT> tmp(A_n_cols, B_n_cols);
-    tmp.zeros();
-    
-    for(uword col=0; col<B_n_cols; ++col)
-      {
-      eT* tmp_colmem = tmp.colptr(col);
-      
-      arrayops::copy( tmp_colmem, B.colptr(col), B_n_rows );
-      
-      for(uword row=B_n_rows; row<A_n_cols; ++row)
-        {
-        tmp_colmem[row] = eT(0);
-        }
-      }
-    
-    podarray<eT> work( static_cast<uword>(lwork) );
-    
-    // NOTE: the dgels() function in the lapack library supplied by ATLAS 3.6 seems to have problems
-    
-    arma_extra_debug_print("lapack::gels()");
-    lapack::gels<eT>( &trans, &m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, work.memptr(), &lwork, &info );
-    
-    out.set_size(A_n_cols, B_n_cols);
-    
-    for(uword col=0; col<B_n_cols; ++col)
-      {
-      arrayops::copy( out.colptr(col), tmp.colptr(col), A_n_cols );
-      }
-    
-    return (info == 0);
-    }
-  #else
-    {
-    arma_ignore(out);
-    arma_ignore(A);
-    arma_ignore(X);
-    arma_stop("solve(): use of LAPACK must be enabled");
-    return false;
-    }
-  #endif
-  }
-
-
-
-//! Solve a system of linear equations.
-//! Assumes that A.n_rows = A.n_cols and B.n_rows = A.n_rows
-template<typename T1>
-inline
-bool
-auxlib::solve_square(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool slow)
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename T1::pod_type eT;
-  
-  if( (A.n_rows <= 4) && (slow == false) )
-    {
-    Mat<eT> A_inv(A.n_rows, A.n_rows);
-    
-    const bool status = auxlib::inv_noalias_tinymat(A_inv, A, A.n_rows);
-    
-    if(status == true)
-      {
-      const unwrap_check<T1> U( B_expr.get_ref(), out );
-      const Mat<eT>& B     = U.M;
-      
-      arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-      
-      out.set_size(A.n_rows, B.n_cols);
-      
-      if(A.is_empty() || B.is_empty())
-        {
-        out.zeros();
-        return true;
-        }
-      
-      gemm_emul<false,false,false,false>::apply(out, A_inv, B);
-      
-      return true;
-      }
-    }
-  
-  
-  Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::gesvx()
-  
-  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-  if(A.is_empty() || B.is_empty())
-    {
-    out.zeros(A.n_rows, B.n_cols);
+    out.zeros(A.n_cols, B_n_cols);
     return true;
     }
   
+  #if defined(ARMA_USE_ATLAS)
+    {
+    arma_debug_assert_atlas_size(A);
+    
+    podarray<int> ipiv(A_n_rows + 2);  // +2 for paranoia: old versions of Atlas might be trashing memory
+    
+    arma_extra_debug_print("atlas::clapack_gesv()");
+    int info = atlas::clapack_gesv<eT>(atlas::CblasColMajor, A_n_rows, B_n_cols, A.memptr(), A_n_rows, ipiv.memptr(), out.memptr(), A_n_rows);
+    
+    return (info == 0);
+    }
+  #elif defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A);
+    
+    blas_int n    = blas_int(A_n_rows);  // assuming A is square
+    blas_int lda  = blas_int(A_n_rows);
+    blas_int ldb  = blas_int(A_n_rows);
+    blas_int nrhs = blas_int(B_n_cols);
+    blas_int info = blas_int(0);
+    
+    podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia: some versions of Lapack might be trashing memory
+    
+    arma_extra_debug_print("lapack::gesv()");
+    lapack::gesv<eT>(&n, &nrhs, A.memptr(), &lda, ipiv.memptr(), out.memptr(), &ldb, &info);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of ATLAS or LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+//! solve a system of linear equations via LU decomposition with equilibration and refinement (real matrices)
+template<typename T1>
+inline
+bool
+auxlib::solve_square_equ(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
   #if defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::pod_type eT;
+    
+    Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::gesvx()
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+      
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_rows, B.n_cols);
+      return true;
+      }
+    
     arma_debug_assert_blas_size(A,B);
     
     out.set_size(A.n_rows, B.n_cols);
     
-    char     fact  = 'E';
+    char     fact  = 'E'; 
     char     trans = 'N';
     char     equed = char(0);
     blas_int n     = blas_int(A.n_rows);
@@ -3528,12 +3338,17 @@ auxlib::solve_square(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>
       &info
       );
     
-    if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
     
-    return (info == 0);
+    const bool singular = ( (info > 0) && (info <= n) );
+    
+    return (singular == false);
     }
   #else
     {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3542,31 +3357,29 @@ auxlib::solve_square(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>
 
 
 
-//! Solve a system of linear equations.
-//! Assumes that A.n_rows = A.n_cols and B.n_rows = A.n_rows
+//! solve a system of linear equations via LU decomposition with equilibration and refinement (complex matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool slow)
+auxlib::solve_square_equ(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
-  arma_ignore(slow);
-  
-  typedef typename T1::pod_type     T;
-  typedef typename std::complex<T> eT;
-  
-  Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_gesvx()
-  
-  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-  if(A.is_empty() || B.is_empty())
-    {
-    out.zeros(A.n_rows, B.n_cols);
-    return true;
-    }
   
   #if defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::pod_type     T;
+    typedef typename std::complex<T> eT;
+    
+    Mat<eT> B = B_expr.get_ref();  // B is overwritten by lapack::cx_gesvx()
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+      
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_rows, B.n_cols);
+      return true;
+      }
+    
     arma_debug_assert_blas_size(A,B);
     
     out.set_size(A.n_rows, B.n_cols);
@@ -3613,12 +3426,17 @@ auxlib::solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::
       &info
       );
     
-    if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
     
-    return (info == 0);
+    const bool singular = ( (info > 0) && (info <= n) );
+    
+    return (singular == false);
     }
   #else
     {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3627,33 +3445,93 @@ auxlib::solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::
 
 
 
-template<typename T1>
+//! solve a non-square full-rank system via QR or LQ decomposition
+template<typename eT, typename T1>
 inline
 bool
-auxlib::solve_nonsquare(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+auxlib::solve_nonsquare(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::pod_type eT;
-  
-  const unwrap<T1>   U(B_expr.get_ref());
-  const Mat<eT>& B = U.M;
-  
-  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-  if(A.is_empty() || B.is_empty())
+  #if defined(ARMA_USE_LAPACK)
     {
-    out.zeros(A.n_cols, B.n_cols);
-    return true;
+    const unwrap<T1>   U(B_expr.get_ref());
+    const Mat<eT>& B = U.M;
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_cols, B.n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,B);
+    
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
+    
+    tmp(0,0, size(B)) = B;
+    
+    char      trans = 'N';
+    blas_int  m     = blas_int(A.n_rows);
+    blas_int  n     = blas_int(A.n_cols);
+    blas_int  lda   = blas_int(A.n_rows);
+    blas_int  ldb   = blas_int(tmp.n_rows);
+    blas_int  nrhs  = blas_int(B.n_cols);
+    blas_int  mn    = (std::min)(m,n);
+    blas_int  lwork = 3 * ( (std::max)(blas_int(1), mn + (std::max)(mn, nrhs)) );
+    blas_int  info  = 0;
+    
+    podarray<eT> work( static_cast<uword>(lwork) );
+    
+    arma_extra_debug_print("lapack::gels()");
+    lapack::gels<eT>( &trans, &m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, work.memptr(), &lwork, &info );
+    
+    out = tmp.head_rows(A.n_cols);
+    
+    return (info == 0);
     }
+  #else
+    {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+// solve a non-square (overdetermined or underdetermined) rank deficient system via QR or LQ decomposition (real matrices)
+template<typename T1>
+inline
+bool
+auxlib::solve_nonsquare_rankdef(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
   
   #if defined(ARMA_USE_LAPACK)
     {
-    Mat<eT> tmp( (std::max)(A.n_rows,A.n_cols), B.n_cols, fill::zeros );
+    typedef typename T1::pod_type eT;
+    
+    const unwrap<T1>   U(B_expr.get_ref());
+    const Mat<eT>& B = U.M;
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_cols, B.n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,B);
+    
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
     
     tmp(0,0, size(B)) = B;
-  
-    arma_debug_assert_blas_size(A,B);
     
     blas_int m     = blas_int(A.n_rows);
     blas_int n     = blas_int(A.n_cols);
@@ -3689,6 +3567,9 @@ auxlib::solve_nonsquare(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_ty
     }
   #else
     {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
     return false;
     }
@@ -3697,34 +3578,35 @@ auxlib::solve_nonsquare(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_ty
 
 
 
+// solve a non-square (overdetermined or underdetermined) rank deficient system via QR or LQ decomposition (complex matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_nonsquare(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+auxlib::solve_nonsquare_rankdef(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::pod_type     T;
-  typedef typename std::complex<T> eT;
-  
-  const unwrap<T1>   U(B_expr.get_ref());
-  const Mat<eT>& B = U.M;
-  
-  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-    
-  if(A.is_empty() || B.is_empty())
-    {
-    out.zeros(A.n_cols, B.n_cols);
-    return true;
-    }
-  
   #if defined(ARMA_USE_LAPACK)
     {
-    Mat<eT> tmp( (std::max)(A.n_rows,A.n_cols), B.n_cols, fill::zeros );
+    typedef typename T1::pod_type     T;
+    typedef typename std::complex<T> eT;
+    
+    const unwrap<T1>   U(B_expr.get_ref());
+    const Mat<eT>& B = U.M;
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+      
+    if(A.is_empty() || B.is_empty())
+      {
+      out.zeros(A.n_cols, B.n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,B);
+    
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
     
     tmp(0,0, size(B)) = B;
-  
-    arma_debug_assert_blas_size(A,B);
     
     blas_int m     = blas_int(A.n_rows);
     blas_int n     = blas_int(A.n_cols);
@@ -3749,7 +3631,7 @@ auxlib::solve_nonsquare(Mat< std::complex<typename T1::pod_type> >& out, Mat< st
     blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
     
     podarray<eT> work( static_cast<uword>(lwork) );
-
+    
     arma_extra_debug_print("lapack::cx_gelsy()");
     lapack::cx_gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), &info);
     
@@ -3761,6 +3643,9 @@ auxlib::solve_nonsquare(Mat< std::complex<typename T1::pod_type> >& out, Mat< st
     }
   #else
     {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
     return false;
     }

@@ -44,7 +44,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   
   if(A.n_rows == A.n_cols)
     {
-    status = auxlib::solve_square(out, A, B_expr, slow);
+    status = (slow == false) ? auxlib::solve_square(out, A, B_expr) : auxlib::solve_square_equ(out, A, B_expr);
     
     if(status == false)
       {
@@ -95,7 +95,9 @@ glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>&
   
   arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
   
-  return auxlib::solve_square(out, A, B_expr, slow);
+  const bool status = (slow == false) ? auxlib::solve_square(out, A, B_expr) : auxlib::solve_square_equ(out, A, B_expr);
+  
+  return status;
   }
 
 
