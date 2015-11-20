@@ -57,6 +57,11 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     {
     arma_extra_debug_print("solve(): detected non-square system");
     status = auxlib::solve_nonsquare(out, A, B_expr);
+    
+    if(status == false)
+      {
+      status = auxlib::solve_nonsquare_rankdef(out, A, B_expr);
+      }
     }
   
   return status;

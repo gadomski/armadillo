@@ -3180,12 +3180,14 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 
 
 //! solve a system of linear equations via LU decomposition
-template<typename eT, typename T1>
+template<typename T1>
 inline
 bool
-auxlib::solve_square(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& B_expr)
+auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
   
   const uword A_n_rows = A.n_rows;
   
@@ -3446,15 +3448,17 @@ auxlib::solve_square_equ(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
 
 
 //! solve a non-square full-rank system via QR or LQ decomposition
-template<typename eT, typename T1>
+template<typename T1>
 inline
 bool
-auxlib::solve_nonsquare(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& B_expr)
+auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
   #if defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::elem_type eT;
+    
     const unwrap<T1>   U(B_expr.get_ref());
     const Mat<eT>& B = U.M;
     
