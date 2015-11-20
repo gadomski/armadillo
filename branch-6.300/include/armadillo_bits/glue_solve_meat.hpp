@@ -20,7 +20,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
   {
   arma_extra_debug_sigprint();
   
-  const bool status = glue_solve::solve_robust( out, X.A, X.B, (X.aux_uword == 1) );
+  const bool status = glue_solve::solve( out, X.A, X.B, (X.aux_uword == 1) );
   
   if(status == false)
     {
@@ -34,7 +34,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
 template<typename eT, typename T1, typename T2>
 inline
 bool
-glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const bool slow)
+glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const bool slow)
   {
   arma_extra_debug_sigprint();
   
@@ -48,21 +48,15 @@ glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,
     
     if(status == false)
       {
-      arma_debug_warn("solve(): using pseudo-inverse to obtain approximate solution");
+      arma_debug_warn("solve(): attempting approximate solution via pseudo-inverse");
       
       status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as auxlib::solve_square() overwrites A
       }
     }
   else
-  if(A.n_rows > A.n_cols)
     {
-    arma_extra_debug_print("solve(): detected over-determined system");
-    status = auxlib::old_solve_od(out, A, B_expr);
-    }
-  else
-    {
-    arma_extra_debug_print("solve(): detected under-determined system");
-    status = auxlib::old_solve_ud(out, A, B_expr);
+    arma_extra_debug_print("solve(): detected non-square system");
+    status = auxlib::solve_nonsquare(out, A, B_expr);
     }
   
   return status;
@@ -87,7 +81,7 @@ glue_solve::solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2
   
   out = Ai * B_expr.get_ref();
   
-  return true;
+  return out.is_finite();
   }
 
 

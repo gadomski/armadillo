@@ -3627,6 +3627,148 @@ auxlib::solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::
 
 
 
+template<typename T1>
+inline
+bool
+auxlib::solve_nonsquare(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::pod_type eT;
+  
+  const unwrap<T1>   U(B_expr.get_ref());
+  const Mat<eT>& B = U.M;
+  
+  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || B.is_empty())
+    {
+    out.zeros(A.n_cols, B.n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    Mat<eT> tmp( (std::max)(A.n_rows,A.n_cols), B.n_cols, fill::zeros );
+    
+    tmp(0,0, size(B)) = B;
+  
+    arma_debug_assert_blas_size(A,B);
+    
+    blas_int m     = blas_int(A.n_rows);
+    blas_int n     = blas_int(A.n_cols);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(tmp.n_rows);
+    blas_int rank  = blas_int(0);
+    blas_int info  = blas_int(0);
+    eT       rcond = eT(0);
+    
+    podarray<blas_int> jpvt(A.n_cols);
+    
+    eT        work_query[2];
+    blas_int lwork_query = -1;
+    
+    arma_extra_debug_print("lapack::gelsy()");
+    lapack::gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &info);
+    
+    if(info != 0)  { return false; }
+    
+    blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
+    
+    podarray<eT> work( static_cast<uword>(lwork) );
+    
+    arma_extra_debug_print("lapack::gelsy()");
+    lapack::gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, work.memptr(), &lwork, &info);
+    
+    // if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    
+    out = tmp.head_rows(A.n_cols);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+template<typename T1>
+inline
+bool
+auxlib::solve_nonsquare(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::pod_type     T;
+  typedef typename std::complex<T> eT;
+  
+  const unwrap<T1>   U(B_expr.get_ref());
+  const Mat<eT>& B = U.M;
+  
+  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || B.is_empty())
+    {
+    out.zeros(A.n_cols, B.n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    Mat<eT> tmp( (std::max)(A.n_rows,A.n_cols), B.n_cols, fill::zeros );
+    
+    tmp(0,0, size(B)) = B;
+  
+    arma_debug_assert_blas_size(A,B);
+    
+    blas_int m     = blas_int(A.n_rows);
+    blas_int n     = blas_int(A.n_cols);
+    blas_int nrhs  = blas_int(B.n_cols);
+    blas_int lda   = blas_int(A.n_rows);
+    blas_int ldb   = blas_int(tmp.n_rows);
+    blas_int rank  = blas_int(0);
+    blas_int info  = blas_int(0);
+    T        rcond = T(0);
+    
+    podarray<blas_int>  jpvt(  A.n_cols);
+    podarray<T>        rwork(2*A.n_cols);
+    
+    eT        work_query[2];
+    blas_int lwork_query = -1;
+    
+    arma_extra_debug_print("lapack::gelsy()");
+    lapack::cx_gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, &work_query[0], &lwork_query, rwork.memptr(), &info);
+    
+    if(info != 0)  { return false; }
+    
+    blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
+    
+    podarray<eT> work( static_cast<uword>(lwork) );
+
+    arma_extra_debug_print("lapack::cx_gelsy()");
+    lapack::cx_gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), &info);
+    
+    // if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
+    
+    out = tmp.head_rows(A.n_cols);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 //
 // solve_tr
 

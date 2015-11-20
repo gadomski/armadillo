@@ -101,6 +101,11 @@
   #define arma_cgels  cgels
   #define arma_zgels  zgels
   
+  #define arma_sgelsy sgelsy
+  #define arma_dgelsy dgelsy
+  #define arma_cgelsy cgelsy
+  #define arma_zgelsy zgelsy
+  
   #define arma_strtrs strtrs
   #define arma_dtrtrs dtrtrs
   #define arma_ctrtrs ctrtrs
@@ -217,6 +222,11 @@
   #define arma_dgels  DGELS
   #define arma_cgels  CGELS
   #define arma_zgels  ZGELS
+  
+  #define arma_sgelsy SGELSY
+  #define arma_dgelsy DGELSY
+  #define arma_cgelsy CGELSY
+  #define arma_zgelsy ZGELSY
   
   #define arma_strtrs STRTRS
   #define arma_dtrtrs DTRTRS
@@ -365,6 +375,14 @@ extern "C"
   void arma_fortran(arma_dgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* b, blas_int* ldb, double* work, blas_int* lwork, blas_int* info);
   void arma_fortran(arma_cgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, void*   b, blas_int* ldb, void*   work, blas_int* lwork, blas_int* info);
   void arma_fortran(arma_zgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, void*   b, blas_int* ldb, void*   work, blas_int* lwork, blas_int* info);
+  
+  // solve over/underdetermined system of linear equations (advanced form, real matrices)
+  void arma_fortran(arma_sgelsy)(blas_int* m, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* jpvt,  float* rcond, blas_int* rank,  float* work, blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_dgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* b, blas_int* ldb, blas_int* jpvt, double* rcond, blas_int* rank, double* work, blas_int* lwork, blas_int* info);
+  
+  // solve over/underdetermined system of linear equations (advanced form, complex matrices)
+  void arma_fortran(arma_cgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt,  float* rcond, blas_int* rank, void* work, blas_int* lwork,  float* rwork, blas_int* info);
+  void arma_fortran(arma_zgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt, double* rcond, blas_int* rank, void* work, blas_int* lwork, double* rwork, blas_int* info);
   
   // solve a triangular system of linear equations
   void arma_fortran(arma_strtrs)(char* uplo, char* trans, char* diag, blas_int* n, blas_int* nrhs, const float*  a, blas_int* lda, float*  b, blas_int* ldb, blas_int* info);

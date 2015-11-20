@@ -121,7 +121,7 @@ solve
   arma_extra_debug_sigprint();
   arma_ignore(junk);
   
-  return glue_solve::solve_robust(out, A_expr, B_expr, slow);
+  return glue_solve::solve(out, A_expr, B_expr, slow);
   }
 
 
@@ -147,7 +147,7 @@ solve
   
   const bool slow = (sig == 's');
   
-  return glue_solve::solve_robust(out, A_expr, B_expr, slow);
+  return glue_solve::solve(out, A_expr, B_expr, slow);
   }
 
 

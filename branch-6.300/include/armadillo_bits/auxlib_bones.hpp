@@ -236,7 +236,11 @@ class auxlib
   template<typename T1>
   inline static bool solve_square(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool slow = false);
   
-  // TODO: solve_nonsquare()
+  template<typename T1>
+  inline static bool solve_nonsquare(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
+  
+  template<typename T1>
+  inline static bool solve_nonsquare(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
   
   //
   // solve_tr
