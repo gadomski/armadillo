@@ -121,14 +121,7 @@ solve
   arma_extra_debug_sigprint();
   arma_ignore(junk);
   
-  typedef typename T1::elem_type eT;
-  
-  Mat<eT> A = A_expr.get_ref();
-  
-  const unwrap_check<T2> U(B_expr.get_ref(), out);
-  const Mat<eT>& B     = U.M;
-  
-  return glue_solve::solve_robust(out, A, B, slow);
+  return glue_solve::solve_robust(out, A_expr, B_expr, slow);
   }
 
 
@@ -148,20 +141,13 @@ solve
   arma_extra_debug_sigprint();
   arma_ignore(junk);
   
-  typedef typename T1::elem_type eT;
-  
   const char sig = (method != NULL) ? method[0] : char(0);
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "solve(): unknown method specified" );
   
   const bool slow = (sig == 's');
   
-  Mat<eT> A = A_expr.get_ref();
-  
-  const unwrap_check<T2> U(B_expr.get_ref(), out);
-  const Mat<eT>& B     = U.M;
-  
-  return glue_solve::solve_robust(out, A, B, slow);
+  return glue_solve::solve_robust(out, A_expr, B_expr, slow);
   }
 
 

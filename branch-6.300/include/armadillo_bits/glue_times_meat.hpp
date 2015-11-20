@@ -83,14 +83,12 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> A = A_strip.M;
     
-    arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
-    
     const unwrap_check<T2> B_tmp(X.B, out);
     const Mat<eT>& B = B_tmp.M;
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
-    const bool status = glue_solve::solve_plain( out, A, B, A_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv( out, A, B, A_strip.slow );
     
     if(status == false)
       {
@@ -185,8 +183,6 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> A = A_strip.M;
     
-    arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
-    
     const partial_unwrap<T2> tmp2(X.A.B);
     const partial_unwrap<T3> tmp3(X.B  );
     
@@ -209,7 +205,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
-    const bool status = glue_solve::solve_plain( out, A, BC, A_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv( out, A, BC, A_strip.slow );
     
     if(status == false)
       {
@@ -231,8 +227,6 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> B = B_strip.M;
     
-    arma_debug_check( (B.is_square() == false), "inv(): given matrix must be square sized" );
-    
     const unwrap<T3> C_tmp(X.B);
     const Mat<eT>& C = C_tmp.M;
     
@@ -240,7 +234,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
-    const bool status = glue_solve::solve_plain( solve_result, B, C, B_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv( solve_result, B, C, B_strip.slow );
     
     if(status == false)
       {

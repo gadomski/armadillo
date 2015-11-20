@@ -20,16 +20,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::elem_type eT;
-  
-  Mat<eT> A = X.A.get_ref();
-  
-  const unwrap_check<T2> U(X.B.get_ref(), out);
-  const Mat<eT>& B =     U.M;
-  
-  arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-  
-  const bool status = glue_solve::solve_robust( out, A, B, (X.aux_uword == 1) );
+  const bool status = glue_solve::solve_robust( out, X.A, X.B, (X.aux_uword == 1) );
   
   if(status == false)
     {
@@ -40,66 +31,40 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
 
 
 
-template<typename eT>
+template<typename eT, typename T1, typename T2>
 inline
 bool
-glue_solve::solve_plain(Mat<eT>& out, Mat<eT>& A, const Mat<eT>& B, const bool slow)
+glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const bool slow)
   {
   arma_extra_debug_sigprint();
   
   bool status = false;
   
-  if(A.n_rows == A.n_cols)
-    {
-    status = auxlib::solve(out, A, B, slow);
-    }
-  else
-  if(A.n_rows > A.n_cols)
-    {
-    arma_extra_debug_print("solve(): detected over-determined system");
-    status = auxlib::solve_od(out, A, B);
-    }
-  else
-    {
-    arma_extra_debug_print("solve(): detected under-determined system");
-    status = auxlib::solve_ud(out, A, B);
-    }
-  
-  return status;
-  }
-
-
-
-template<typename eT>
-inline
-bool
-glue_solve::solve_robust(Mat<eT>& out, Mat<eT>& A, const Mat<eT>& B, const bool slow)
-  {
-  arma_extra_debug_sigprint();
-  
-  bool status = false;
+  Mat<eT> A = A_expr.get_ref();
   
   if(A.n_rows == A.n_cols)
     {
-    status = auxlib::solve(out, A, B, slow);
+    status = auxlib::solve(out, A, B_expr, slow);
     
     if(status == false)
       {
       arma_debug_warn("solve(): matrix appears ill-conditioned; using pseudo-inverse to obtain approximate solution");
       
-      status = glue_solve::solve_pinv(out, A, B);
+      // need to pass A_expr to glue_solve::solve_pinv(), as auxlib::solve() overwrites A
+      
+      status = glue_solve::solve_pinv(out, A_expr, B_expr);
       }
     }
   else
   if(A.n_rows > A.n_cols)
     {
     arma_extra_debug_print("solve(): detected over-determined system");
-    status = auxlib::solve_od(out, A, B);
+    status = auxlib::solve_od(out, A, B_expr);
     }
   else
     {
     arma_extra_debug_print("solve(): detected under-determined system");
-    status = auxlib::solve_ud(out, A, B);
+    status = auxlib::solve_ud(out, A, B_expr);
     }
   
   return status;
@@ -107,22 +72,38 @@ glue_solve::solve_robust(Mat<eT>& out, Mat<eT>& A, const Mat<eT>& B, const bool 
 
 
 
-template<typename eT>
+template<typename eT, typename T1, typename T2>
 inline
 bool
-glue_solve::solve_pinv(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
+glue_solve::solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr)
   {
   arma_extra_debug_sigprint();
   
+  // brutal last-resort approximate solver based on pseudo-inverse
+  
   Mat<eT> Ai;
   
-  bool status = pinv(Ai, A);  // use default tolerance
+  bool status = pinv(Ai, A_expr.get_ref());  // use default tolerance
   
   if(status == false)  { return false; }
   
-  out = Ai * B;  // TODO: measure quality of the approximate solution?
+  out = Ai * B_expr.get_ref();
   
   return true;
+  }
+
+
+
+template<typename eT, typename T2>
+inline
+bool
+glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>& B_expr, const bool slow)
+  {
+  arma_extra_debug_sigprint();
+  
+  arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
+  
+  return auxlib::solve(out, A, B_expr, slow);
   }
 
 
