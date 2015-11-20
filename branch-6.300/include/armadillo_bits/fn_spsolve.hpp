@@ -73,7 +73,7 @@ spsolve_helper
       {
       arma_debug_check( (AA.n_rows != AA.n_cols), "spsolve(): matrix A must be square sized" );
       
-      status = auxlib::old_solve(out, AA, B.get_ref(), true);
+      status = auxlib::solve_square(out, AA, B.get_ref(), true);
       }
     }
   
