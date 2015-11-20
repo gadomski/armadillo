@@ -44,7 +44,7 @@ glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,
   
   if(A.n_rows == A.n_cols)
     {
-    status = auxlib::solve(out, A, B_expr, slow);
+    status = auxlib::old_solve(out, A, B_expr, slow);
     
     if(status == false)
       {
@@ -59,12 +59,12 @@ glue_solve::solve_robust(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,
   if(A.n_rows > A.n_cols)
     {
     arma_extra_debug_print("solve(): detected over-determined system");
-    status = auxlib::solve_od(out, A, B_expr);
+    status = auxlib::old_solve_od(out, A, B_expr);
     }
   else
     {
     arma_extra_debug_print("solve(): detected under-determined system");
-    status = auxlib::solve_ud(out, A, B_expr);
+    status = auxlib::old_solve_ud(out, A, B_expr);
     }
   
   return status;
@@ -103,7 +103,7 @@ glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>&
   
   arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
   
-  return auxlib::solve(out, A, B_expr, slow);
+  return auxlib::old_solve(out, A, B_expr, slow);
   }
 
 

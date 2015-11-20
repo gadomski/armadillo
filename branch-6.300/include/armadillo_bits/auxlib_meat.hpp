@@ -3184,7 +3184,7 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 template<typename eT, typename T1>
 inline
 bool
-auxlib::solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow)
+auxlib::old_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow)
   {
   arma_extra_debug_sigprint();
   
@@ -3283,7 +3283,7 @@ auxlib::solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow)
 template<typename eT, typename T1>
 inline
 bool
-auxlib::solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
+auxlib::old_solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
@@ -3351,7 +3351,7 @@ auxlib::solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
 template<typename eT, typename T1>
 inline
 bool
-auxlib::solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
+auxlib::old_solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   

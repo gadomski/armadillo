@@ -222,13 +222,16 @@ class auxlib
   // solve
   
   template<typename eT, typename T1>
-  inline static bool solve   (Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow = false);
+  inline static bool old_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow = false);
   
   template<typename eT, typename T1>
-  inline static bool solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
+  inline static bool new_solve(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X, const bool slow = false);
   
   template<typename eT, typename T1>
-  inline static bool solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
+  inline static bool old_solve_od(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
+  
+  template<typename eT, typename T1>
+  inline static bool old_solve_ud(Mat<eT>& out, Mat<eT>& A, const Base<eT,T1>& X);
   
   
   //
