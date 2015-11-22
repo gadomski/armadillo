@@ -34,7 +34,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
 template<typename eT, typename T1, typename T2>
 inline
 bool
-glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const bool slow)
+glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -44,7 +44,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   
   if(A.n_rows == A.n_cols)
     {
-    status = (slow == false) ? auxlib::solve_square(out, A, B_expr) : auxlib::solve_square_equ(out, A, B_expr);
+    status = auxlib::solve_square(out, A, B_expr);
     
     if(status == false)
       {
@@ -94,13 +94,13 @@ glue_solve::solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2
 template<typename eT, typename T2>
 inline
 bool
-glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>& B_expr, const bool slow)
+glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>& B_expr)
   {
   arma_extra_debug_sigprint();
   
   arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
   
-  const bool status = (slow == false) ? auxlib::solve_square(out, A, B_expr) : auxlib::solve_square_equ(out, A, B_expr);
+  const bool status = auxlib::solve_square(out, A, B_expr);
   
   return status;
   }

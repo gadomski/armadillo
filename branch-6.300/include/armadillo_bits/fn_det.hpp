@@ -21,14 +21,15 @@ typename T1::elem_type
 det
   (
   const Base<typename T1::elem_type,T1>& X,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
-  return auxlib::det(X, slow);
+  return auxlib::det(X);
   }
 
 
@@ -40,20 +41,19 @@ typename T1::elem_type
 det
   (
   const Base<typename T1::elem_type,T1>& X,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(method);
   arma_ignore(junk);
   
   const char sig = (method != NULL) ? method[0] : char(0);
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
   
-  const bool slow = (sig == 's');
-  
-  return auxlib::det(X, slow);
+  return auxlib::det(X);
   }
 
 
@@ -66,7 +66,7 @@ typename T1::elem_type
 det
   (
   const Op<T1, op_diagmat>& X,
-  const bool slow = false
+  const bool slow = false  // argument kept only for compatibility with old user code
   )
   {
   arma_extra_debug_sigprint();
@@ -108,7 +108,7 @@ typename T1::elem_type
 det
   (
   const Op<T1, op_diagmat>& X,
-  const char* method
+  const char* method  // argument kept only for compatibility with old user code
   )
   {
   arma_extra_debug_sigprint();
@@ -117,7 +117,7 @@ det
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
   
-  return det(X, false);
+  return det(X);
   }
 
 
@@ -130,7 +130,7 @@ typename T1::elem_type
 det
   (
   const Op<T1, op_trimat>& X,
-  const bool slow = false
+  const bool slow = false  // argument kept only for compatibility with old user code
   )
   {
   arma_extra_debug_sigprint();
@@ -171,7 +171,7 @@ typename T1::elem_type
 det
   (
   const Op<T1, op_trimat>& X,
-  const char* method
+  const char* method  // argument kept only for compatibility with old user code
   )
   {
   arma_extra_debug_sigprint();
@@ -180,7 +180,7 @@ det
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
   
-  return det(X, false);
+  return det(X);
   }
 
 
@@ -193,16 +193,17 @@ typename T1::elem_type
 det
   (
   const Op<T1,op_inv>& X,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
   typedef typename T1::elem_type eT;
   
-  const eT tmp = det(X.m, slow);
+  const eT tmp = det(X.m);
   
   if(tmp == eT(0))  { arma_debug_warn("det(): denominator is zero" ); }
   
@@ -218,69 +219,19 @@ typename T1::elem_type
 det
   (
   const Op<T1,op_inv>& X,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
   const char sig = (method != NULL) ? method[0] : char(0);
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
   
-  const bool slow = (sig == 's');
-  
-  return det(X, slow);
-  }
-
-
-
-//! determinant of trans(A)
-template<typename T1>
-inline
-arma_warn_unused
-typename T1::elem_type
-det
-  (
-  const Op<T1,op_htrans>& in,
-  const bool slow = false,
-  const typename arma_blas_type_only<typename T1::elem_type>::result* junk1 = 0,
-  const typename         arma_not_cx<typename T1::elem_type>::result* junk2 = 0
-  )
-  {
-  arma_extra_debug_sigprint();
-  arma_ignore(junk1);
-  arma_ignore(junk2);
-  
-  return auxlib::det(in.m, slow);  // bypass op_htrans
-  }
-
-
-
-template<typename T1>
-inline
-arma_warn_unused
-typename T1::elem_type
-det
-  (
-  const Op<T1,op_htrans>& in,
-  const char* method,
-  const typename arma_blas_type_only<typename T1::elem_type>::result* junk1 = 0,
-  const typename         arma_not_cx<typename T1::elem_type>::result* junk2 = 0
-  )
-  {
-  arma_extra_debug_sigprint();
-  arma_ignore(junk1);
-  arma_ignore(junk2);
-  
-  const char sig = (method != NULL) ? method[0] : char(0);
-  
-  arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
-  
-  const bool slow = (sig == 's');
-  
-  return auxlib::det(in.m, slow);  // bypass op_htrans
+  return det(X);
   }
 
 

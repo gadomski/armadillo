@@ -1,4 +1,4 @@
-// Copyright (C) 2008-2013 National ICT Australia (NICTA)
+// Copyright (C) 2008-2015 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -20,14 +20,15 @@ const Op<T1, op_inv>
 inv
   (
   const Base<typename T1::elem_type,T1>& X,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
-  return Op<T1, op_inv>(X.get_ref(), ((slow == false) ? 0 : 1), 0);
+  return Op<T1, op_inv>(X.get_ref());
   }
 
 
@@ -38,7 +39,7 @@ const Op<T1, op_inv>
 inv
   (
   const Base<typename T1::elem_type,T1>& X,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -49,7 +50,7 @@ inv
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "inv(): unknown method specified" );
   
-  return Op<T1, op_inv>(X.get_ref(), ((sig == 'f') ? 0 : 1), 0);
+  return Op<T1, op_inv>(X.get_ref());
   }
 
 
@@ -61,7 +62,7 @@ const Op<T1, op_inv_tr>
 inv
   (
   const Op<T1, op_trimat>& X,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -80,7 +81,7 @@ const Op<T1, op_inv_tr>
 inv
   (
   const Op<T1, op_trimat>& X,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -103,16 +104,17 @@ inv
   (
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& X,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
   try
     {
-    out = inv(X,slow);
+    out = inv(X);
     }
   catch(std::runtime_error&)
     {
@@ -131,16 +133,17 @@ inv
   (
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& X,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(method);
   arma_ignore(junk);
   
   try
     {
-    out = inv(X,method);
+    out = inv(X);
     }
   catch(std::runtime_error&)
     {
@@ -159,7 +162,7 @@ const Op<T1, op_inv_sympd>
 inv_sympd
   (
   const Base<typename T1::elem_type, T1>& X,
-  const char* method = "std",
+  const char* method = "std",  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -170,7 +173,7 @@ inv_sympd
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "inv_sympd(): unknown method specified" );
   
-  return Op<T1, op_inv_sympd>(X.get_ref(), 0, 0);
+  return Op<T1, op_inv_sympd>(X.get_ref());
   }
 
 
@@ -182,7 +185,7 @@ inv_sympd
   (
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& X,
-  const char* method = "std",
+  const char* method = "std",  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {

@@ -28,14 +28,15 @@ solve
   (
   const Base<typename T1::elem_type,T1>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
-  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), ((slow == false) ? 0 : 1) );
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref());
   }
 
 
@@ -47,7 +48,7 @@ solve
   (
   const Base<typename T1::elem_type,T1>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -58,7 +59,7 @@ solve
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "solve(): unknown method specified" );
   
-  return Glue<T1, T2, glue_solve>( A.get_ref(), B.get_ref(), ((sig == 'f') ? 0 : 1) );
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref());
   }
 
 
@@ -70,7 +71,7 @@ solve
   (
   const Op<T1, op_trimat>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -90,7 +91,7 @@ solve
   (
   const Op<T1, op_trimat>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -114,14 +115,15 @@ solve
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& A_expr,
   const Base<typename T1::elem_type,T2>& B_expr,
-  const bool slow = false,
+  const bool slow = false,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
   arma_extra_debug_sigprint();
+  arma_ignore(slow);
   arma_ignore(junk);
   
-  return glue_solve::solve(out, A_expr, B_expr, slow);
+  return glue_solve::solve(out, A_expr, B_expr);
   }
 
 
@@ -134,7 +136,7 @@ solve
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& A_expr,
   const Base<typename T1::elem_type,T2>& B_expr,
-  const char* method,
+  const char* method,  // argument kept only for compatibility with old user code
   const typename arma_blas_type_only<typename T1::elem_type>::result* junk = 0
   )
   {
@@ -145,9 +147,7 @@ solve
   
   arma_debug_check( ((sig != 's') && (sig != 'f')), "solve(): unknown method specified" );
   
-  const bool slow = (sig == 's');
-  
-  return glue_solve::solve(out, A_expr, B_expr, slow);
+  return glue_solve::solve(out, A_expr, B_expr);
   }
 
 

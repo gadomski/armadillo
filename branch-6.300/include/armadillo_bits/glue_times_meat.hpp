@@ -88,7 +88,7 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
-    const bool status = glue_solve::solve_reinterpreted_inv( out, A, B, A_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv(out, A, B);
     
     if(status == false)
       {
@@ -205,7 +205,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
-    const bool status = glue_solve::solve_reinterpreted_inv( out, A, BC, A_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv(out, A, BC);
     
     if(status == false)
       {
@@ -234,7 +234,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
-    const bool status = glue_solve::solve_reinterpreted_inv( solve_result, B, C, B_strip.slow );
+    const bool status = glue_solve::solve_reinterpreted_inv(solve_result, B, C);
     
     if(status == false)
       {

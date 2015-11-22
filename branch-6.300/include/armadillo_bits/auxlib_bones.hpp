@@ -33,10 +33,10 @@ class auxlib
   // inv
   
   template<typename eT, typename T1>
-  inline static bool inv(Mat<eT>& out, const Base<eT,T1>& X, const bool slow = false);
+  inline static bool inv(Mat<eT>& out, const Base<eT,T1>& X);
   
   template<typename eT>
-  inline static bool inv(Mat<eT>& out, const Mat<eT>& A, const bool slow = false);
+  inline static bool inv(Mat<eT>& out, const Mat<eT>& A);
   
   template<typename eT>
   inline static bool inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N);
@@ -70,7 +70,7 @@ class auxlib
   // det
   
   template<typename eT, typename T1>
-  inline static eT det(const Base<eT,T1>& X, const bool slow = false);
+  inline static eT det(const Base<eT,T1>& X);
   
   template<typename eT>
   inline static eT det_tinymat(const Mat<eT>& X, const uword N);

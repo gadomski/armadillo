@@ -209,9 +209,9 @@ Base<elem_type,derived>::max(uword& row_of_max_val, uword& col_of_max_val) const
 template<typename derived>
 arma_inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i(const bool slow) const
+Base_inv_yes<derived>::i() const   // argument kept only for compatibility with old user code
   {
-  return Op<derived,op_inv>( static_cast<const derived&>(*this), ((slow == false) ? 0 : 1), 0 );
+  return Op<derived,op_inv>(static_cast<const derived&>(*this));
   }
 
 
@@ -219,13 +219,20 @@ Base_inv_yes<derived>::i(const bool slow) const
 template<typename derived>
 arma_inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i(const char* method) const
+Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibility with old user code
   {
-  const char sig = (method != NULL) ? method[0] : char(0);
-  
-  arma_debug_check( ((sig != 's') && (sig != 'f')), "Base::i(): unknown method specified" );
-  
-  return Op<derived,op_inv>( static_cast<const derived&>(*this), ((sig == 'f') ? 0 : 1), 0 );
+  arma_ignore(slow);
+  return Op<derived,op_inv>(static_cast<const derived&>(*this));
+  }
+
+
+
+template<typename derived>
+arma_inline
+const Op<derived,op_inv>
+Base_inv_yes<derived>::i(const char* method) const   // argument kept only for compatibility with old user code
+  {
+  return Op<derived,op_inv>(static_cast<const derived&>(*this));
   }
 
 

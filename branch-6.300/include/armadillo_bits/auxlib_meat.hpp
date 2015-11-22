@@ -22,7 +22,7 @@
 template<typename eT, typename T1>
 inline
 bool
-auxlib::inv(Mat<eT>& out, const Base<eT,T1>& X, const bool slow)
+auxlib::inv(Mat<eT>& out, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
@@ -30,28 +30,23 @@ auxlib::inv(Mat<eT>& out, const Base<eT,T1>& X, const bool slow)
   
   arma_debug_check( (out.is_square() == false), "inv(): given matrix must be square sized" );
   
-  bool status = false;
-  
   const uword N = out.n_rows;
   
-  if( (N <= 4) && (slow == false) )
+  if(N <= 4)
     {
     Mat<eT> tmp(N,N);
     
-    status = auxlib::inv_noalias_tinymat(tmp, out, N);
+    const bool status = auxlib::inv_noalias_tinymat(tmp, out, N);
     
     if(status == true)
       {
       arrayops::copy( out.memptr(), tmp.memptr(), tmp.n_elem );
+      
+      return true;
       }
     }
   
-  if( (N > 4) || (status == false) )
-    {
-    status = auxlib::inv_inplace_lapack(out);
-    }
-  
-  return status;
+  return auxlib::inv_inplace_lapack(out);
   }
 
 
@@ -59,44 +54,42 @@ auxlib::inv(Mat<eT>& out, const Base<eT,T1>& X, const bool slow)
 template<typename eT>
 inline
 bool
-auxlib::inv(Mat<eT>& out, const Mat<eT>& X, const bool slow)
+auxlib::inv(Mat<eT>& out, const Mat<eT>& X)
   {
   arma_extra_debug_sigprint();
   
   arma_debug_check( (X.is_square() == false), "inv(): given matrix must be square sized" );
   
-  bool status = false;
-  
   const uword N = X.n_rows;
   
-  if( (N <= 4) && (slow == false) )
+  if(N <= 4)
     {
     if(&out != &X)
       {
       out.set_size(N,N);
       
-      status = auxlib::inv_noalias_tinymat(out, X, N);
+      const bool status = auxlib::inv_noalias_tinymat(out, X, N);
+      
+      if(status == true)  { return true; }
       }
     else
       {
       Mat<eT> tmp(N,N);
       
-      status = auxlib::inv_noalias_tinymat(tmp, X, N);
+      const bool status = auxlib::inv_noalias_tinymat(tmp, X, N);
       
       if(status == true)
         {
         arrayops::copy( out.memptr(), tmp.memptr(), tmp.n_elem );
+        
+        return true;
         }
       }
     }
   
-  if( (N > 4) || (status == false) )
-    {
-    out = X;
-    status = auxlib::inv_inplace_lapack(out);
-    }
+  out = X;
   
-  return status;
+  return auxlib::inv_inplace_lapack(out);
   }
 
 
@@ -110,9 +103,9 @@ auxlib::inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N)
   
   typedef typename get_pod_type<eT>::result T;
   
-  const T det_min = (is_float<T>::value) ? T(1e-19) : T(1e-154);
+  const T det_min = std::numeric_limits<T>::epsilon();
   
-  bool calc_ok = true;
+  bool calc_ok = false;
   
   const eT* Xm   =   X.memptr();
         eT* outm = out.memptr();  // NOTE: the output matrix is assumed to have the correct size
@@ -122,6 +115,8 @@ auxlib::inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N)
     case 1:
       {
       outm[0] = eT(1) / Xm[0];
+      
+      calc_ok = true;
       };
       break;
       
@@ -140,10 +135,8 @@ auxlib::inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N)
         outm[pos<0,1>::n2] = -b / det_val;
         outm[pos<1,0>::n2] = -c / det_val;
         outm[pos<1,1>::n2] =  a / det_val;
-        }
-      else
-        {
-        calc_ok = false;
+        
+        calc_ok = true;
         }
       };
       break;
@@ -168,16 +161,12 @@ auxlib::inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N)
         
         const eT check_val = Xm[pos<0,0>::n3]*outm[pos<0,0>::n3] + Xm[pos<0,1>::n3]*outm[pos<1,0>::n3] + Xm[pos<0,2>::n3]*outm[pos<2,0>::n3];
         
-        const  T max_diff  = (is_float<T>::value) ? T(1e-4) : T(1e-10);
+        const  T max_diff  = (is_float<T>::value) ? T(1e-4) : T(1e-10);  // empirically determined; may need tuning
         
-        if(std::abs(T(1) - check_val) > max_diff)
+        if(std::abs(T(1) - check_val) < max_diff)
           {
-          calc_ok = false;
+          calc_ok = true;
           }
-        }
-      else
-        {
-        calc_ok = false;
         }
       };
       break;
@@ -210,16 +199,12 @@ auxlib::inv_noalias_tinymat(Mat<eT>& out, const Mat<eT>& X, const uword N)
         
         const eT check_val = Xm[pos<0,0>::n4]*outm[pos<0,0>::n4] + Xm[pos<0,1>::n4]*outm[pos<1,0>::n4] + Xm[pos<0,2>::n4]*outm[pos<2,0>::n4] + Xm[pos<0,3>::n4]*outm[pos<3,0>::n4];
         
-        const  T max_diff  = (is_float<T>::value) ? T(1e-4) : T(1e-10);
+        const  T max_diff  = (is_float<T>::value) ? T(1e-4) : T(1e-10);  // empirically determined; may need tuning
         
-        if(std::abs(T(1) - check_val) > max_diff)
+        if(std::abs(T(1) - check_val) < max_diff)
           {
-          calc_ok = false;
+          calc_ok = true;
           }
-        }
-      else
-        {
-        calc_ok = false;
         }
       };
       break;
@@ -472,7 +457,7 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
 template<typename eT, typename T1>
 inline
 eT
-auxlib::det(const Base<eT,T1>& X, const bool slow)
+auxlib::det(const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
@@ -487,17 +472,16 @@ auxlib::det(const Base<eT,T1>& X, const bool slow)
   
   const uword N = A.n_rows;
   
-  if( (N <= 4) && (slow == false) )
+  if(N <= 4)
     {
-    const  T det_min = (is_float<T>::value) ? T(1e-19) : T(1e-154);
     const eT det_val = auxlib::det_tinymat(A, N);
     
-    return (std::abs(det_val) >= det_min) ? det_val : auxlib::det_lapack(A, make_copy);
+    const  T det_min = std::numeric_limits<T>::epsilon();
+    
+    if(std::abs(det_val) >= det_min)  { return det_val; }
     }
-  else
-    {
-    return auxlib::det_lapack(A, make_copy);
-    }
+  
+  return auxlib::det_lapack(A, make_copy);
   }
 
 
@@ -3199,8 +3183,8 @@ auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_typ
     
     if(status == true)
       {
-      const unwrap_check<T1> U( B_expr.get_ref(), out );
-      const Mat<eT>& B     = U.M;
+      const unwrap<T1>   U(B_expr.get_ref());
+      const Mat<eT>& B = U.M;
       
       const uword B_n_rows = B.n_rows;
       const uword B_n_cols = B.n_cols;
@@ -3213,9 +3197,20 @@ auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_typ
         return true;
         }
       
-      out.set_size(A_n_rows, B_n_cols);
-      
-      gemm_emul<false,false,false,false>::apply(out, A_inv, B);
+      if(&out != &B)
+        {
+        out.set_size(A_n_rows, B_n_cols);
+        
+        gemm_emul<false,false,false,false>::apply(out, A_inv, B);
+        }
+      else
+        {
+        Mat<eT> tmp(A_n_rows, B_n_cols);
+        
+        gemm_emul<false,false,false,false>::apply(tmp, A_inv, B);
+        
+        out.steal_mem(tmp);
+        }
       
       return true;
       }
