@@ -284,6 +284,38 @@ namespace fill
 
 
 
+//! \addtogroup fn_solve
+//! @{
+
+
+// TODO: may need to use solve_opts_base trick (as per spsolve_opts_base) if the fallback option is on by default;
+// TODO: if a user instantiates the solve_opts structure, should everything be false?  or should everything be in the default state?
+
+struct solve_opts
+  {
+  bool equilibrate;
+  bool refine;
+  bool upper_tri;
+  bool lower_tri;
+  bool rank_def;
+  bool fallback;
+  
+  inline solve_opts()
+    {
+    equilibrate = false;
+    refine      = false;
+    upper_tri   = false;
+    lower_tri   = false;
+    rank_def    = false;
+    fallback    = false;
+    }
+  };
+
+
+//! @}
+
+
+
 //! \addtogroup fn_spsolve
 //! @{
 

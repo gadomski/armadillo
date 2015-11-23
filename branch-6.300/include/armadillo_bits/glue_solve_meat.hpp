@@ -20,7 +20,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
   {
   arma_extra_debug_sigprint();
   
-  const bool status = glue_solve::solve( out, X.A, X.B, (X.aux_uword == 1) );
+  const bool status = glue_solve::solve( out, X.A, X.B );
   
   if(status == false)
     {

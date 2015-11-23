@@ -221,7 +221,6 @@ arma_inline
 const Op<derived,op_inv>
 Base_inv_yes<derived>::i(const bool) const   // argument kept only for compatibility with old user code
   {
-  arma_ignore(slow);
   return Op<derived,op_inv>(static_cast<const derived&>(*this));
   }
 
