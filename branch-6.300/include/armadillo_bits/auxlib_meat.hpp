@@ -3163,6 +3163,61 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 
 
 
+template<typename T1>
+inline
+bool
+auxlib::solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const uword A_n_rows = A.n_rows;
+  
+  out = B_expr.get_ref();
+  
+  const uword B_n_rows = out.n_rows;
+  const uword B_n_cols = out.n_cols;
+    
+  arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
+    
+  if(A.is_empty() || out.is_empty())
+    {
+    out.zeros(A.n_cols, B_n_cols);
+    return true;
+    }
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    arma_debug_assert_blas_size(A);
+    
+    char     uplo  = 'L';
+    blas_int n     = blas_int(A_n_rows);  // assuming A is square
+    blas_int lda   = blas_int(A_n_rows);
+    blas_int ldb   = blas_int(A_n_rows);
+    blas_int nrhs  = blas_int(B_n_cols);
+    blas_int info  = blas_int(0);
+    blas_int lwork = blas_int(4*n);
+    
+    podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia
+    
+    podarray<eT> work( static_cast<uword>(lwork) );
+    
+    arma_extra_debug_print("lapack::sysv()");
+    lapack::sysv(&uplo, &n, &nrhs, A.memptr(), &lda, ipiv.memptr(), out.memptr(), &ldb, work.memptr(), &lwork, &info);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_stop("solve(): use of ATLAS or LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 //! solve a system of linear equations via LU decomposition
 template<typename T1>
 inline

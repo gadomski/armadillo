@@ -86,6 +86,11 @@
   #define arma_cgesdd cgesdd
   #define arma_zgesdd zgesdd
   
+  #define arma_ssysv  ssysv
+  #define arma_dsysv  dsysv
+  #define arma_csysv  csysv
+  #define arma_zsysv  zsysv
+  
   #define arma_sgesv  sgesv
   #define arma_dgesv  dgesv
   #define arma_cgesv  cgesv
@@ -207,6 +212,11 @@
   #define arma_dgesdd DGESDD
   #define arma_cgesdd CGESDD
   #define arma_zgesdd ZGESDD
+  
+  #define arma_ssysv  SSYSV
+  #define arma_dsysv  DSYSV
+  #define arma_csysv  CSYSV
+  #define arma_zsysv  ZSYSV
   
   #define arma_sgesv  SGESV
   #define arma_dgesv  DGESV
@@ -356,7 +366,13 @@ extern "C"
   void arma_fortran(arma_cgesdd)(char* jobz, blas_int* m, blas_int* n, void* a, blas_int* lda, float*  s, void* u, blas_int* ldu, void* vt, blas_int* ldvt, void* work, blas_int* lwork, float*  rwork, blas_int* iwork, blas_int* info);
   void arma_fortran(arma_zgesdd)(char* jobz, blas_int* m, blas_int* n, void* a, blas_int* lda, double* s, void* u, blas_int* ldu, void* vt, blas_int* ldvt, void* work, blas_int* lwork, double* rwork, blas_int* iwork, blas_int* info);
   
-  // solve system of linear equations, using LU decomposition
+  // solve system of linear equations (symmetric matrix)
+  void arma_fortran(arma_ssysv)(char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda, blas_int* ipiv,  float* b, blas_int* ldb,  float* work, blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_dsysv)(char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, double* work, blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_csysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info);
+  void arma_fortran(arma_zsysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info);
+  
+  // solve system of linear equations (general matrix), using LU decomposition
   void arma_fortran(arma_sgesv)(blas_int* n, blas_int* nrhs, float*  a, blas_int* lda, blas_int* ipiv, float*  b, blas_int* ldb, blas_int* info);
   void arma_fortran(arma_dgesv)(blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, blas_int* info);
   void arma_fortran(arma_cgesv)(blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, blas_int* ipiv, void*   b, blas_int* ldb, blas_int* info);

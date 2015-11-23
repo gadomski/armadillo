@@ -222,6 +222,9 @@ class auxlib
   // solve
   
   template<typename T1>
+  inline static bool solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& X);
+  
+  template<typename T1>
   inline static bool solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& X);
   
   template<typename T1>
