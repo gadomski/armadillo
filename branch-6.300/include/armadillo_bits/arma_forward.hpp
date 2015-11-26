@@ -294,7 +294,6 @@ struct solve_opts
   bool equilibrate;
   bool refine;
   bool rankdef;
-  bool sympd;
   bool symu;
   bool syml;
   bool triu;
@@ -306,7 +305,6 @@ struct solve_opts
     , equilibrate (false)
     , refine      (false)
     , rankdef     (false)
-    , sympd       (false)
     , symu        (false)
     , syml        (false)
     , triu        (false)

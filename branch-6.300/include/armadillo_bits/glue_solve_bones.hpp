@@ -37,11 +37,10 @@ class glue_solve
   static const uword flag_equilibrate = (1u << 1);
   static const uword flag_refine      = (1u << 2);
   static const uword flag_rankdef     = (1u << 3);
-  static const uword flag_sympd       = (1u << 4);
-  static const uword flag_symu        = (1u << 5);
-  static const uword flag_syml        = (1u << 6);
-  static const uword flag_triu        = (1u << 7);
-  static const uword flag_tril        = (1u << 8);
+  static const uword flag_symu        = (1u << 4);
+  static const uword flag_syml        = (1u << 5);
+  static const uword flag_triu        = (1u << 6);
+  static const uword flag_tril        = (1u << 7);
   };
 
 
