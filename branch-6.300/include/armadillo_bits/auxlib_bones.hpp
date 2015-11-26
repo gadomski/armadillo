@@ -233,11 +233,9 @@ class auxlib
   template<typename T1>
   inline static bool solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& X);
   
-  // TODO
   template<typename T1>
   inline static bool solve_sym_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
   
-  // TODO
   template<typename T1>
   inline static bool solve_sym_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
   

@@ -53,9 +53,8 @@ namespace solve_opts
     return result;
     }
   
-  // THE VALUES BELOW (eg. 1u << 1) ARE SUBJECT TO CHANGE WITHOUT NOTICE.
-  // DO NOT RELY ON ANY SPECIFIC VALUE!
-  // ALWAYS USE THE NAME (eg. solve_opts::nofallback) INSTEAD OF THE VALUE!
+  // The values below (eg. 1u << 1) are for only internal Armadillo use.
+  // The values can change without notice.
   
   static const uword flag_none        = uword(0      );
   static const uword flag_nofallback  = uword(1u << 0);

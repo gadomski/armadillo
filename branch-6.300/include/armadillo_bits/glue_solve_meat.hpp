@@ -70,6 +70,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
       {
       arma_extra_debug_print("solve(): detected square system");
       
+      // TODO: BUG: matrix A doesn't have the right form if {symu, syml, triu, tril} is given
       status = glue_solve::solve_pinv(out, PA.Q, B_expr);
       }
     else
@@ -91,11 +92,18 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     {
     arma_extra_debug_print("solve(): detected square system");
     
-         if(equilibrate || refine)  { status = auxlib::solve_square_ext(out, A, B_expr, equilibrate); }
-    else if(symu)                   { status = auxlib::solve_sym       (out, A, B_expr, uword(0));    }
-    else if(syml)                   { status = auxlib::solve_sym       (out, A, B_expr, uword(1));    }
-    else if(triu)                   { status = auxlib::solve_tri       (out, A, B_expr, uword(0));    }  // NOTE: solve_tri() doesn't overwrite A
-    else if(tril)                   { status = auxlib::solve_tri       (out, A, B_expr, uword(1));    }
+    if(equilibrate)
+      {
+      // TODO: BUG: matrix A doesn't have the right form if {symu, syml, triu, tril} is given
+      status = auxlib::solve_square_ext(out, A, B_expr, true);
+      }
+    else
+      {
+           if(symu) { status = auxlib::solve_sym(out, A, B_expr, uword(0));    }
+      else if(syml) { status = auxlib::solve_sym(out, A, B_expr, uword(1));    }
+      else if(triu) { status = auxlib::solve_tri(out, A, B_expr, uword(0));    }  // NOTE: solve_tri() doesn't overwrite A
+      else if(tril) { status = auxlib::solve_tri(out, A, B_expr, uword(1));    }
+      }
     
     if( (status == false) && (nofallback == false) )
       {
@@ -106,7 +114,11 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     {
     arma_extra_debug_print("solve(): detected non-square system");
     
-    arma_debug_check( (symu || syml || triu || tril), "solve(): incorrect options for non-square matrix" );
+    arma_debug_check( (equilibrate), "solve(): option 'equilibrate' not supported for non-square matrix" );
+    
+    arma_debug_check( (refine), "solve(): option 'refine' not supported for non-square matrix" );
+    
+    arma_debug_check( (symu || syml || triu || tril), "solve(): options imply a square matrix, but non-square matrix was given" );
     
     status = auxlib::solve_nonsquare(out, A, B_expr);
     
