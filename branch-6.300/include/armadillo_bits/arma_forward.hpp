@@ -288,26 +288,43 @@ namespace fill
 //! @{
 
 
-// TODO: may need to use solve_opts_base trick (as per spsolve_opts_base) if the fallback option is on by default;
-// TODO: if a user instantiates the solve_opts structure, should everything be false?  or should everything be in the default state?
-
-struct solve_opts
+struct solve_opts_base
   {
+  const unsigned int id;
+  
+  inline solve_opts_base(const unsigned int in_id) : id(in_id) {}
+  };
+
+
+struct solve_opts_none : public solve_opts_base
+  {
+  inline solve_opts_none() : solve_opts_base(0) {}
+  };
+
+
+struct solve_opts : public solve_opts_base
+  {
+  bool sym;
+  bool sympd;
+  bool triu;
+  bool tril;
   bool equilibrate;
   bool refine;
-  bool upper_tri;
-  bool lower_tri;
-  bool rank_def;
+  bool rankdef;
   bool fallback;
   
-  inline solve_opts()
+  inline
+  solve_opts()
+    : solve_opts_base(1)
     {
+    sym         = false;
+    sympd       = false;
+    triu        = false;
+    tril        = false;
     equilibrate = false;
     refine      = false;
-    upper_tri   = false;
-    lower_tri   = false;
-    rank_def    = false;
-    fallback    = false;
+    rankdef     = false;
+    fallback    = true;
     }
   };
 

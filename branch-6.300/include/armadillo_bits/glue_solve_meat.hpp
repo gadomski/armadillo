@@ -20,7 +20,7 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
   {
   arma_extra_debug_sigprint();
   
-  const bool status = glue_solve::solve( out, X.A, X.B );
+  const bool status = glue_solve::solve( out, X.A, X.B, X.aux_uword );
   
   if(status == false)
     {
@@ -34,33 +34,83 @@ glue_solve::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>
 template<typename eT, typename T1, typename T2>
 inline
 bool
-glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr)
+glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const uword flags)
   {
   arma_extra_debug_sigprint();
   
+  const bool sym         = (flags & flag_sym        );
+  const bool sympd       = (flags & flag_sympd      );
+  const bool tril        = (flags & flag_tril       );
+  const bool triu        = (flags & flag_triu       );
+  const bool equilibrate = (flags & flag_equilibrate);
+  const bool refine      = (flags & flag_refine     );
+  const bool rankdef     = (flags & flag_rankdef    );
+  const bool fallback    = (flags & flag_fallback   );
+  
+  
+  arma_extra_debug_print("enabled flags:");
+  
+  if(sym        )  { arma_extra_debug_print("sym");         }
+  if(sympd      )  { arma_extra_debug_print("sympd");       }
+  if(tril       )  { arma_extra_debug_print("tril");        }
+  if(triu       )  { arma_extra_debug_print("triu");        }
+  if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
+  if(refine     )  { arma_extra_debug_print("refine");      }
+  if(rankdef    )  { arma_extra_debug_print("rankdef");     }
+  if(fallback   )  { arma_extra_debug_print("fallback");    }
+  
+  
   bool status = false;
+  
+  if(rankdef)
+    {
+    const Proxy<T1> PA(A_expr.get_ref());
+    
+    if(PA.get_n_rows() == PA.get_n_cols())
+      {
+      arma_extra_debug_print("solve(): detected square system");
+      
+      status = glue_solve::solve_pinv(out, PA.Q, B_expr);
+      }
+    else
+      {
+      arma_extra_debug_print("solve(): detected non-square system");
+      
+      arma_debug_check( (sym || sympd || tril || triu), "solve(): incorrect options for non-square matrix" );
+      
+      Mat<eT> A = PA.Q;
+      status = auxlib::solve_nonsquare_ext(out, A, B_expr, equilibrate);
+      }
+    
+    return status;
+    }
   
   Mat<eT> A = A_expr.get_ref();
   
   if(A.n_rows == A.n_cols)
     {
-    status = auxlib::solve_square(out, A, B_expr);
+    arma_extra_debug_print("solve(): detected square system");
     
-    if(status == false)
+         if(equilibrate || refine)  { status = auxlib::solve_square_ext(out, A, B_expr, equilibrate); }
+    else if(sympd                )  { status = auxlib::solve_sympd     (out, A, B_expr);              }
+    else if(sym                  )  { status = auxlib::solve_sym       (out, A, B_expr);              }
+    
+    if( (status == false) && (fallback) )
       {
-      arma_debug_warn("solve(): attempting approximate solution via pseudo-inverse");
-      
-      status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as auxlib::solve_square() overwrites A
+      status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as A can be overwritten at this stage
       }
     }
   else
     {
     arma_extra_debug_print("solve(): detected non-square system");
+    
+    arma_debug_check( (sym || sympd || tril || triu), "solve(): incorrect options for non-square matrix" );
+    
     status = auxlib::solve_nonsquare(out, A, B_expr);
     
-    if(status == false)
+    if( (status == false) && (fallback) )
       {
-      status = auxlib::solve_nonsquare_rankdef(out, A, B_expr);
+      status = auxlib::solve_nonsquare_ext(out, A, B_expr, equilibrate);
       }
     }
   
@@ -87,22 +137,6 @@ glue_solve::solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2
   out = Ai * B_expr.get_ref();
   
   return out.is_finite();
-  }
-
-
-
-template<typename eT, typename T2>
-inline
-bool
-glue_solve::solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>& B_expr)
-  {
-  arma_extra_debug_sigprint();
-  
-  arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
-  
-  const bool status = auxlib::solve_square(out, A, B_expr);
-  
-  return status;
   }
 
 

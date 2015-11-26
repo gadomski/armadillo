@@ -28,15 +28,25 @@ solve
   (
   const Base<typename T1::elem_type,T1>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const solve_opts&                      settings = solve_opts()
+  const solve_opts_base&                 settings = solve_opts_none()
   )
   {
   arma_extra_debug_sigprint();
   
-  // TODO: process settings: encode each setting as a separate bit in a uword variable;
-  // TODO: the resulting uword variable is then used for initialising the aux_uword member in the Glue structure
+  const solve_opts& opts = (settings.id == 1) ? static_cast<const solve_opts&>(settings) : solve_opts();
   
-  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref());
+  uword flags = uword(0);
+  
+  if(opts.sym        )  { flags |= glue_solve::flag_sym;         }
+  if(opts.sympd      )  { flags |= glue_solve::flag_sympd;       }
+  if(opts.triu       )  { flags |= glue_solve::flag_triu;        }
+  if(opts.tril       )  { flags |= glue_solve::flag_tril;        }
+  if(opts.equilibrate)  { flags |= glue_solve::flag_equilibrate; }
+  if(opts.refine     )  { flags |= glue_solve::flag_refine;      }
+  if(opts.rankdef    )  { flags |= glue_solve::flag_rankdef;     }
+  if(opts.fallback   )  { flags |= glue_solve::flag_fallback;    }
+  
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), flags);
   }
 
 

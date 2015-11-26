@@ -20,11 +20,22 @@ class glue_solve
   
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve>& X);
   
-  template<typename eT, typename T1, typename T2> inline static bool solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr);
+  template<typename eT, typename T1, typename T2> inline static bool solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const uword flags);
   
   template<typename eT, typename T1, typename T2> inline static bool solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr);
   
-  template<typename eT, typename T2> inline static bool solve_reinterpreted_inv(Mat<eT>& out, Mat<eT>& A, const Base<eT,T2>& B_expr);
+  
+  // the flags below are internal to Armadillo, and are subject to change without notice.
+  // DO NOT USE THESE FLAGS IN USER CODE!
+  
+  static const uword flag_sym         = (1u << 0);
+  static const uword flag_sympd       = (1u << 1);
+  static const uword flag_tril        = (1u << 2);
+  static const uword flag_triu        = (1u << 3);
+  static const uword flag_equilibrate = (1u << 4);
+  static const uword flag_refine      = (1u << 5);
+  static const uword flag_rankdef     = (1u << 6);
+  static const uword flag_fallback    = (1u << 7);
   };
 
 

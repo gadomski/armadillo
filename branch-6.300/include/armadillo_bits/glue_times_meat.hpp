@@ -77,6 +77,8 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
   
   if(strip_inv<T1>::do_inv == true)
     {
+    // replace inv(A)*B with solve(A,B)
+    
     arma_extra_debug_print("glue_times_redirect<2>::apply(): detected inv(A)*B");
     
     const strip_inv<T1> A_strip(X.A);
@@ -88,7 +90,9 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
-    const bool status = glue_solve::solve_reinterpreted_inv(out, A, B);
+    arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
+    
+    const bool status = auxlib::solve_square(out, A, B);
     
     if(status == false)
       {
@@ -205,7 +209,9 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
-    const bool status = glue_solve::solve_reinterpreted_inv(out, A, BC);
+    arma_debug_check( (A.is_square() == false), "inv(): given matrix must be square sized" );
+    
+    const bool status = auxlib::solve_square(out, A, BC);
     
     if(status == false)
       {
@@ -234,7 +240,9 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
-    const bool status = glue_solve::solve_reinterpreted_inv(solve_result, B, C);
+    arma_debug_check( (B.is_square() == false), "inv(): given matrix must be square sized" );
+    
+    const bool status = auxlib::solve_square(solve_result, B, C);
     
     if(status == false)
       {

@@ -3322,11 +3322,11 @@ auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_typ
 
 
 
-//! solve a system of linear equations via LU decomposition with equilibration and refinement (real matrices)
+//! solve a system of linear equations via LU decomposition with refinement (real matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_square_equ(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3348,7 +3348,7 @@ auxlib::solve_square_equ(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     
     out.set_size(A.n_rows, B.n_cols);
     
-    char     fact  = 'E'; 
+    char     fact  = (equilibrate) ? 'E' : 'N'; 
     char     trans = 'N';
     char     equed = char(0);
     blas_int n     = blas_int(A.n_rows);
@@ -3409,11 +3409,11 @@ auxlib::solve_square_equ(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
 
 
 
-//! solve a system of linear equations via LU decomposition with equilibration and refinement (complex matrices)
+//! solve a system of linear equations via LU decomposition with refinement (complex matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_square_equ(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3436,7 +3436,7 @@ auxlib::solve_square_equ(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     
     out.set_size(A.n_rows, B.n_cols);
     
-    char     fact  = 'E';
+    char     fact  = (equilibrate) ? 'E' : 'N'; 
     char     trans = 'N';
     char     equed = char(0);
     blas_int n     = blas_int(A.n_rows);
