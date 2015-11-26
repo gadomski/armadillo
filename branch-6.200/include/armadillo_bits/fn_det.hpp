@@ -236,55 +236,6 @@ det
 
 
 
-//! determinant of trans(A)
-template<typename T1>
-inline
-arma_warn_unused
-typename T1::elem_type
-det
-  (
-  const Op<T1,op_htrans>& in,
-  const bool slow = false,
-  const typename arma_blas_type_only<typename T1::elem_type>::result* junk1 = 0,
-  const typename         arma_not_cx<typename T1::elem_type>::result* junk2 = 0
-  )
-  {
-  arma_extra_debug_sigprint();
-  arma_ignore(junk1);
-  arma_ignore(junk2);
-  
-  return auxlib::det(in.m, slow);  // bypass op_htrans
-  }
-
-
-
-template<typename T1>
-inline
-arma_warn_unused
-typename T1::elem_type
-det
-  (
-  const Op<T1,op_htrans>& in,
-  const char* method,
-  const typename arma_blas_type_only<typename T1::elem_type>::result* junk1 = 0,
-  const typename         arma_not_cx<typename T1::elem_type>::result* junk2 = 0
-  )
-  {
-  arma_extra_debug_sigprint();
-  arma_ignore(junk1);
-  arma_ignore(junk2);
-  
-  const char sig = (method != NULL) ? method[0] : char(0);
-  
-  arma_debug_check( ((sig != 's') && (sig != 'f')), "det(): unknown method specified" );
-  
-  const bool slow = (sig == 's');
-  
-  return auxlib::det(in.m, slow);  // bypass op_htrans
-  }
-
-
-
 template<typename T>
 arma_inline
 arma_warn_unused
