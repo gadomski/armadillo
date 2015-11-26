@@ -13,6 +13,28 @@
 
 
 
+inline
+static
+uword
+glue_solve::encode_flags(const solve_opts& settings)
+  {
+  uword flags = uword(0);
+  
+  if(settings.fallback   )  { flags |= flag_fallback;    }
+  if(settings.equilibrate)  { flags |= flag_equilibrate; }
+  if(settings.refine     )  { flags |= flag_refine;      }
+  if(settings.rankdef    )  { flags |= flag_rankdef;     }
+  if(settings.sympd      )  { flags |= flag_sympd;       }
+  if(settings.symu       )  { flags |= flag_symu;        }
+  if(settings.syml       )  { flags |= flag_syml;        }
+  if(settings.triu       )  { flags |= flag_triu;        }
+  if(settings.tril       )  { flags |= flag_tril;        }
+  
+  return flags;
+  }
+
+
+
 template<typename T1, typename T2>
 inline
 void
@@ -38,26 +60,28 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   {
   arma_extra_debug_sigprint();
   
-  const bool sym         = (flags & flag_sym        );
-  const bool sympd       = (flags & flag_sympd      );
-  const bool tril        = (flags & flag_tril       );
-  const bool triu        = (flags & flag_triu       );
+  const bool fallback    = (flags & flag_fallback   );
   const bool equilibrate = (flags & flag_equilibrate);
   const bool refine      = (flags & flag_refine     );
   const bool rankdef     = (flags & flag_rankdef    );
-  const bool fallback    = (flags & flag_fallback   );
+  const bool sympd       = (flags & flag_sympd      );
+  const bool symu        = (flags & flag_symu       );
+  const bool syml        = (flags & flag_syml       );
+  const bool triu        = (flags & flag_triu       );
+  const bool tril        = (flags & flag_tril       );
   
   
   arma_extra_debug_print("enabled flags:");
   
-  if(sym        )  { arma_extra_debug_print("sym");         }
-  if(sympd      )  { arma_extra_debug_print("sympd");       }
-  if(tril       )  { arma_extra_debug_print("tril");        }
-  if(triu       )  { arma_extra_debug_print("triu");        }
+  if(fallback   )  { arma_extra_debug_print("fallback");    }
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(refine     )  { arma_extra_debug_print("refine");      }
   if(rankdef    )  { arma_extra_debug_print("rankdef");     }
-  if(fallback   )  { arma_extra_debug_print("fallback");    }
+  if(sympd      )  { arma_extra_debug_print("sympd");       }
+  if(symu       )  { arma_extra_debug_print("symu");        }
+  if(syml       )  { arma_extra_debug_print("syml");        }
+  if(triu       )  { arma_extra_debug_print("triu");        }
+  if(tril       )  { arma_extra_debug_print("tril");        }
   
   
   bool status = false;
@@ -79,7 +103,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
       arma_debug_check( (sym || sympd || tril || triu), "solve(): incorrect options for non-square matrix" );
       
       Mat<eT> A = PA.Q;
-      status = auxlib::solve_nonsquare_ext(out, A, B_expr, equilibrate);
+      status = auxlib::solve_nonsquare_ext(out, A, B_expr);
       }
     
     return status;
@@ -110,7 +134,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     
     if( (status == false) && (fallback) )
       {
-      status = auxlib::solve_nonsquare_ext(out, A, B_expr, equilibrate);
+      status = auxlib::solve_nonsquare_ext(out, A, B_expr);
       }
     }
   

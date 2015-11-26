@@ -288,43 +288,30 @@ namespace fill
 //! @{
 
 
-struct solve_opts_base
+struct solve_opts
   {
-  const unsigned int id;
-  
-  inline solve_opts_base(const unsigned int in_id) : id(in_id) {}
-  };
-
-
-struct solve_opts_none : public solve_opts_base
-  {
-  inline solve_opts_none() : solve_opts_base(0) {}
-  };
-
-
-struct solve_opts : public solve_opts_base
-  {
-  bool sym;
-  bool sympd;
-  bool triu;
-  bool tril;
+  bool fallback;
   bool equilibrate;
   bool refine;
   bool rankdef;
-  bool fallback;
+  bool sympd;
+  bool symu;
+  bool syml;
+  bool triu;
+  bool tril;
   
   inline
   solve_opts()
-    : solve_opts_base(1)
+    : fallback    (true)
+    , equilibrate (false)
+    , refine      (false)
+    , rankdef     (false)
+    , sympd       (false)
+    , symu        (false)
+    , syml        (false)
+    , triu        (false)
+    , tril        (false)
     {
-    sym         = false;
-    sympd       = false;
-    triu        = false;
-    tril        = false;
-    equilibrate = false;
-    refine      = false;
-    rankdef     = false;
-    fallback    = true;
     }
   };
 
