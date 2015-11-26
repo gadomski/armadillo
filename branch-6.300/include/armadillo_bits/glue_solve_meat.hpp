@@ -13,27 +13,6 @@
 
 
 
-inline
-static
-uword
-glue_solve::encode_flags(const solve_opts& settings)
-  {
-  uword flags = uword(0);
-  
-  if(settings.fallback   )  { flags |= flag_fallback;    }
-  if(settings.equilibrate)  { flags |= flag_equilibrate; }
-  if(settings.refine     )  { flags |= flag_refine;      }
-  if(settings.rankdef    )  { flags |= flag_rankdef;     }
-  if(settings.symu       )  { flags |= flag_symu;        }
-  if(settings.syml       )  { flags |= flag_syml;        }
-  if(settings.triu       )  { flags |= flag_triu;        }
-  if(settings.tril       )  { flags |= flag_tril;        }
-  
-  return flags;
-  }
-
-
-
 template<typename T1, typename T2>
 inline
 void
@@ -59,19 +38,19 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   {
   arma_extra_debug_sigprint();
   
-  const bool fallback    = (flags & flag_fallback   );
-  const bool equilibrate = (flags & flag_equilibrate);
-  const bool refine      = (flags & flag_refine     );
-  const bool rankdef     = (flags & flag_rankdef    );
-  const bool symu        = (flags & flag_symu       );
-  const bool syml        = (flags & flag_syml       );
-  const bool triu        = (flags & flag_triu       );
-  const bool tril        = (flags & flag_tril       );
+  const bool nofallback  = (flags & solve_opt::flag_nofallback );
+  const bool equilibrate = (flags & solve_opt::flag_equilibrate);
+  const bool refine      = (flags & solve_opt::flag_refine     );
+  const bool rankdef     = (flags & solve_opt::flag_rankdef    );
+  const bool symu        = (flags & solve_opt::flag_symu       );
+  const bool syml        = (flags & solve_opt::flag_syml       );
+  const bool triu        = (flags & solve_opt::flag_triu       );
+  const bool tril        = (flags & solve_opt::flag_tril       );
   
   
   arma_extra_debug_print("enabled flags:");
   
-  if(fallback   )  { arma_extra_debug_print("fallback");    }
+  if(nofallback )  { arma_extra_debug_print("nofallback");  }
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(refine     )  { arma_extra_debug_print("refine");      }
   if(rankdef    )  { arma_extra_debug_print("rankdef");     }
@@ -113,9 +92,12 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     arma_extra_debug_print("solve(): detected square system");
     
          if(equilibrate || refine)  { status = auxlib::solve_square_ext(out, A, B_expr, equilibrate); }
-    else if(sym                  )  { status = auxlib::solve_sym       (out, A, B_expr);              }
+    else if(symu)                   { status = auxlib::solve_sym       (out, A, B_expr, uword(0));    }
+    else if(syml)                   { status = auxlib::solve_sym       (out, A, B_expr, uword(1));    }
+    else if(triu)                   { status = auxlib::solve_tri       (out, A, B_expr, uword(0));    }  // NOTE: solve_tri() doesn't overwrite A
+    else if(tril)                   { status = auxlib::solve_tri       (out, A, B_expr, uword(1));    }
     
-    if( (status == false) && (fallback) )
+    if( (status == false) && (nofallback == false) )
       {
       status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as A can be overwritten at this stage
       }
@@ -128,7 +110,7 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
     
     status = auxlib::solve_nonsquare(out, A, B_expr);
     
-    if( (status == false) && (fallback) )
+    if( (status == false) && (nofallback == false) )
       {
       status = auxlib::solve_nonsquare_ext(out, A, B_expr);
       }
@@ -157,41 +139,6 @@ glue_solve::solve_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2
   out = Ai * B_expr.get_ref();
   
   return out.is_finite();
-  }
-
-
-
-template<typename T1, typename T2>
-inline
-void
-glue_solve_tr::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve_tr>& X)
-  {
-  arma_extra_debug_sigprint();
-  
-  typedef typename T1::elem_type eT;
-  
-  const unwrap_check<T1> A_tmp(X.A, out);
-  const unwrap_check<T2> B_tmp(X.B, out);
-  
-  const Mat<eT>& A = A_tmp.M;
-  const Mat<eT>& B = B_tmp.M;
-  
-  bool  err_state = false;
-  char* err_msg   = 0;
-  
-  arma_debug_set_error( err_state, err_msg, ((&A) == (&B)),           "solve(): A is an alias of B" );
-  arma_debug_set_error( err_state, err_msg, (A.n_rows != B.n_rows),   "solve(): number of rows in A and B must be the same" );
-  arma_debug_set_error( err_state, err_msg, (A.is_square() == false), "solve(): A is not a square matrix" );
-  
-  arma_debug_check(err_state, err_msg);
-  
-  const bool status = auxlib::solve_tr(out, A, B, X.aux_uword);
-  
-  if(status == false)
-    {
-    out.reset();
-    arma_bad("solve(): solution not found");
-    }
   }
 
 

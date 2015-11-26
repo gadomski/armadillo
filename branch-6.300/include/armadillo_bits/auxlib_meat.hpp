@@ -3497,6 +3497,53 @@ auxlib::solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>&
 
 
 
+template<typename T1>
+inline
+bool
+auxlib::solve_tri(Mat<typename T1::elem_type>& out, const Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const uword layout)
+  {
+  arma_extra_debug_sigprint();
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    out = B_expr.get_ref();
+    
+    const uword B_n_cols = out.n_cols;
+    
+    if(A.is_empty() || out.is_empty())
+      {
+      out.zeros(A.n_cols, B_n_cols);
+      return true;
+      }
+    
+    arma_debug_assert_blas_size(A,out);
+    
+    char     uplo  = (layout == 0) ? 'U' : 'L';
+    char     trans = 'N';
+    char     diag  = 'N';
+    blas_int n     = blas_int(A.n_rows);
+    blas_int nrhs  = blas_int(B_n_cols);
+    blas_int info  = 0;
+    
+    arma_extra_debug_print("lapack::trtrs()");
+    lapack::trtrs(&uplo, &trans, &diag, &n, &nrhs, A.memptr(), &n, out.memptr(), &n, &info);
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_ignore(out);
+    arma_ignore(A);
+    arma_ignore(B_expr);
+    arma_ignore(layout);
+    arma_stop("solve(): use of LAPACK must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
 //! solve a non-square full-rank system via QR or LQ decomposition
 template<typename T1>
 inline
@@ -3700,54 +3747,6 @@ auxlib::solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat
     arma_ignore(out);
     arma_ignore(A);
     arma_ignore(B_expr);
-    arma_stop("solve(): use of LAPACK must be enabled");
-    return false;
-    }
-  #endif
-  }
-
-
-
-//
-// solve_tr
-
-template<typename eT>
-inline
-bool
-auxlib::solve_tr(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const uword layout)
-  {
-  arma_extra_debug_sigprint();
-  
-  #if defined(ARMA_USE_LAPACK)
-    {
-    if(A.is_empty() || B.is_empty())
-      {
-      out.zeros(A.n_cols, B.n_cols);
-      return true;
-      }
-    
-    arma_debug_assert_blas_size(A,B);
-    
-    out = B;
-    
-    char     uplo  = (layout == 0) ? 'U' : 'L';
-    char     trans = 'N';
-    char     diag  = 'N';
-    blas_int n     = blas_int(A.n_rows);
-    blas_int nrhs  = blas_int(B.n_cols);
-    blas_int info  = 0;
-    
-    arma_extra_debug_print("lapack::trtrs()");
-    lapack::trtrs<eT>(&uplo, &trans, &diag, &n, &nrhs, A.memptr(), &n, out.memptr(), &n, &info);
-    
-    return (info == 0);
-    }
-  #else
-    {
-    arma_ignore(out);
-    arma_ignore(A);
-    arma_ignore(B);
-    arma_ignore(layout);
     arma_stop("solve(): use of LAPACK must be enabled");
     return false;
     }

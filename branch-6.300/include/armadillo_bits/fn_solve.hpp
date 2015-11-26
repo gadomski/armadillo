@@ -28,14 +28,12 @@ solve
   (
   const Base<typename T1::elem_type,T1>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const solve_opts&                      settings = solve_opts()
+  const solve_opts::opts&                opts = solve_opts::none
   )
   {
   arma_extra_debug_sigprint();
   
-  const uword flags = glue_solve::encode_flags(settings);
-  
-  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), flags);
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), opts.flags);
   }
 
 
@@ -52,7 +50,7 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref());
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), solve_opts::flag_none);
   }
 
 
@@ -69,7 +67,7 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref());
+  return Glue<T1, T2, glue_solve>(A.get_ref(), B.get_ref(), solve_opts::flag_none);
   }
 
 
@@ -81,14 +79,17 @@ solve
   (
   const Op<T1, op_trimat>&               A,
   const Base<typename T1::elem_type,T2>& B,
-  const solve_opts&                      settings = solve_opts()
+  const solve_opts::opts&                opts = solve_opts::none
   )
   {
   arma_extra_debug_sigprint();
   
-  // TODO: process settings, with upper_tri or lower_tri set to true
+  uword flags = opts.flags;
   
-  return Glue<T1, T2, glue_solve_tr>(A.m, B.get_ref(), A.aux_uword_a);
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  
+  return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
 
 
@@ -105,7 +106,12 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return Glue<T1, T2, glue_solve_tr>(A.m, B.get_ref(), A.aux_uword_a);
+  uword flags = solve_opts::flag_none;
+  
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  
+  return Glue<T1, T2, glue_solve_tr>(A.m, B.get_ref(), flags);
   }
 
 
@@ -122,8 +128,17 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return Glue<T1, T2, glue_solve_tr>(A.m, B.get_ref(), A.aux_uword_a);
+  uword flags = solve_opts::flag_none;
+  
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  
+  return Glue<T1, T2, glue_solve_tr>(A.m, B.get_ref(), flags);
   }
+
+
+
+// TODO: handling of op_symmat
 
 
 
@@ -135,14 +150,12 @@ solve
          Mat<typename T1::elem_type>&    out,
   const Base<typename T1::elem_type,T1>& A,
   const Base<typename T1::elem_type,T2>& B,
-  const solve_opts&                      settings = solve_opts()
+  const solve_opts::opts&                opts = solve_opts::none
   )
   {
   arma_extra_debug_sigprint();
   
-  const uword flags = glue_solve::encode_flags(settings);
-  
-  return glue_solve::solve(out, A.get_ref(), B.get_ref(), flags);
+  return glue_solve::solve(out, A.get_ref(), B.get_ref(), opts.flags);
   }
 
 
@@ -160,7 +173,7 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return glue_solve::solve(out, A.get_ref(), B.get_ref());
+  return glue_solve::solve(out, A.get_ref(), B.get_ref(), solve_opts::flag_none);
   }
 
 
@@ -178,8 +191,12 @@ solve
   {
   arma_extra_debug_sigprint();
   
-  return glue_solve::solve(out, A.get_ref(), B.get_ref());
+  return glue_solve::solve(out, A.get_ref(), B.get_ref(), solve_opts::flag_none);
   }
+
+
+// TODO: handling of op_trimat
+// TODO: handling of op_symmat
 
 
 

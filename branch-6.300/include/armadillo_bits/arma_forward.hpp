@@ -284,40 +284,6 @@ namespace fill
 
 
 
-//! \addtogroup fn_solve
-//! @{
-
-
-struct solve_opts
-  {
-  bool fallback;
-  bool equilibrate;
-  bool refine;
-  bool rankdef;
-  bool symu;
-  bool syml;
-  bool triu;
-  bool tril;
-  
-  inline
-  solve_opts()
-    : fallback    (true)
-    , equilibrate (false)
-    , refine      (false)
-    , rankdef     (false)
-    , symu        (false)
-    , syml        (false)
-    , triu        (false)
-    , tril        (false)
-    {
-    }
-  };
-
-
-//! @}
-
-
-
 //! \addtogroup fn_spsolve
 //! @{
 
