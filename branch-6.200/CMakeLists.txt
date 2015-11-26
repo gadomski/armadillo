@@ -336,12 +336,14 @@ set_target_properties(armadillo PROPERTIES VERSION ${ARMA_MAJOR}.${ARMA_MINOR_AL
 # does not search /usr/local/lib by default, we need to place the
 # library in either /usr/lib or /usr/lib64
 
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  message(STATUS "*** CMAKE_INSTALL_PREFIX was initalised by cmake to the default value of ${CMAKE_INSTALL_PREFIX}")
-  message(STATUS "*** CMAKE_INSTALL_PREFIX changed to /usr")
-  unset(CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr")
-  #set(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH "install prefix" FORCE)
+if(NOT APPLE)
+  if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    message(STATUS "*** CMAKE_INSTALL_PREFIX was initalised by cmake to the default value of ${CMAKE_INSTALL_PREFIX}")
+    message(STATUS "*** CMAKE_INSTALL_PREFIX changed to /usr")
+    unset(CMAKE_INSTALL_PREFIX)
+    set(CMAKE_INSTALL_PREFIX "/usr")
+    #set(CMAKE_INSTALL_PREFIX "/usr" CACHE PATH "install prefix" FORCE)
+  endif()
 endif()
 
 # Allow for the "lib" directory to be specified on the command line
