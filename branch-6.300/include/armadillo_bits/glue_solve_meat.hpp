@@ -59,7 +59,6 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   if(triu       )  { arma_extra_debug_print("triu");        }
   if(tril       )  { arma_extra_debug_print("tril");        }
   
-  
   bool status = false;
   
   if(rankdef)
@@ -84,6 +83,29 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
       }
     
     return status;
+    }
+  
+  if(symu || syml)
+    {
+    // ensure matrix is square
+    // check for equlibrate and refine
+    // ...
+    // check for nofallback 
+    }
+  else
+  if(triu || tril)
+    {
+    // ensure matrix is square
+    // check for equlibrate and refine
+    // ...
+    // check for nofallback 
+    }
+  else
+    {
+    // general matrix
+    // - square matrix
+    // - nonsquare matrix
+    // check for nofallback 
     }
   
   Mat<eT> A = A_expr.get_ref();
