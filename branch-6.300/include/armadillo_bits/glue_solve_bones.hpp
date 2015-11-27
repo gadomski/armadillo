@@ -80,35 +80,35 @@ namespace solve_opts
   // The values below (eg. 1u << 1) are for only internal Armadillo use.
   // The values can change without notice.
   
-  static const uword flag_none        = uword(0      );
-  static const uword flag_nofallback  = uword(1u << 0);
-  static const uword flag_equilibrate = uword(1u << 1);
-  static const uword flag_refine      = uword(1u << 2);
-  static const uword flag_rankdef     = uword(1u << 3);
-  static const uword flag_symu        = uword(1u << 4);
-  static const uword flag_syml        = uword(1u << 5);
-  static const uword flag_triu        = uword(1u << 6);
-  static const uword flag_tril        = uword(1u << 7);
+  static const uword flag_none         = uword(0      );
+  static const uword flag_fullrankonly = uword(1u << 0);
+  static const uword flag_equilibrate  = uword(1u << 1);
+  static const uword flag_refine       = uword(1u << 2);
+  static const uword flag_rankdef      = uword(1u << 3);
+  static const uword flag_symu         = uword(1u << 4);
+  static const uword flag_syml         = uword(1u << 5);
+  static const uword flag_triu         = uword(1u << 6);
+  static const uword flag_tril         = uword(1u << 7);
   
-  struct opts_none        : public opts { inline opts_none()        : opts(flag_none       ) {} };
-  struct opts_nofallback  : public opts { inline opts_nofallback()  : opts(flag_nofallback ) {} };
-  struct opts_equilibrate : public opts { inline opts_equilibrate() : opts(flag_equilibrate) {} };
-  struct opts_refine      : public opts { inline opts_refine()      : opts(flag_refine     ) {} };
-  struct opts_rankdef     : public opts { inline opts_rankdef()     : opts(flag_rankdef    ) {} };
-  struct opts_symu        : public opts { inline opts_symu()        : opts(flag_symu       ) {} };
-  struct opts_syml        : public opts { inline opts_syml()        : opts(flag_syml       ) {} };
-  struct opts_triu        : public opts { inline opts_triu()        : opts(flag_triu       ) {} };
-  struct opts_tril        : public opts { inline opts_tril()        : opts(flag_tril       ) {} };
+  struct opts_none         : public opts { inline opts_none()         : opts(flag_none        ) {} };
+  struct opts_fullrankonly : public opts { inline opts_fullrankonly() : opts(flag_fullrankonly) {} };
+  struct opts_equilibrate  : public opts { inline opts_equilibrate()  : opts(flag_equilibrate ) {} };
+  struct opts_refine       : public opts { inline opts_refine()       : opts(flag_refine      ) {} };
+  struct opts_rankdef      : public opts { inline opts_rankdef()      : opts(flag_rankdef     ) {} };
+  struct opts_symu         : public opts { inline opts_symu()         : opts(flag_symu        ) {} };
+  struct opts_syml         : public opts { inline opts_syml()         : opts(flag_syml        ) {} };
+  struct opts_triu         : public opts { inline opts_triu()         : opts(flag_triu        ) {} };
+  struct opts_tril         : public opts { inline opts_tril()         : opts(flag_tril        ) {} };
   
-  static const opts_none        none;
-  static const opts_nofallback  nofallback;
-  static const opts_equilibrate equilibrate;
-  static const opts_refine      refine;
-  static const opts_rankdef     rankdef;
-  static const opts_symu        symu;
-  static const opts_syml        syml;
-  static const opts_triu        triu;
-  static const opts_tril        tril;
+  static const opts_none         none;
+  static const opts_fullrankonly fullrankonly;
+  static const opts_equilibrate  equilibrate;
+  static const opts_refine       refine;
+  static const opts_rankdef      rankdef;
+  static const opts_symu         symu;
+  static const opts_syml         syml;
+  static const opts_triu         triu;
+  static const opts_tril         tril;
   }
 
 

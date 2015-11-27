@@ -7299,7 +7299,6 @@ See also:
 
 <a name="det"></a>
 <b>det( A )</b>
-<br><b>det( A, method )</b>
 <br><b>log_det( val, sign, A )</b>
 <ul>
 <li>
@@ -7308,13 +7307,6 @@ Determinant of square matrix <i>A</i>
 <br>
 <li>
 If <i>A</i> is not square, a <i>std::logic_error</i> exception is thrown
-</li>
-<br>
-<li><i>det():</i> the <i>method</i> argument is optional.
-For matrix sizes &le; 4x4, a fast algorithm is used.
-In rare instances, the fast algorithm might be less precise than the standard algorithm.
-To force the use of the standard algorithm, set the <i>method</i> argument to <code>"std"</code>.
-For matrix sizes greater than 4x4, the standard algorithm is always used
 </li>
 <br>
 <li>
@@ -10208,20 +10200,11 @@ See also:
 
 <a name="inv"></a>
 <b>B = inv( A )</b>
-<br><b>B = inv( A, method )</b>
 <br>
 <br><b>inv( B, A )</b>
-<br><b>inv( B, A, method )</b>
 <ul>
 <li>
 Inverse of square matrix <i>A</i>
-</li>
-<br>
-<li>The <i>method</i> argument is optional.
-For matrix sizes &le; 4x4, a fast algorithm is used.
-In rare instances, the fast algorithm might be less precise than the standard algorithm.
-To force the use of the standard algorithm, set the <i>method</i> argument to <code>"std"</code>.
-For matrix sizes greater than 4x4, the standard algorithm is always used
 </li>
 <br>
 <li>
@@ -10841,20 +10824,17 @@ See also:
 
 <a name="solve"></a>
 <b>X = solve( A, B )</b>
-<br><b>X = solve( A, B, method )</b>
+<br><b>X = solve( A, B, options )</b> &nbsp;&nbsp;&nbsp; (version 6.300+)
 <br>
 <br><b>solve( X, A, B )</b>
-<br><b>solve( X, A, B, method )</b>
+<br><b>solve( X, A, B, options )</b> &nbsp;&nbsp;&nbsp; (version 6.300+)
 <ul>
 <li>Solve a <b>dense</b> system of linear equations, <i>A*X = B</i>, where <i>X</i> is unknown;
 similar functionality to the \ operator in Matlab/Octave, ie. <i>X&nbsp;=&nbsp;A&nbsp;\&nbsp;B</i>
 </li>
 <br>
-<li>If <i>A</i> is square, <i>solve()</i> is faster and more accurate than using <i>X&nbsp;=&nbsp;inv(A)*B</i></li>
-<br>
-<li>
-If <i>A</i> is non-square,
-<i>solve()</i> will try to provide approximate solutions to under-determined as well as over-determined systems</li>
+<li><i>A</i> can be square (critically determined system), or non-square (under/over-determined system)
+</li>
 <br>
 <li>
 <i>B</i> can be a vector or matrix
@@ -10864,18 +10844,35 @@ If <i>A</i> is non-square,
 The number of rows in <i>A</i> and <i>B</i> must be the same
 </li>
 <br>
-<li>The <i>method</i> argument is optional.
-For matrix sizes &le; 4x4, a fast algorithm is used.
-In rare instances, the fast algorithm might be less precise than the standard algorithm.
-To force the use of the standard algorithm,
-set the <i>method</i> argument to <code>"std"</code>.
-For matrix sizes greater than 4x4, the standard algorithm is always used
+<li>
+If the system is rank deficient, an approximate solution is computed (version 6.300+)
+</li>
+<br>
+<li>The <i>options</i> argument is optional; it is one or a combination of the following:
+<ul>
+<br>
+<table>
+<tbody>
+<tr><td><code>solve_opts::fullrankonly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not solve rank deficient systems</td></tr>
+<tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
+<tr><td><code>solve_opts::refine</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>apply iterative refinement to improve the solution &nbsp; (matrix <i>A</i> must be square)</td></tr>
+</tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+The options can be combined using the <code>|</code> operator; for example: <code>solve_opts::fullrankonly&nbsp;|&nbsp;solve_opts::refine</code>
+</li>
+<br>
+<li>
+If <i>A</i> is known to be a symmetric matrix,
+the solution can be computed faster by explicitly indicating that <i>A</i> is symmetric through <a href="#symmat">symmatu()</a> or <a href="#symmat">symmatl()</a>
 </li>
 <br>
 <li>
 If <i>A</i> is known to be a triangular matrix,
-the solution can be computed faster by explicitly marking <i>A</i> as triangular
-through <a href="#trimat">trimatu()</a> or <a href="#trimat">trimatl()</a>
+the solution can be computed faster by explicitly indicating that <i>A</i> is triangular through <a href="#trimat">trimatu()</a> or <a href="#trimat">trimatl()</a>
 </li>
 <br>
 <li>
@@ -10893,12 +10890,18 @@ Examples:
 mat A = randu&lt;mat&gt;(5,5);
 vec b = randu&lt;vec&gt;(5);
 mat B = randu&lt;mat&gt;(5,5);
+mat S = B.t()*B; // create symmetric matrix
 
-vec x = solve(A, b);
-mat X = solve(A, B);
+vec x1 = solve(A, b);
 
 vec x2;
 bool status = solve(x2, A, b);
+
+mat X1 = solve(A, B);
+
+mat X2 = solve(A, B, solve_opts::refine);
+
+mat X3 = solve(A, symmatu(S));  // indicate that S is symmetric
 </pre>
 </ul>
 </li>

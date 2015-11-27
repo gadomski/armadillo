@@ -42,17 +42,17 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
-  const bool nofallback  = (flags & solve_opts::flag_nofallback );
-  const bool equilibrate = (flags & solve_opts::flag_equilibrate);
-  const bool refine      = (flags & solve_opts::flag_refine     );
-  const bool rankdef     = (flags & solve_opts::flag_rankdef    );
+  const bool fullrankonly = (flags & solve_opts::flag_fullrankonly);
+  const bool equilibrate  = (flags & solve_opts::flag_equilibrate );
+  const bool refine       = (flags & solve_opts::flag_refine      );
+  const bool rankdef      = (flags & solve_opts::flag_rankdef     );
   
   arma_extra_debug_print("enabled flags:");
   
-  if(nofallback )  { arma_extra_debug_print("nofallback");  }
-  if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
-  if(refine     )  { arma_extra_debug_print("refine");      }
-  if(rankdef    )  { arma_extra_debug_print("rankdef");     }
+  if(fullrankonly)  { arma_extra_debug_print("fullrankonly"); }
+  if(equilibrate )  { arma_extra_debug_print("equilibrate");  }
+  if(refine      )  { arma_extra_debug_print("refine");       }
+  if(rankdef     )  { arma_extra_debug_print("rankdef");      }
   
   
   bool status = false;
@@ -61,7 +61,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if(A.n_rows == A.n_cols)
     {
-    arma_extra_debug_print("(square)");
+    arma_extra_debug_print("detected square system");
     
     if(equilibrate || refine)
       {
@@ -77,25 +77,25 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       }
     
     
-    if( (status == false) && (nofallback == false) )
+    if( (status == false) && (fullrankonly == false) )
       {
-      arma_extra_debug_print("(fallback)");
+      arma_extra_debug_print("solving rank deficient system");
       
       status = glue_solve_gen::apply_pinv(out, A_expr.get_ref(), B_expr.get_ref());
       }
     }
   else
     {
-    arma_extra_debug_print("(non-square)");
+    arma_extra_debug_print("detected non-square system");
     
     arma_debug_check( (equilibrate || refine), "solve(): options 'equilibrate' and 'refine' not applicable to non-square matrices" );
     
     status = auxlib::solve_nonsquare(out, A, B_expr.get_ref());  // A is overwritten
     
     
-    if( (status == false) && (nofallback == false) )
+    if( (status == false) && (fullrankonly == false) )
       {
-      arma_extra_debug_print("(fallback)");
+      arma_extra_debug_print("solving rank deficient system");
       
       status = auxlib::solve_nonsquare_ext(out, A, B_expr.get_ref());  // A is overwritten
       }
@@ -157,21 +157,21 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
-  const bool nofallback  = (flags & solve_opts::flag_nofallback );
-  const bool equilibrate = (flags & solve_opts::flag_equilibrate);
-  const bool refine      = (flags & solve_opts::flag_refine     );
-  const bool rankdef     = (flags & solve_opts::flag_rankdef    );
-  const bool symu        = (flags & solve_opts::flag_symu       );
-  const bool syml        = (flags & solve_opts::flag_syml       );
+  const bool fullrankonly = (flags & solve_opts::flag_fullrankonly);
+  const bool equilibrate  = (flags & solve_opts::flag_equilibrate );
+  const bool refine       = (flags & solve_opts::flag_refine      );
+  const bool rankdef      = (flags & solve_opts::flag_rankdef     );
+  const bool symu         = (flags & solve_opts::flag_symu        );
+  const bool syml         = (flags & solve_opts::flag_syml        );
   
   arma_extra_debug_print("enabled flags:");
   
-  if(nofallback )  { arma_extra_debug_print("nofallback");  }
-  if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
-  if(refine     )  { arma_extra_debug_print("refine");      }
-  if(rankdef    )  { arma_extra_debug_print("rankdef");     }
-  if(symu       )  { arma_extra_debug_print("symu");        }
-  if(syml       )  { arma_extra_debug_print("syml");        }
+  if(fullrankonly)  { arma_extra_debug_print("fullrankonly"); }
+  if(equilibrate )  { arma_extra_debug_print("equilibrate");  }
+  if(refine      )  { arma_extra_debug_print("refine");       }
+  if(rankdef     )  { arma_extra_debug_print("rankdef");      }
+  if(symu        )  { arma_extra_debug_print("symu");         }
+  if(syml        )  { arma_extra_debug_print("syml");         }
   
   
   bool status = false;
@@ -211,9 +211,9 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     }
   
   
-  if( (status == false) && (nofallback == false) )
+  if( (status == false) && (fullrankonly == false) )
     {
-    arma_extra_debug_print("(fallback)");
+    arma_extra_debug_print("solving rank deficient system");
     
     const Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
     
@@ -254,22 +254,22 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
-  const bool nofallback  = (flags & solve_opts::flag_nofallback );
-  const bool equilibrate = (flags & solve_opts::flag_equilibrate);
-  const bool refine      = (flags & solve_opts::flag_refine     );
-  const bool rankdef     = (flags & solve_opts::flag_rankdef    );
-  const bool triu        = (flags & solve_opts::flag_triu       );
-  const bool tril        = (flags & solve_opts::flag_tril       );
+  const bool fullrankonly = (flags & solve_opts::flag_fullrankonly);
+  const bool equilibrate  = (flags & solve_opts::flag_equilibrate );
+  const bool refine       = (flags & solve_opts::flag_refine      );
+  const bool rankdef      = (flags & solve_opts::flag_rankdef     );
+  const bool triu         = (flags & solve_opts::flag_triu        );
+  const bool tril         = (flags & solve_opts::flag_tril        );
   
   
   arma_extra_debug_print("enabled flags:");
   
-  if(nofallback )  { arma_extra_debug_print("nofallback");  }
-  if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
-  if(refine     )  { arma_extra_debug_print("refine");      }
-  if(rankdef    )  { arma_extra_debug_print("rankdef");     }
-  if(triu       )  { arma_extra_debug_print("triu");        }
-  if(tril       )  { arma_extra_debug_print("tril");        }
+  if(fullrankonly)  { arma_extra_debug_print("fullrankonly"); }
+  if(equilibrate )  { arma_extra_debug_print("equilibrate");  }
+  if(refine      )  { arma_extra_debug_print("refine");       }
+  if(rankdef     )  { arma_extra_debug_print("rankdef");      }
+  if(triu        )  { arma_extra_debug_print("triu");         }
+  if(tril        )  { arma_extra_debug_print("tril");         }
   
   
   bool status = false;
@@ -296,9 +296,9 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     }
   
   
-  if( (status == false) && (nofallback == false) )
+  if( (status == false) && (fullrankonly == false) )
     {
-    arma_extra_debug_print("(fallback)");
+    arma_extra_debug_print("solving rank deficient system");
     
     const Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
