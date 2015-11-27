@@ -649,7 +649,7 @@ namespace lapack
   template<typename eT>
   inline
   void
-  sysvx(char* fact, char* uplo, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* af, blas_int* ldaf, blas_int* ipiv, eT* b, blas_int* ldb, eT* x, blas_int* ldx, eT* rcond, eT* ferr, eT* berr, eT* work, blas_int* lwork, blas_int* iwork, blas_int* info)
+  sysvx(char* fact, char* uplo, blas_int* n, blas_int* nrhs, const eT* a, blas_int* lda, eT* af, blas_int* ldaf, blas_int* ipiv, const eT* b, blas_int* ldb, eT* x, blas_int* ldx, eT* rcond, eT* ferr, eT* berr, eT* work, blas_int* lwork, blas_int* iwork, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
@@ -671,7 +671,7 @@ namespace lapack
   template<typename T, typename eT>
   inline
   void
-  cx_sysvx(char* fact, char* uplo, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* af, blas_int* ldaf, blas_int* ipiv, eT* b, blas_int* ldb, eT* x, blas_int* ldx, T* rcond, T* ferr, T* berr, eT* work, blas_int* lwork, T* rwork, blas_int* info)
+  cx_sysvx(char* fact, char* uplo, blas_int* n, blas_int* nrhs, const eT* a, blas_int* lda, eT* af, blas_int* ldaf, blas_int* ipiv, const eT* b, blas_int* ldb, eT* x, blas_int* ldx, T* rcond, T* ferr, T* berr, eT* work, blas_int* lwork, T* rwork, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     

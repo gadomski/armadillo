@@ -52,8 +52,8 @@ solve
   
   uword flags = opts.flags;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -74,8 +74,8 @@ solve
   
   uword flags = opts.flags;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -113,8 +113,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -135,8 +135,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -174,8 +174,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -196,8 +196,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return Glue<T1, T2, glue_solve>(A.m, B.get_ref(), flags);
   }
@@ -237,8 +237,8 @@ solve
   
   uword flags = opts.flags;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }
@@ -260,8 +260,8 @@ solve
   
   uword flags = opts.flags;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }
@@ -301,8 +301,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }
@@ -324,8 +324,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }
@@ -364,8 +364,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_symu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_syml; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }
@@ -387,8 +387,8 @@ solve
   
   uword flags = solve_opts::flag_none;
   
-  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu); }
-  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril); }
+  if(A.aux_uword_a == 0)  {  flags |= solve_opts::flag_triu; }
+  if(A.aux_uword_a == 1)  {  flags |= solve_opts::flag_tril; }
   
   return glue_solve::solve(out, A.m, B.get_ref(), flags);
   }

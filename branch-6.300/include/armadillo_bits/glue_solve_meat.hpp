@@ -38,14 +38,14 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   {
   arma_extra_debug_sigprint();
   
-  const bool nofallback  = (flags & solve_opt::flag_nofallback );
-  const bool equilibrate = (flags & solve_opt::flag_equilibrate);
-  const bool refine      = (flags & solve_opt::flag_refine     );
-  const bool rankdef     = (flags & solve_opt::flag_rankdef    );
-  const bool symu        = (flags & solve_opt::flag_symu       );
-  const bool syml        = (flags & solve_opt::flag_syml       );
-  const bool triu        = (flags & solve_opt::flag_triu       );
-  const bool tril        = (flags & solve_opt::flag_tril       );
+  const bool nofallback  = (flags & solve_opts::flag_nofallback );
+  const bool equilibrate = (flags & solve_opts::flag_equilibrate);
+  const bool refine      = (flags & solve_opts::flag_refine     );
+  const bool rankdef     = (flags & solve_opts::flag_rankdef    );
+  const bool symu        = (flags & solve_opts::flag_symu       );
+  const bool syml        = (flags & solve_opts::flag_syml       );
+  const bool triu        = (flags & solve_opts::flag_triu       );
+  const bool tril        = (flags & solve_opts::flag_tril       );
   
   
   arma_extra_debug_print("enabled flags:");
@@ -59,94 +59,137 @@ glue_solve::solve(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_
   if(triu       )  { arma_extra_debug_print("triu");        }
   if(tril       )  { arma_extra_debug_print("tril");        }
   
-  bool status = false;
   
-  if(rankdef)
-    {
-    const Proxy<T1> PA(A_expr.get_ref());
-    
-    if(PA.get_n_rows() == PA.get_n_cols())
-      {
-      arma_extra_debug_print("solve(): detected square system");
-      
-      // TODO: BUG: matrix A doesn't have the right form if {symu, syml, triu, tril} is given
-      status = glue_solve::solve_pinv(out, PA.Q, B_expr);
-      }
-    else
-      {
-      arma_extra_debug_print("solve(): detected non-square system");
-      
-      arma_debug_check( (symu || syml || triu || tril), "solve(): incorrect options for non-square matrix" );
-      
-      Mat<eT> A = PA.Q;
-      status = auxlib::solve_nonsquare_ext(out, A, B_expr);
-      }
-    
-    return status;
-    }
+  arma_debug_check( ((symu || syml) && (triu || tril)), "solve(): inconsistent options" );
+  
+  bool status = false;
   
   if(symu || syml)
     {
-    // ensure matrix is square
-    // check for equlibrate and refine
-    // ...
-    // check for nofallback 
+    arma_extra_debug_print("(symu || syml)");
+    
+    const uword layout = (symu) ? uword(0) : uword(1);
+      
+    if(equilibrate)
+      {
+      arma_extra_debug_print("(equilibrate)");
+      
+      Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
+      
+      status = auxlib::solve_square_ext(out, symA, B_expr.get_ref(), true);  // A is overwritten
+      }
+    else
+    if(refine)
+      {
+      arma_extra_debug_print("(refine)");
+      
+      const unwrap_check<T1> U(A_expr.get_ref(), out);
+      
+      const Mat<eT>& A = U.M;
+      
+      arma_debug_check( (A.is_square() == false), "symmatu()/symmatl(): given matrix must be square sized" );
+      
+      status = auxlib::solve_sym_ext(out, A, B_expr.get_ref(), layout);  // A is not modified
+      }
+    else
+      {
+      arma_extra_debug_print("(standard)");
+      
+      Mat<eT> A = A_expr.get_ref();
+      
+      arma_debug_check( (A.is_square() == false), "symmatu()/symmatl(): given matrix must be square sized" );
+      
+      status = auxlib::solve_sym(out, A, B_expr.get_ref(), layout);  // A is overwritten
+      }
+    
+    if( (status == false) && (nofallback == false) )
+      {
+      arma_extra_debug_print("(fallback)");
+      
+      const Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
+      
+      status = glue_solve::solve_pinv(out, symA, B_expr.get_ref());
+      }
     }
   else
   if(triu || tril)
     {
-    // ensure matrix is square
-    // check for equlibrate and refine
-    // ...
-    // check for nofallback 
-    }
-  else
-    {
-    // general matrix
-    // - square matrix
-    // - nonsquare matrix
-    // check for nofallback 
-    }
-  
-  Mat<eT> A = A_expr.get_ref();
-  
-  if(A.n_rows == A.n_cols)
-    {
-    arma_extra_debug_print("solve(): detected square system");
+    arma_extra_debug_print("(triu || tril)");
     
-    if(equilibrate)
+    if(equilibrate || refine)
       {
-      // TODO: BUG: matrix A doesn't have the right form if {symu, syml, triu, tril} is given
-      status = auxlib::solve_square_ext(out, A, B_expr, true);
+      arma_extra_debug_print("(equilibrate || refine)");
+      
+      Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
+      
+      status = auxlib::solve_square_ext(out, triA, B_expr.get_ref(), equilibrate);  // A is overwritten
       }
     else
       {
-           if(symu) { status = auxlib::solve_sym(out, A, B_expr, uword(0));    }
-      else if(syml) { status = auxlib::solve_sym(out, A, B_expr, uword(1));    }
-      else if(triu) { status = auxlib::solve_tri(out, A, B_expr, uword(0));    }  // NOTE: solve_tri() doesn't overwrite A
-      else if(tril) { status = auxlib::solve_tri(out, A, B_expr, uword(1));    }
+      arma_extra_debug_print("(standard)");
+      
+      const unwrap_check<T1> U(A_expr.get_ref(), out);
+      
+      const Mat<eT>& A = U.M;
+      
+      const uword layout = (triu) ? uword(0) : uword(1);
+      
+      status = auxlib::solve_tri(out, A, B_expr.get_ref(), layout);  // A is not modified
       }
     
     if( (status == false) && (nofallback == false) )
       {
-      status = glue_solve::solve_pinv(out, A_expr, B_expr);  // using A_expr as A can be overwritten at this stage
+      arma_extra_debug_print("(fallback)");
+      
+      const Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
+      
+      status = glue_solve::solve_pinv(out, triA, B_expr.get_ref());
       }
     }
   else
     {
-    arma_extra_debug_print("solve(): detected non-square system");
+    arma_extra_debug_print("(general)");
     
-    arma_debug_check( (equilibrate), "solve(): option 'equilibrate' not supported for non-square matrix" );
+    Mat<eT> A = A_expr.get_ref();
     
-    arma_debug_check( (refine), "solve(): option 'refine' not supported for non-square matrix" );
-    
-    arma_debug_check( (symu || syml || triu || tril), "solve(): options imply a square matrix, but non-square matrix was given" );
-    
-    status = auxlib::solve_nonsquare(out, A, B_expr);
-    
-    if( (status == false) && (nofallback == false) )
+    if(A.n_rows == A.n_cols)
       {
-      status = auxlib::solve_nonsquare_ext(out, A, B_expr);
+      arma_extra_debug_print("(square)");
+      
+      if(equilibrate || refine)
+        {
+        arma_extra_debug_print("(equilibrate || refine)");
+        
+        status = auxlib::solve_square_ext(out, A, B_expr, equilibrate);  // A is overwritten
+        }
+      else
+        {
+        arma_extra_debug_print("(standard)");
+        
+        status = auxlib::solve_square(out, A, B_expr.get_ref());  // A is overwritten
+        }
+      
+      if( (status == false) && (nofallback == false) )
+        {
+        arma_extra_debug_print("(fallback)");
+        
+        status = glue_solve::solve_pinv(out, A_expr.get_ref(), B_expr.get_ref());
+        }
+      }
+    else
+      {
+      arma_extra_debug_print("(non-square)");
+      
+      arma_debug_check( (equilibrate || refine), "solve(): options 'equilibrate' and 'refine' not applicable to non-square matrices" );
+      
+      status = auxlib::solve_nonsquare(out, A, B_expr.get_ref());  // A is overwritten
+      
+      if( (status == false) && (nofallback == false) )
+        {
+        arma_extra_debug_print("(fallback)");
+        
+        status = auxlib::solve_nonsquare_ext(out, A, B_expr.get_ref());  // A is overwritten
+        }
       }
     }
   

@@ -3476,7 +3476,7 @@ auxlib::solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>&
     blas_int info  = blas_int(0);
     blas_int lwork = blas_int(4*n);
     
-    podarray<blas_int> ipiv(A_n_rows + 2);  // +2 for paranoia
+    podarray<blas_int> ipiv(A.n_rows + 2);  // +2 for paranoia
     
     podarray<eT> work( static_cast<uword>(lwork) );
     
@@ -3526,8 +3526,7 @@ auxlib::solve_sym_ext(Mat<typename T1::pod_type>& out, const Mat<typename T1::po
     out.set_size(A.n_rows, B.n_cols);
     
     char     fact  = 'N'; 
-    char     uplo  = (layout == 0) 'U' : 'L';
-    char     equed = char(0);
+    char     uplo  = (layout == 0) ? 'U' : 'L';
     blas_int n     = blas_int(A.n_rows);
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
@@ -3553,7 +3552,7 @@ auxlib::solve_sym_ext(Mat<typename T1::pod_type>& out, const Mat<typename T1::po
       &n, &nrhs,
       A.memptr(), &lda,
       AF.memptr(), &ldaf, 
-      IPIV,
+      IPIV.memptr(),
       B.memptr(),  &ldb,
       out.memptr(), &ldx,
       &rcond,
@@ -3611,8 +3610,7 @@ auxlib::solve_sym_ext(Mat< std::complex<typename T1::pod_type> >& out, const Mat
     out.set_size(A.n_rows, B.n_cols);
     
     char     fact  = 'N'; 
-    char     uplo  = (layout == 0) 'U' : 'L';
-    char     equed = char(0);
+    char     uplo  = (layout == 0) ? 'U' : 'L';
     blas_int n     = blas_int(A.n_rows);
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
@@ -3682,7 +3680,7 @@ auxlib::solve_tri(Mat<typename T1::elem_type>& out, const Mat<typename T1::elem_
     const uword B_n_rows = out.n_rows;
     const uword B_n_cols = out.n_cols;
     
-    arma_debug_check( (A_n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
+    arma_debug_check( (A.n_rows != B_n_rows), "solve(): number of rows in the given matrices must be the same" );
     
     if(A.is_empty() || out.is_empty())
       {
