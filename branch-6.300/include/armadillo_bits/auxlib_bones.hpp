@@ -231,6 +231,19 @@ class auxlib
   inline static bool solve_square_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate);
   
   template<typename T1>
+  inline static bool solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr);
+  
+  template<typename T1>
+  inline static bool solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
+  
+  template<typename T1>
+  inline static bool solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
+  
+  
+  //
+  // solve_sym
+  
+  template<typename T1>
   inline static bool solve_sym(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& X, const uword layout);
   
   template<typename T1>
@@ -239,17 +252,12 @@ class auxlib
   template<typename T1>
   inline static bool solve_sym_ext(Mat< std::complex<typename T1::pod_type> >& out, const Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const uword layout);
   
+  
+  //
+  // solve_tri
+  
   template<typename T1>
   inline static bool solve_tri(Mat<typename T1::elem_type>& out, const Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr, const uword layout);
-  
-  template<typename T1>
-  inline static bool solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr);
-  
-  template<typename T1>
-  inline static bool solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
-  
-  template<typename T1>
-  inline static bool solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
   
   
   //
