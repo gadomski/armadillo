@@ -86,16 +86,6 @@
   #define arma_cgesdd cgesdd
   #define arma_zgesdd zgesdd
   
-  #define arma_ssysv  ssysv
-  #define arma_dsysv  dsysv
-  #define arma_csysv  csysv
-  #define arma_zsysv  zsysv
-  
-  #define arma_ssysvx ssysvx
-  #define arma_dsysvx dsysvx
-  #define arma_csysvx csysvx
-  #define arma_zsysvx zsysvx
-  
   #define arma_sgesv  sgesv
   #define arma_dgesv  dgesv
   #define arma_cgesv  cgesv
@@ -115,6 +105,16 @@
   #define arma_dgelsy dgelsy
   #define arma_cgelsy cgelsy
   #define arma_zgelsy zgelsy
+  
+  #define arma_ssysv  ssysv
+  #define arma_dsysv  dsysv
+  #define arma_csysv  csysv
+  #define arma_zsysv  zsysv
+  
+  #define arma_ssysvx ssysvx
+  #define arma_dsysvx dsysvx
+  #define arma_csysvx csysvx
+  #define arma_zsysvx zsysvx
   
   #define arma_strtrs strtrs
   #define arma_dtrtrs dtrtrs
@@ -218,16 +218,6 @@
   #define arma_cgesdd CGESDD
   #define arma_zgesdd ZGESDD
   
-  #define arma_ssysv  SSYSV
-  #define arma_dsysv  DSYSV
-  #define arma_csysv  CSYSV
-  #define arma_zsysv  ZSYSV
-  
-  #define arma_ssysvx SSYSVX
-  #define arma_dsysvx DSYSVX
-  #define arma_csysvx CSYSVX
-  #define arma_zsysvx ZSYSVX
-  
   #define arma_sgesv  SGESV
   #define arma_dgesv  DGESV
   #define arma_cgesv  CGESV
@@ -247,6 +237,16 @@
   #define arma_dgelsy DGELSY
   #define arma_cgelsy CGELSY
   #define arma_zgelsy ZGELSY
+  
+  #define arma_ssysv  SSYSV
+  #define arma_dsysv  DSYSV
+  #define arma_csysv  CSYSV
+  #define arma_zsysv  ZSYSV
+  
+  #define arma_ssysvx SSYSVX
+  #define arma_dsysvx DSYSVX
+  #define arma_csysvx CSYSVX
+  #define arma_zsysvx ZSYSVX
   
   #define arma_strtrs STRTRS
   #define arma_dtrtrs DTRTRS
