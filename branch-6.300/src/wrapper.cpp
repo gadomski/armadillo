@@ -533,7 +533,7 @@ extern "C"
       arma_fortran_noprefix(arma_cgesvx)(fact, trans, n, nrhs, a, lda, af, ldaf, ipiv, equed, r, c, b, ldb, x, ldx, rcond, ferr, berr, work, rwork, info);
       }
     
-    void arma_fortran_prefix(arma_zgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info);
+    void arma_fortran_prefix(arma_zgesvx)(char* fact, char* trans, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, char* equed, double* r, double* c, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, double* rwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_zgesvx)(fact, trans, n, nrhs, a, lda, af, ldaf, ipiv, equed, r, c, b, ldb, x, ldx, rcond, ferr, berr, work, rwork, info);
       }
@@ -597,12 +597,12 @@ extern "C"
       arma_fortran_noprefix(arma_dsysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
       }
     
-    void arma_fortran_prefix(arma_csysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info);
+    void arma_fortran_prefix(arma_csysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_csysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
       }
     
-    void arma_fortran_prefix(arma_zsysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info);
+    void arma_fortran_prefix(arma_zsysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_zsysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
       }
@@ -614,7 +614,7 @@ extern "C"
       arma_fortran_noprefix(arma_ssysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, iwork, info);
       }
       
-    void arma_fortran_prefix(arma_dsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, blas_int* ipiv, double* b,  blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* lwork, blas_int* iwork, blas_int* info);
+    void arma_fortran_prefix(arma_dsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, blas_int* ipiv, double* b,  blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* lwork, blas_int* iwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_dsysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, iwork, info);
       }
@@ -626,7 +626,7 @@ extern "C"
       arma_fortran_noprefix(arma_csysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, rwork, info);
       }
     
-    void arma_fortran_prefix(arma_zsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, blas_int* lwork, double* rwork, blas_int* info);
+    void arma_fortran_prefix(arma_zsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, blas_int* lwork, double* rwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_zsysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, rwork, info);
       }
