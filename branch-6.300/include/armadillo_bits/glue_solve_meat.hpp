@@ -129,7 +129,7 @@ glue_solve_gen::apply_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<e
 
 
 //
-// solve_sym
+// glue_solve_sym
 
 
 template<typename T1, typename T2>
@@ -225,11 +225,8 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
 
 
 
-
-
-
 //
-// solve_tri
+// glue_solve_tri
 
 
 template<typename T1, typename T2>
