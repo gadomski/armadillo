@@ -82,6 +82,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       {
       arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
+      arma_debug_warn("system appears singular to machine precision; attempting approximate solution");
+      
       Mat<eT> AA = A_expr.get_ref();
       status = auxlib::solve_approx(out, AA, B_expr.get_ref());  // A is overwritten
       }
@@ -190,7 +192,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     {
     arma_extra_debug_print("glue_solve_sym::apply(): solving rank deficient system");
     
-    const Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
+    Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
     
     status = auxlib::solve_approx(out, symA, B_expr.get_ref());  // A is overwritten
     }
@@ -276,7 +278,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     {
     arma_extra_debug_print("glue_solve_tri::apply(): solving rank deficient system");
     
-    const Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
+    Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
     status = auxlib::solve_approx(out, triA, B_expr.get_ref());  // A is overwritten
     }
