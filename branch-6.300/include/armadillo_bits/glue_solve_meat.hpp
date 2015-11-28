@@ -48,7 +48,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool noapprox    = bool(flags & solve_opts::flag_noapprox   );
   const bool rankdef     = bool(flags & solve_opts::flag_rankdef    );
   
-  arma_extra_debug_print("enabled flags:");
+  arma_extra_debug_print("glue_solve_gen::apply(): enabled flags:");
   
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(refine     )  { arma_extra_debug_print("refine");      }
@@ -63,17 +63,17 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if(A.n_rows == A.n_cols)
     {
-    arma_extra_debug_print("detected square system");
+    arma_extra_debug_print("glue_solve_gen::apply(): detected square system");
     
     if(equilibrate || refine)
       {
-      arma_extra_debug_print("(equilibrate || refine)");
+      arma_extra_debug_print("glue_solve_gen::apply(): (equilibrate || refine)");
       
       status = auxlib::solve_square_ext(out, A, B_expr, equilibrate);  // A is overwritten
       }
     else
       {
-      arma_extra_debug_print("(standard)");
+      arma_extra_debug_print("glue_solve_gen::apply(): (standard)");
       
       status = auxlib::solve_square(out, A, B_expr.get_ref());  // A is overwritten
       }
@@ -81,14 +81,14 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     if( (status == false) && (approx == true) )
       {
-      arma_extra_debug_print("solving rank deficient system");
+      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
       status = glue_solve_gen::apply_pinv(out, A_expr.get_ref(), B_expr.get_ref());
       }
     }
   else
     {
-    arma_extra_debug_print("detected non-square system");
+    arma_extra_debug_print("glue_solve_gen::apply(): detected non-square system");
     
     arma_debug_check( (equilibrate || refine), "solve(): options 'equilibrate' and 'refine' not applicable to non-square matrices" );
     
@@ -97,7 +97,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     if( (status == false) && (approx == true) )
       {
-      arma_extra_debug_print("solving rank deficient system");
+      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
       status = auxlib::solve_nonsquare_ext(out, A, B_expr.get_ref());  // A is overwritten
       }
@@ -167,7 +167,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool symu        = bool(flags & solve_opts::flag_symu       );
   const bool syml        = bool(flags & solve_opts::flag_syml       );
   
-  arma_extra_debug_print("enabled flags:");
+  arma_extra_debug_print("glue_solve_sym::apply(): enabled flags:");
   
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(refine     )  { arma_extra_debug_print("refine");      }
@@ -184,7 +184,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if(equilibrate)
     {
-    arma_extra_debug_print("(equilibrate)");
+    arma_extra_debug_print("glue_solve_sym::apply(): (equilibrate)");
     
     Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
     
@@ -193,7 +193,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   else
   if(refine)
     {
-    arma_extra_debug_print("(refine)");
+    arma_extra_debug_print("glue_solve_sym::apply(): (refine)");
     
     const unwrap_check<T1> U(A_expr.get_ref(), out);
     
@@ -205,7 +205,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     }
   else
     {
-    arma_extra_debug_print("(standard)");
+    arma_extra_debug_print("glue_solve_sym::apply(): (standard)");
     
     Mat<eT> A = A_expr.get_ref();
     
@@ -217,7 +217,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if( (status == false) && (approx == true) )
     {
-    arma_extra_debug_print("solving rank deficient system");
+    arma_extra_debug_print("glue_solve_sym::apply(): solving rank deficient system");
     
     const Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
     
@@ -266,8 +266,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   const bool triu        = bool(flags & solve_opts::flag_triu       );
   const bool tril        = bool(flags & solve_opts::flag_tril       );
   
-  
-  arma_extra_debug_print("enabled flags:");
+  arma_extra_debug_print("glue_solve_tri::apply(): enabled flags:");
   
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(refine     )  { arma_extra_debug_print("refine");      }
@@ -282,7 +281,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if(equilibrate || refine)
     {
-    arma_extra_debug_print("(equilibrate || refine)");
+    arma_extra_debug_print("glue_solve_tri::apply(): (equilibrate || refine)");
     
     Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
@@ -290,7 +289,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     }
   else
     {
-    arma_extra_debug_print("(standard)");
+    arma_extra_debug_print("glue_solve_tri::apply(): (standard)");
     
     const unwrap_check<T1> U(A_expr.get_ref(), out);
     
@@ -304,7 +303,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   
   if( (status == false) && (approx == true) )
     {
-    arma_extra_debug_print("solving rank deficient system");
+    arma_extra_debug_print("glue_solve_tri::apply(): solving rank deficient system");
     
     const Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
