@@ -90,7 +90,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     {
     arma_extra_debug_print("glue_solve_gen::apply(): detected non-square system");
     
-    arma_debug_check( (equilibrate || refine), "solve(): options 'equilibrate' and 'refine' not applicable to non-square matrices" );
+    if(equilibrate)  { arma_debug_warn( "solve(): option 'equilibrate' ignored for non-square matrix" ); }
+    if(refine     )  { arma_debug_warn( "solve(): option 'refine' ignored for non-square matrix"      ); }
     
     status = auxlib::solve_nonsquare(out, A, B_expr.get_ref());  // A is overwritten
     
@@ -99,7 +100,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       {
       arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
-      status = auxlib::solve_nonsquare_ext(out, A, B_expr.get_ref());  // A is overwritten
+      Mat<eT> AA = A_expr.get_ref();
+      
+      status = auxlib::solve_nonsquare_ext(out, AA, B_expr.get_ref());  // AA is overwritten
       }
     }
   
