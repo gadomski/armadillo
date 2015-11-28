@@ -3335,11 +3335,13 @@ auxlib::solve_square_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
       &info
       );
     
-    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
+    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
+    // 
+    // const bool singular = ( (info > 0) && (info <= n) );
+    // 
+    // return (singular == false);
     
-    const bool singular = ( (info > 0) && (info <= n) );
-    
-    return (singular == false);
+    return (info == 0);
     }
   #else
     {
@@ -3423,11 +3425,13 @@ auxlib::solve_square_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
       &info
       );
     
-    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
+    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
+    // 
+    // const bool singular = ( (info > 0) && (info <= n) );
+    // 
+    // return (singular == false);
     
-    const bool singular = ( (info > 0) && (info <= n) );
-    
-    return (singular == false);
+    return (info == 0);
     }
   #else
     {
@@ -3773,11 +3777,13 @@ auxlib::solve_sym_ext(Mat<typename T1::pod_type>& out, const Mat<typename T1::po
       &info
       );
     
-    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
+    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
+    // 
+    // const bool singular = ( (info > 0) && (info <= n) );
+    // 
+    // return (singular == false);
     
-    const bool singular = ( (info > 0) && (info <= n) );
-    
-    return (singular == false);
+    return (info == 0);
     }
   #else
     {
@@ -3850,18 +3856,20 @@ auxlib::solve_sym_ext(Mat< std::complex<typename T1::pod_type> >& out, const Mat
       IPIV.memptr(),
       B.memptr(), &ldb,
       out.memptr(), &ldx,
-      rcond, 
+      &rcond, 
       FERR.memptr(), BERR.memptr(),
       WORK.memptr(), &lwork,
       RWORK.memptr(),
       &info
       );
     
-    if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision"); }
+    // if(info == (n+1))  { arma_debug_warn("solve(): matrix appears singular to working precision; rcond = ", rcond); }
+    // 
+    // const bool singular = ( (info > 0) && (info <= n) );
+    // 
+    // return (singular == false);
     
-    const bool singular = ( (info > 0) && (info <= n) );
-    
-    return (singular == false);
+    return (info == 0);
     }
   #else
     {
