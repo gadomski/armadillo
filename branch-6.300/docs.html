@@ -10844,12 +10844,6 @@ similar functionality to the \ operator in Matlab/Octave, ie. <i>X&nbsp;=&nbsp;A
 The number of rows in <i>A</i> and <i>B</i> must be the same
 </li>
 <br>
-<!--
-<li>
-If the system is rank deficient, an approximate solution is computed (version 7.000+)
-</li>
-<br>
--->
 <li>The <i>options</i> argument is optional; it is one or a combination of the following:
 <ul>
 <br>
@@ -10865,11 +10859,6 @@ If the system is rank deficient, an approximate solution is computed (version 7.
 <br>
 <li>
 The options can be combined using the <code>|</code> operator; for example: <code>solve_opts::refine&nbsp;|&nbsp;solve_opts::approx</code>
-</li>
-<br>
-<li>
-If <i>A</i> is known to be a symmetric matrix,
-the solution can be computed faster by explicitly indicating that <i>A</i> is symmetric through <a href="#symmat">symmatu()</a> or <a href="#symmat">symmatl()</a>
 </li>
 <br>
 <li>
@@ -10892,7 +10881,6 @@ Examples:
 mat A = randu&lt;mat&gt;(5,5);
 vec b = randu&lt;vec&gt;(5);
 mat B = randu&lt;mat&gt;(5,5);
-mat S = B.t()*B; // create symmetric matrix
 
 vec x1 = solve(A, b);
 
@@ -10903,7 +10891,7 @@ mat X1 = solve(A, B);
 
 mat X2 = solve(A, B, solve_opts::refine);
 
-mat X3 = solve(A, symmatu(S));  // indicate that S is symmetric
+mat X3 = solve(A, trimatu(B));  // indicate that B is triangular
 </pre>
 </ul>
 </li>
