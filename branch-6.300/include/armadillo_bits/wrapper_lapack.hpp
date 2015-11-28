@@ -726,23 +726,69 @@ namespace lapack
   
   
   
+//   template<typename eT>
+//   inline
+//   void
+//   gelsy(blas_int* m, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* b, blas_int* ldb, blas_int* jpvt, eT* rcond, blas_int* rank, eT* work, blas_int* lwork, blas_int* info)
+//     {
+//     arma_type_check(( is_supported_blas_type<eT>::value == false ));
+//     
+//     if(is_float<eT>::value)
+//       {
+//       typedef float T;
+//       arma_fortran(arma_sgelsy)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, jpvt, (T*)rcond, rank, (T*)work, lwork, info);
+//       }
+//     else
+//     if(is_double<eT>::value)
+//       {
+//       typedef double T;
+//       arma_fortran(arma_dgelsy)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, jpvt, (T*)rcond, rank, (T*)work, lwork, info);
+//       }
+//     }
+//   
+//   
+//   
+//   template<typename T, typename eT>
+//   inline
+//   void
+//   cx_gelsy(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt, T* rcond, blas_int* rank, void* work, blas_int* lwork, eT* rwork, blas_int* info)
+//     {
+//     arma_type_check(( is_supported_blas_type<eT>::value == false ));
+//     
+//     if(is_supported_complex_float<eT>::value)
+//       {
+//       typedef float               pod_T;
+//       typedef std::complex<float>  cx_T;
+//       arma_fortran(arma_cgelsy)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, jpvt, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, info);
+//       }
+//     else
+//     if(is_supported_complex_double<eT>::value)
+//       {
+//       typedef double               pod_T;
+//       typedef std::complex<double>  cx_T;
+//       arma_fortran(arma_zgelsy)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, jpvt, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, info);
+//       }
+//     }
+  
+  
+  
   template<typename eT>
   inline
   void
-  gelsy(blas_int* m, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* b, blas_int* ldb, blas_int* jpvt, eT* rcond, blas_int* rank, eT* work, blas_int* lwork, blas_int* info)
+  gelsd(blas_int* m, blas_int* n, blas_int* nrhs, eT* a, blas_int* lda, eT* b, blas_int* ldb, eT* S, eT* rcond, blas_int* rank, eT* work, blas_int* lwork, blas_int* iwork, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
     if(is_float<eT>::value)
       {
       typedef float T;
-      arma_fortran(arma_sgelsy)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, jpvt, (T*)rcond, rank, (T*)work, lwork, info);
+      arma_fortran(arma_sgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info);
       }
     else
     if(is_double<eT>::value)
       {
       typedef double T;
-      arma_fortran(arma_dgelsy)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, jpvt, (T*)rcond, rank, (T*)work, lwork, info);
+      arma_fortran(arma_dgelsd)(m, n, nrhs, (T*)a, lda, (T*)b, ldb, (T*)S, (T*)rcond, rank, (T*)work, lwork, iwork, info);
       }
     }
   
@@ -751,7 +797,7 @@ namespace lapack
   template<typename T, typename eT>
   inline
   void
-  cx_gelsy(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt, T* rcond, blas_int* rank, void* work, blas_int* lwork, eT* rwork, blas_int* info)
+  cx_gelsd(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, T* S, T* rcond, blas_int* rank, void* work, blas_int* lwork, T* rwork, blas_int* iwork, blas_int* info)
     {
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
@@ -759,14 +805,14 @@ namespace lapack
       {
       typedef float               pod_T;
       typedef std::complex<float>  cx_T;
-      arma_fortran(arma_cgelsy)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, jpvt, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, info);
+      arma_fortran(arma_cgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info);
       }
     else
     if(is_supported_complex_double<eT>::value)
       {
       typedef double               pod_T;
       typedef std::complex<double>  cx_T;
-      arma_fortran(arma_zgelsy)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, jpvt, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, info);
+      arma_fortran(arma_zgelsd)(m, n, nrhs, (cx_T*)a, lda, (cx_T*)b, ldb, (pod_T*)S, (pod_T*)rcond, rank, (cx_T*)work, lwork, (pod_T*)rwork, iwork, info);
       }
     }
   

@@ -3507,11 +3507,10 @@ auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
 
 
 
-// solve a non-square (overdetermined or underdetermined) rank deficient system via QR or LQ decomposition (real matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+auxlib::solve_approx(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3532,41 +3531,66 @@ auxlib::solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::po
     
     arma_debug_assert_blas_size(A,B);
     
-    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols );
     
-    tmp(0,0, size(B)) = B;
+    if(size(tmp) == size(B))
+      {
+      tmp = B;
+      }
+    else
+      {
+      tmp.zeros();
+      tmp(0,0, size(B)) = B;
+      }
     
     blas_int m     = blas_int(A.n_rows);
     blas_int n     = blas_int(A.n_cols);
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
     blas_int ldb   = blas_int(tmp.n_rows);
+    eT       rcond = eT(-1);  // use machine precision
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
-    eT       rcond = eT(0);
     
-    podarray<blas_int> jpvt(A.n_cols);
+    const uword minmn = (std::min)(A.n_rows, A.n_cols);
+    
+    podarray<eT> S(minmn);
     
     eT        work_query[2];
-    blas_int lwork_query = -1;
+    blas_int iwork_query[2];
+    blas_int lwork_query = blas_int(-1);
     
-    arma_extra_debug_print("lapack::gelsy()");
-    lapack::gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &info);
+    arma_extra_debug_print("lapack::gelsd()");
+    lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &iwork_query[0], &info);
     
     if(info != 0)  { return false; }
     
-    blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
+    blas_int lwork  = static_cast<blas_int>( access::tmp_real(work_query[0]) );
+    blas_int liwork = iwork_query[0];
     
-    podarray<eT> work( static_cast<uword>(lwork) );
+    podarray<eT>        work(static_cast<uword>(lwork ));
+    podarray<blas_int> iwork(static_cast<uword>(liwork));
     
-    arma_extra_debug_print("lapack::gelsy()");
-    lapack::gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, work.memptr(), &lwork, &info);
+    arma_extra_debug_print("lapack::gelsd()");
+    lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, iwork.memptr(), &info);
     
-    // if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
-    
-    out = tmp.head_rows(A.n_cols);
-    
-    return (info == 0);
+    if(info == 0)
+      {
+      if(tmp.n_rows == A.n_cols)
+        {
+        out.steal_mem(tmp);
+        }
+      else
+        {
+        out = tmp.head_rows(A.n_cols);
+        }
+      
+      return true;
+      }
+    else
+      {
+      return false;
+      }
     }
   #else
     {
@@ -3581,11 +3605,10 @@ auxlib::solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::po
 
 
 
-// solve a non-square (overdetermined or underdetermined) rank deficient system via QR or LQ decomposition (complex matrices)
 template<typename T1>
 inline
 bool
-auxlib::solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+auxlib::solve_approx(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3598,7 +3621,7 @@ auxlib::solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat
     const Mat<eT>& B = U.M;
     
     arma_debug_check( (A.n_rows != B.n_rows), "solve(): number of rows in the given matrices must be the same" );
-      
+    
     if(A.is_empty() || B.is_empty())
       {
       out.zeros(A.n_cols, B.n_cols);
@@ -3607,42 +3630,69 @@ auxlib::solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat
     
     arma_debug_assert_blas_size(A,B);
     
-    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols );
     
-    tmp(0,0, size(B)) = B;
+    if(size(tmp) == size(B))
+      {
+      tmp = B;
+      }
+    else
+      {
+      tmp.zeros();
+      tmp(0,0, size(B)) = B;
+      }
     
     blas_int m     = blas_int(A.n_rows);
     blas_int n     = blas_int(A.n_cols);
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
     blas_int ldb   = blas_int(tmp.n_rows);
+    T        rcond = T(-1);  // use machine precision
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
-    T        rcond = T(0);
     
-    podarray<blas_int>  jpvt(  A.n_cols);
-    podarray<T>        rwork(2*A.n_cols);
+    const uword minmn = (std::min)(A.n_rows, A.n_cols);
+    
+    podarray<T> S(minmn);
     
     eT        work_query[2];
-    blas_int lwork_query = -1;
+     T       rwork_query[2];
+    blas_int iwork_query[2];
+    blas_int lwork_query = blas_int(-1);
     
-    arma_extra_debug_print("lapack::gelsy()");
-    lapack::cx_gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, &work_query[0], &lwork_query, rwork.memptr(), &info);
+    arma_extra_debug_print("lapack::cx_gelsd()");
+    lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &rwork_query[0], &iwork_query[0], &info);
     
     if(info != 0)  { return false; }
     
-    blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
+    blas_int lwork  = static_cast<blas_int>( access::tmp_real( work_query[0]) );
+    blas_int lrwork = static_cast<blas_int>( access::tmp_real(rwork_query[0]) );
+    blas_int liwork = iwork_query[0];
     
-    podarray<eT> work( static_cast<uword>(lwork) );
+    podarray<eT>        work(static_cast<uword>(lwork ));
+    podarray< T>       rwork(static_cast<uword>(lrwork));
+    podarray<blas_int> iwork(static_cast<uword>(liwork));
     
-    arma_extra_debug_print("lapack::cx_gelsy()");
-    lapack::cx_gelsy(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, jpvt.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), &info);
+    arma_extra_debug_print("lapack::cx_gelsd()");
+    lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), iwork.memptr(), &info);
     
-    // if(rcond == eT(0))  { arma_debug_warn("solve(): given matrix appears singular to machine precision"); }
-    
-    out = tmp.head_rows(A.n_cols);
-    
-    return (info == 0);
+    if(info == 0)
+      {
+      if(tmp.n_rows == A.n_cols)
+        {
+        out.steal_mem(tmp);
+        }
+      else
+        {
+        out = tmp.head_rows(A.n_cols);
+        }
+      
+      return true;
+      }
+    else
+      {
+      return false;
+      }
     }
   #else
     {
@@ -4285,6 +4335,50 @@ auxlib::qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::compl
     }
   #endif
   }
+
+
+
+// template<typename T1>
+// inline
+// typename T1::pod_type
+// rcond(const Base<typename T1::elem_type,T1>& A_expr)
+//   {
+//   typedef typename T1::pod_type   T;
+//   typedef typename T1::elem_type eT;
+//   
+//   #if defined(ARMA_USE_LAPACK)
+//     {
+//     Mat<eT> A = A_expr.get_ref();
+//     
+//     arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
+//     
+//     arma_debug_assert_blas_size(A);
+//     
+//     char     NORM = '1';
+//     blas_int M    = blas_int(A.n_rows);
+//     blas_int N    = blas_int(A.n_rows);  // assuming square matrix
+//     blas_int LDA  = blas_int(A.n_rows);
+//     blas_int INFO = blas_int(0);
+//     
+//     podarray<eT>       WORK(1);
+//     podarray<blas_int> IPIV( (std::min)(A.n_rows, A.n_cols) );
+//     
+//     const T norm_val = lapack::lange(&NORM, &M, &N, A.memptr(), &LDA, WORK.memptr());
+//     
+//     lapack::getrf(&M, &N, A.memptr(), &LDA, IPIV.memptr(), &INFO);
+//     
+//     if(INFO != blas_int(0))  { return T(0); }
+//     
+//     lapack::dgecon(NORM, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO);
+// 
+//     }
+//   #else
+//     {
+//     arma_ignore(A_expr);
+//     arma_stop("rcond(): use of LAPACK must be enabled");
+//     return T(0);
+//     }
+//   }
 
 
 

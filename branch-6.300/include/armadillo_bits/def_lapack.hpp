@@ -101,10 +101,10 @@
   #define arma_cgels  cgels
   #define arma_zgels  zgels
   
-  #define arma_sgelsy sgelsy
-  #define arma_dgelsy dgelsy
-  #define arma_cgelsy cgelsy
-  #define arma_zgelsy zgelsy
+  #define arma_sgelsd sgelsd
+  #define arma_dgelsd dgelsd
+  #define arma_cgelsd cgelsd
+  #define arma_zgelsd zgelsd
   
   #define arma_ssysv  ssysv
   #define arma_dsysv  dsysv
@@ -233,10 +233,10 @@
   #define arma_cgels  CGELS
   #define arma_zgels  ZGELS
   
-  #define arma_sgelsy SGELSY
-  #define arma_dgelsy DGELSY
-  #define arma_cgelsy CGELSY
-  #define arma_zgelsy ZGELSY
+  #define arma_sgelsd SGELSD
+  #define arma_dgelsd DGELSD
+  #define arma_cgelsd CGELSD
+  #define arma_zgelsd ZGELSD
   
   #define arma_ssysv  SSYSV
   #define arma_dsysv  DSYSV
@@ -396,13 +396,13 @@ extern "C"
   void arma_fortran(arma_cgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, void*   b, blas_int* ldb, void*   work, blas_int* lwork, blas_int* info);
   void arma_fortran(arma_zgels)(char* trans, blas_int* m, blas_int* n, blas_int* nrhs, void*   a, blas_int* lda, void*   b, blas_int* ldb, void*   work, blas_int* lwork, blas_int* info);
   
-  // solve over/under-determined system of linear equations (advanced form, real)
-  void arma_fortran(arma_sgelsy)(blas_int* m, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* jpvt,  float* rcond, blas_int* rank,  float* work, blas_int* lwork, blas_int* info);
-  void arma_fortran(arma_dgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* b, blas_int* ldb, blas_int* jpvt, double* rcond, blas_int* rank, double* work, blas_int* lwork, blas_int* info);
+  // approximately solve system of linear equations using svd (real)
+  void arma_fortran(arma_sgelsd)(blas_int* m, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* b, blas_int* ldb,  float* S,  float* rcond, blas_int* rank,  float* work, blas_int* lwork, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_dgelsd)(blas_int* m, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* b, blas_int* ldb, double* S, double* rcond, blas_int* rank, double* work, blas_int* lwork, blas_int* iwork, blas_int* info);
   
-  // solve over/under-determined system of linear equations (advanced form, complex)
-  void arma_fortran(arma_cgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt,  float* rcond, blas_int* rank, void* work, blas_int* lwork,  float* rwork, blas_int* info);
-  void arma_fortran(arma_zgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt, double* rcond, blas_int* rank, void* work, blas_int* lwork, double* rwork, blas_int* info);
+  // approximately solve system of linear equations using svd (complex)
+  void arma_fortran(arma_cgelsd)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb,  float* S,  float* rcond, blas_int* rank, void* work, blas_int* lwork,  float* rwork, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_zgelsd)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, double* S, double* rcond, blas_int* rank, void* work, blas_int* lwork, double* rwork, blas_int* iwork, blas_int* info);
   
   // solve system of linear equations (symmetric matrix)
   void arma_fortran(arma_ssysv)(char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda, blas_int* ipiv,  float* b, blas_int* ldb,  float* work, blas_int* lwork, blas_int* info);

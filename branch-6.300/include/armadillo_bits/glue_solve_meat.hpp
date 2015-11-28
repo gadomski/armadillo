@@ -78,12 +78,12 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       status = auxlib::solve_square(out, A, B_expr.get_ref());  // A is overwritten
       }
     
-    
     if( (status == false) && (approx == true) )
       {
       arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
-      status = glue_solve_gen::apply_pinv(out, A_expr.get_ref(), B_expr.get_ref());
+      Mat<eT> AA = A_expr.get_ref();
+      status = auxlib::solve_approx(out, AA, B_expr.get_ref());  // A is overwritten
       }
     }
   else
@@ -93,42 +93,10 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     if(equilibrate)  { arma_debug_warn( "solve(): option 'equilibrate' ignored for non-square matrix" ); }
     if(refine     )  { arma_debug_warn( "solve(): option 'refine' ignored for non-square matrix"      ); }
     
-    status = auxlib::solve_nonsquare(out, A, B_expr.get_ref());  // A is overwritten
-    
-    
-    if( (status == false) && (approx == true) )
-      {
-      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
-      
-      Mat<eT> AA = A_expr.get_ref();
-      
-      status = auxlib::solve_nonsquare_ext(out, AA, B_expr.get_ref());  // AA is overwritten
-      }
+    status = auxlib::solve_approx(out, A, B_expr.get_ref());  // A is overwritten
     }
   
   return status;
-  }
-
-
-
-template<typename eT, typename T1, typename T2>
-inline
-bool
-glue_solve_gen::apply_pinv(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr)
-  {
-  arma_extra_debug_sigprint();
-  
-  // brutal last-resort approximate solver based on pseudo-inverse
-  
-  Mat<eT> Ai;
-  
-  bool status = pinv(Ai, A_expr.get_ref());  // use default tolerance
-  
-  if(status == false)  { return false; }
-  
-  out = Ai * B_expr.get_ref();
-  
-  return out.is_finite();
   }
 
 
@@ -224,7 +192,7 @@ glue_solve_sym::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     const Mat<eT> symA = (symu) ? symmatu( A_expr.get_ref() ) : symmatl( A_expr.get_ref() );
     
-    status = glue_solve_gen::apply_pinv(out, symA, B_expr.get_ref());
+    status = auxlib::solve_approx(out, symA, B_expr.get_ref());  // A is overwritten
     }
   
   return status;
@@ -310,7 +278,7 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     const Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
-    status = glue_solve_gen::apply_pinv(out, triA, B_expr.get_ref());
+    status = auxlib::solve_approx(out, triA, B_expr.get_ref());  // A is overwritten
     }
   
   return status;

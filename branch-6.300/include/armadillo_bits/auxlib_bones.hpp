@@ -234,11 +234,11 @@ class auxlib
   inline static bool solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr);
   
   template<typename T1>
-  inline static bool solve_nonsquare_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
+  inline static bool solve_approx(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr);
   
   template<typename T1>
-  inline static bool solve_nonsquare_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
-  
+  inline static bool solve_approx(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr);
+
   
   //
   // solve_sym
@@ -285,6 +285,13 @@ class auxlib
   
   template<typename T, typename T1, typename T2>
   inline static bool qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::complex<T> >& vsl, Mat< std::complex<T> >& vsr, const Base< std::complex<T>, T1 >& X_expr, const Base< std::complex<T>, T2 >& Y_expr);
+  
+  
+  // 
+  // rcond
+  
+  // template<typename T1>
+  // inline static typename T1::pod_type rcond(const Base<typename T1::elem_type,T1>& A_expr);
   };
 
 
