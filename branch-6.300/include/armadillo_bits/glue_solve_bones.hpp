@@ -26,18 +26,6 @@ class glue_solve_gen
 
 
 
-class glue_solve_sym
-  {
-  public:
-  
-  template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_solve_sym>& X);
-  
-  template<typename eT, typename T1, typename T2> inline static bool apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>& B_expr, const uword flags);
-  };
-
-
-
-
 class glue_solve_tri
   {
   public:
@@ -84,10 +72,8 @@ namespace solve_opts
   static const uword flag_approx      = uword(1u << 2);
   static const uword flag_noapprox    = uword(1u << 3);
   static const uword flag_rankdef     = uword(1u << 4);
-  static const uword flag_symu        = uword(1u << 5);
-  static const uword flag_syml        = uword(1u << 6);
-  static const uword flag_triu        = uword(1u << 7);
-  static const uword flag_tril        = uword(1u << 8);
+  static const uword flag_triu        = uword(1u << 5);
+  static const uword flag_tril        = uword(1u << 6);
   
   struct opts_none        : public opts { inline opts_none()        : opts(flag_none       ) {} };
   struct opts_equilibrate : public opts { inline opts_equilibrate() : opts(flag_equilibrate) {} };
@@ -95,8 +81,6 @@ namespace solve_opts
   struct opts_approx      : public opts { inline opts_approx()      : opts(flag_approx     ) {} };
   struct opts_noapprox    : public opts { inline opts_noapprox()    : opts(flag_noapprox   ) {} };
   struct opts_rankdef     : public opts { inline opts_rankdef()     : opts(flag_rankdef    ) {} };
-  struct opts_symu        : public opts { inline opts_symu()        : opts(flag_symu       ) {} };
-  struct opts_syml        : public opts { inline opts_syml()        : opts(flag_syml       ) {} };
   struct opts_triu        : public opts { inline opts_triu()        : opts(flag_triu       ) {} };
   struct opts_tril        : public opts { inline opts_tril()        : opts(flag_tril       ) {} };
   
@@ -106,8 +90,6 @@ namespace solve_opts
   static const opts_approx      approx;
   static const opts_noapprox    noapprox;
   static const opts_rankdef     rankdef;
-  static const opts_symu        symu;
-  static const opts_syml        syml;
   static const opts_triu        triu;
   static const opts_tril        tril;
   }
