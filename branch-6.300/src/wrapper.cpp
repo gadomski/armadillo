@@ -562,7 +562,7 @@ extern "C"
     
     
     
-    
+    // TODO: replace with xgelsd 
     void arma_fortran_prefix(arma_sgelsy)(blas_int* m, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* jpvt,  float* rcond, blas_int* rank,  float* work, blas_int* lwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_sgelsy)(m, n, nrhs, a, lda, b, ldb, jpvt, rcond, rank, work, lwork, info);
@@ -583,52 +583,6 @@ extern "C"
     void arma_fortran_prefix(arma_zgelsy)(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* jpvt, double* rcond, blas_int* rank, void* work, blas_int* lwork, double* rwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_zgelsy)(m, n, nrhs, a, lda, b, ldb, jpvt, rcond, rank, work, lwork, rwork, info);
-      }
-    
-    
-    
-    void arma_fortran_prefix(arma_ssysv)(char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda, blas_int* ipiv,  float* b, blas_int* ldb,  float* work, blas_int* lwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_ssysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
-      }
-    
-    void arma_fortran_prefix(arma_dsysv)(char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, blas_int* ipiv, double* b, blas_int* ldb, double* work, blas_int* lwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_dsysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
-      }
-    
-    void arma_fortran_prefix(arma_csysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_csysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
-      }
-    
-    void arma_fortran_prefix(arma_zsysv)(char* uplo, blas_int* n, blas_int* nrhs,   void* a, blas_int* lda, blas_int* ipiv,   void* b, blas_int* ldb,   void* work, blas_int* lwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_zsysv)(uplo, n, nrhs, a, lda, ipiv, b, ldb, work, lwork, info);
-      }
-    
-    
-    
-    void arma_fortran_prefix(arma_ssysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs,  float* a, blas_int* lda,  float* af, blas_int* ldaf, blas_int* ipiv,  float* b,  blas_int* ldb,  float* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr,  float* work, blas_int* lwork, blas_int* iwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_ssysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, iwork, info);
-      }
-      
-    void arma_fortran_prefix(arma_dsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, double* a, blas_int* lda, double* af, blas_int* ldaf, blas_int* ipiv, double* b,  blas_int* ldb, double* x, blas_int* ldx, double* rcond, double* ferr, double* berr, double* work, blas_int* lwork, blas_int* iwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_dsysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, iwork, info);
-      }
-    
-    
-    
-    void arma_fortran_prefix(arma_csysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, void* b, blas_int* ldb, void* x, blas_int* ldx,  float* rcond,  float* ferr,  float* berr, void* work, blas_int* lwork,  float* rwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_csysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, rwork, info);
-      }
-    
-    void arma_fortran_prefix(arma_zsysvx)(char* fact, char* uplo, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* af, blas_int* ldaf, blas_int* ipiv, void* b, blas_int* ldb, void* x, blas_int* ldx, double* rcond, double* ferr, double* berr, void* work, blas_int* lwork, double* rwork, blas_int* info)
-      {
-      arma_fortran_noprefix(arma_zsysvx)(fact, uplo, n, nrhs, a, lda, af, ldaf, ipiv, b, ldb, x, ldx, rcond, ferr, berr, work, lwork, rwork, info);
       }
     
     
