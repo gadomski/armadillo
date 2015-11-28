@@ -10844,25 +10844,27 @@ similar functionality to the \ operator in Matlab/Octave, ie. <i>X&nbsp;=&nbsp;A
 The number of rows in <i>A</i> and <i>B</i> must be the same
 </li>
 <br>
+<!--
 <li>
-If the system is rank deficient, an approximate solution is computed (version 6.300+)
+If the system is rank deficient, an approximate solution is computed (version 7.000+)
 </li>
 <br>
+-->
 <li>The <i>options</i> argument is optional; it is one or a combination of the following:
 <ul>
 <br>
 <table>
 <tbody>
-<tr><td><code>solve_opts::fullrankonly</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not solve rank deficient systems</td></tr>
 <tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
 <tr><td><code>solve_opts::refine</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>apply iterative refinement to improve the solution &nbsp; (matrix <i>A</i> must be square)</td></tr>
+<tr><td><code>solve_opts::approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>allow approximate solutions for rank deficient systems</td></tr>
 </tbody>
 </table>
 </ul>
 </li>
 <br>
 <li>
-The options can be combined using the <code>|</code> operator; for example: <code>solve_opts::fullrankonly&nbsp;|&nbsp;solve_opts::refine</code>
+The options can be combined using the <code>|</code> operator; for example: <code>solve_opts::refine&nbsp;|&nbsp;solve_opts::approx</code>
 </li>
 <br>
 <li>
