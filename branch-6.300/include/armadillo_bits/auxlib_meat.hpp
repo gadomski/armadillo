@@ -3498,23 +3498,18 @@ auxlib::solve_approx_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::ele
     arma_extra_debug_print("lapack::gels()");
     lapack::gels<eT>( &trans, &m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, work.memptr(), &lwork, &info );
     
-    if(info == 0)
+    if(info != 0)  { return false; }
+    
+    if(tmp.n_rows == A.n_cols)
       {
-      if(tmp.n_rows == A.n_cols)
-        {
-        out.steal_mem(tmp);
-        }
-      else
-        {
-        out = tmp.head_rows(A.n_cols);
-        }
-      
-      return true;
+      out.steal_mem(tmp);
       }
     else
       {
-      return false;
+      out = tmp.head_rows(A.n_cols);
       }
+    
+    return true;
     }
   #else
     {
@@ -3596,23 +3591,18 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     arma_extra_debug_print("lapack::gelsd()");
     lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, iwork.memptr(), &info);
     
-    if(info == 0)
+    if(info != 0)  { return false; }
+    
+    if(tmp.n_rows == A.n_cols)
       {
-      if(tmp.n_rows == A.n_cols)
-        {
-        out.steal_mem(tmp);
-        }
-      else
-        {
-        out = tmp.head_rows(A.n_cols);
-        }
-      
-      return true;
+      out.steal_mem(tmp);
       }
     else
       {
-      return false;
+      out = tmp.head_rows(A.n_cols);
       }
+    
+    return true;
     }
   #else
     {
@@ -3698,23 +3688,18 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     arma_extra_debug_print("lapack::cx_gelsd()");
     lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), iwork.memptr(), &info);
     
-    if(info == 0)
+    if(info != 0)  { return false; }
+    
+    if(tmp.n_rows == A.n_cols)
       {
-      if(tmp.n_rows == A.n_cols)
-        {
-        out.steal_mem(tmp);
-        }
-      else
-        {
-        out = tmp.head_rows(A.n_cols);
-        }
-      
-      return true;
+      out.steal_mem(tmp);
       }
     else
       {
-      return false;
+      out = tmp.head_rows(A.n_cols);
       }
+    
+    return true;
     }
   #else
     {
