@@ -4117,47 +4117,106 @@ auxlib::qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::compl
 
 
 
-// template<typename T1>
-// inline
-// typename T1::pod_type
-// rcond(const Base<typename T1::elem_type,T1>& A_expr)
-//   {
-//   typedef typename T1::pod_type   T;
-//   typedef typename T1::elem_type eT;
-//   
-//   #if defined(ARMA_USE_LAPACK)
-//     {
-//     Mat<eT> A = A_expr.get_ref();
-//     
-//     arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
-//     
-//     arma_debug_assert_blas_size(A);
-//     
-//     char     NORM = '1';
-//     blas_int M    = blas_int(A.n_rows);
-//     blas_int N    = blas_int(A.n_rows);  // assuming square matrix
-//     blas_int LDA  = blas_int(A.n_rows);
-//     blas_int INFO = blas_int(0);
-//     
-//     podarray<eT>       WORK(1);
-//     podarray<blas_int> IPIV( (std::min)(A.n_rows, A.n_cols) );
-//     
-//     const T norm_val = lapack::lange(&NORM, &M, &N, A.memptr(), &LDA, WORK.memptr());
-//     
-//     lapack::getrf(&M, &N, A.memptr(), &LDA, IPIV.memptr(), &INFO);
-//     
-//     if(INFO != blas_int(0))  { return T(0); }
-//     
-//     lapack::dgecon(NORM, N, A, LDA, ANORM, RCOND, WORK, IWORK, INFO);
-// 
-//     }
-//   #else
-//     {
-//     arma_ignore(A_expr);
-//     arma_stop("rcond(): use of LAPACK must be enabled");
-//     return T(0);
-//     }
-//   }
+template<typename T1>
+inline
+typename T1::pod_type
+rcond(const Base<typename T1::pod_type,T1>& A_expr)
+  {
+  typedef typename T1::pod_type   T;
+  typedef typename T1::elem_type eT;
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    Mat<eT> A = A_expr.get_ref();
+    
+    arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
+    
+    arma_debug_assert_blas_size(A);
+    
+    char     norm_id  = '1';
+    blas_int m        = blas_int(A.n_rows);
+    blas_int n        = blas_int(A.n_rows);  // assuming square matrix
+    blas_int lda      = blas_int(A.n_rows);
+    T        norm_val = T(0);
+    T        rcond    = T(0);
+    blas_int info     = blas_int(0);
+    
+    podarray<eT>        work(4*A.n_rows);
+    podarray<blas_int> iwork(A.n_rows);
+    podarray<blas_int> ipiv( (std::min)(A.n_rows, A.n_cols) );
+    
+    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, work.memptr());
+    
+    lapack::getrf(&m, &n, A.memptr(), &lda, ipiv.memptr(), &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    lapack::gecon(&norm_id, &n, a.memptr(), &lda, &norm_val, &rcond, work.memptr(), iwork.memptr(), &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    return rcond;
+    }
+  #else
+    {
+    arma_ignore(A_expr);
+    arma_stop("rcond(): use of LAPACK must be enabled");
+    }
+  
+  return T(0);
+  }
+
+
+
+template<typename T1>
+inline
+typename T1::pod_type
+rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
+  {
+  typedef typename T1::pod_type   T;
+  typedef typename T1::elem_type eT;
+  
+  #if defined(ARMA_USE_LAPACK)
+    {
+    Mat<eT> A = A_expr.get_ref();
+    
+    arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
+    
+    arma_debug_assert_blas_size(A);
+    
+    char     norm_id  = '1';
+    blas_int m        = blas_int(A.n_rows);
+    blas_int n        = blas_int(A.n_rows);  // assuming square matrix
+    blas_int lda      = blas_int(A.n_rows);
+    T        norm_val = T(0);
+    T        rcond    = T(0);
+    blas_int info     = blas_int(0);
+    
+    podarray<eT>        work(2*A.n_rows);
+    podarray< T>       rwork(2*A.n_rows);
+    podarray<blas_int> iwork(A.n_rows);
+    podarray<blas_int> ipiv( (std::min)(A.n_rows, A.n_cols) );
+    
+    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, work.memptr());
+    
+    lapack::getrf(&m, &n, A.memptr(), &lda, ipiv.memptr(), &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    lapack::cx_gecon(&norm_id, &n, a.memptr(), &lda, &norm_val, &rcond, work.memptr(), rwork.memptr(), &info);
+    
+    if(info != blas_int(0))  { return T(0); }
+    
+    return rcond;
+    }
+  #else
+    {
+    arma_ignore(A_expr);
+    arma_stop("rcond(): use of LAPACK must be enabled");
+    }
+  
+  return T(0);
+  }
 
 
 

@@ -273,8 +273,11 @@ class auxlib
   // 
   // rcond
   
-  // template<typename T1>
-  // inline static typename T1::pod_type rcond(const Base<typename T1::elem_type,T1>& A_expr);
+  template<typename T1>
+  inline static typename T1::pod_type rcond(const Base<typename T1::pod_type,T1>& A_expr);
+  
+  template<typename T1>
+  inline static typename T1::pod_type rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr);
   };
 
 
