@@ -443,10 +443,10 @@ extern "C"
   void arma_fortran(arma_zgges)(char* jobvsl, char* jobvsr, char* sort, void* selctg, blas_int* n, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* sdim, void* alpha, void* beta, void* vsl, blas_int* ldvsl, void* vsr, blas_int* ldvsr, void* work, blas_int* lwork, double* rwork, double* bwork, blas_int* info);
   
   // 1-norm
-  void arma_fortran(arma_slange)(char* norm, blas_int* m, blas_int* n,  float* a, blas_int* lda,  float* work);
-  void arma_fortran(arma_dlange)(char* norm, blas_int* m, blas_int* n, double* a, blas_int* lda, double* work);
-  void arma_fortran(arma_clange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda,  float* work);
-  void arma_fortran(arma_zlange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda, double* work);
+  float  arma_fortran(arma_slange)(char* norm, blas_int* m, blas_int* n,  float* a, blas_int* lda,  float* work);
+  double arma_fortran(arma_dlange)(char* norm, blas_int* m, blas_int* n, double* a, blas_int* lda, double* work);
+  float  arma_fortran(arma_clange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda,  float* work);
+  double arma_fortran(arma_zlange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda, double* work);
   
   // reciprocal of condition number (real)
   void arma_fortran(arma_sgecon)(char* norm, blas_int* n,  float* a, blas_int* lda,  float* anorm,  float* rcond,  float* work, blas_int* iwork, blas_int* info);

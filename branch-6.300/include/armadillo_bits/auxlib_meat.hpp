@@ -4120,7 +4120,7 @@ auxlib::qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::compl
 template<typename T1>
 inline
 typename T1::pod_type
-rcond(const Base<typename T1::pod_type,T1>& A_expr)
+auxlib::rcond(const Base<typename T1::pod_type,T1>& A_expr)
   {
   typedef typename T1::pod_type   T;
   typedef typename T1::elem_type eT;
@@ -4129,7 +4129,7 @@ rcond(const Base<typename T1::pod_type,T1>& A_expr)
     {
     Mat<eT> A = A_expr.get_ref();
     
-    arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
+    arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
     
     arma_debug_assert_blas_size(A);
     
@@ -4151,7 +4151,7 @@ rcond(const Base<typename T1::pod_type,T1>& A_expr)
     
     if(info != blas_int(0))  { return T(0); }
     
-    lapack::gecon(&norm_id, &n, a.memptr(), &lda, &norm_val, &rcond, work.memptr(), iwork.memptr(), &info);
+    lapack::gecon(&norm_id, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), iwork.memptr(), &info);
     
     if(info != blas_int(0))  { return T(0); }
     
@@ -4162,6 +4162,7 @@ rcond(const Base<typename T1::pod_type,T1>& A_expr)
     arma_ignore(A_expr);
     arma_stop("rcond(): use of LAPACK must be enabled");
     }
+  #endif
   
   return T(0);
   }
@@ -4171,7 +4172,7 @@ rcond(const Base<typename T1::pod_type,T1>& A_expr)
 template<typename T1>
 inline
 typename T1::pod_type
-rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
+auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
   {
   typedef typename T1::pod_type   T;
   typedef typename T1::elem_type eT;
@@ -4180,7 +4181,7 @@ rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     {
     Mat<eT> A = A_expr.get_ref();
     
-    arma_debug_check( (A.is_square == false), "rcond(): matrix must be square sized" );
+    arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
     
     arma_debug_assert_blas_size(A);
     
@@ -4192,18 +4193,19 @@ rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     T        rcond    = T(0);
     blas_int info     = blas_int(0);
     
+    podarray< T>       junk(1);
     podarray<eT>        work(2*A.n_rows);
     podarray< T>       rwork(2*A.n_rows);
     podarray<blas_int> iwork(A.n_rows);
     podarray<blas_int> ipiv( (std::min)(A.n_rows, A.n_cols) );
     
-    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, work.memptr());
+    norm_val = lapack::lange(&norm_id, &m, &n, A.memptr(), &lda, junk.memptr());
     
     lapack::getrf(&m, &n, A.memptr(), &lda, ipiv.memptr(), &info);
     
     if(info != blas_int(0))  { return T(0); }
     
-    lapack::cx_gecon(&norm_id, &n, a.memptr(), &lda, &norm_val, &rcond, work.memptr(), rwork.memptr(), &info);
+    lapack::cx_gecon(&norm_id, &n, A.memptr(), &lda, &norm_val, &rcond, work.memptr(), rwork.memptr(), &info);
     
     if(info != blas_int(0))  { return T(0); }
     
@@ -4214,6 +4216,7 @@ rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     arma_ignore(A_expr);
     arma_stop("rcond(): use of LAPACK must be enabled");
     }
+  #endif
   
   return T(0);
   }
