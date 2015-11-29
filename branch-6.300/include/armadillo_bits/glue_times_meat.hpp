@@ -92,7 +92,7 @@ glue_times_redirect2_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, B, "matrix multiplication");
     
-    const bool status = auxlib::solve_square(out, A, B);
+    const bool status = auxlib::solve_square_fast(out, A, B);
     
     if(status == false)
       {
@@ -211,7 +211,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     arma_debug_assert_mul_size(A, BC, "matrix multiplication");
     
-    const bool status = auxlib::solve_square(out, A, BC);
+    const bool status = auxlib::solve_square_fast(out, A, BC);
     
     if(status == false)
       {
@@ -242,7 +242,7 @@ glue_times_redirect3_helper<true>::apply(Mat<typename T1::elem_type>& out, const
     
     Mat<eT> solve_result;
     
-    const bool status = auxlib::solve_square(solve_result, B, C);
+    const bool status = auxlib::solve_square_fast(solve_result, B, C);
     
     if(status == false)
       {

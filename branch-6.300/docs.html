@@ -10849,21 +10849,26 @@ The number of rows in <i>A</i> and <i>B</i> must be the same
 <br>
 <table>
 <tbody>
-<tr><td><code>solve_opts::refine</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>apply iterative refinement to improve the solution &nbsp; (matrix <i>A</i> must be square)</td></tr>
+<tr><td><code>solve_opts::fast</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not apply iterative refinement and/or equilibration</td></tr>
 <tr><td><code>solve_opts::equilibrate</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>equilibrate the system before solving &nbsp; (matrix <i>A</i> must be square)</td></tr>
-<tr><td><code>solve_opts::approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>allow approximate solutions for rank deficient systems</td></tr>
+<tr><td><code>solve_opts::no_approx</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>do not find approximate solutions for rank deficient systems</td></tr>
 </tbody>
 </table>
+<br>
+<li>
+Options can be combined using the <code>+</code> operator; for example: <code>solve_opts::fast&nbsp;+&nbsp;solve_opts::no_approx</code>
+</li>
+<br>
+<li>
+<b>Caveat:</b> <code>solve_opts::fast</code> is recommended only for well-conditioned systems 
+</li>
 </ul>
 </li>
 <br>
 <li>
-The options can be combined using the <code>|</code> operator; for example: <code>solve_opts::refine&nbsp;|&nbsp;solve_opts::approx</code>
-</li>
-<br>
-<li>
 If <i>A</i> is known to be a triangular matrix,
-the solution can be computed faster by explicitly indicating that <i>A</i> is triangular through <a href="#trimat">trimatu()</a> or <a href="#trimat">trimatl()</a>
+the solution can be computed faster by explicitly indicating that <i>A</i> is triangular through <a href="#trimat">trimatu()</a> or <a href="#trimat">trimatl()</a>;
+<br>indicating a triangular matrix also implies that <code>solve_opts::fast</code> is enabled
 </li>
 <br>
 <li>
@@ -10889,7 +10894,7 @@ bool status = solve(x2, A, b);
 
 mat X1 = solve(A, B);
 
-mat X2 = solve(A, B, solve_opts::refine);
+mat X2 = solve(A, B, solve_opts::fast);
 
 mat X3 = solve(A, trimatu(B));  // indicate that B is triangular
 </pre>

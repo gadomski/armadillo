@@ -3167,7 +3167,7 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
 template<typename T1>
 inline
 bool
-auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+auxlib::solve_square_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3271,7 +3271,7 @@ auxlib::solve_square(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_typ
 template<typename T1>
 inline
 bool
-auxlib::solve_square_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3360,7 +3360,7 @@ auxlib::solve_square_ext(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
 template<typename T1>
 inline
 bool
-auxlib::solve_square_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3450,7 +3450,7 @@ auxlib::solve_square_ext(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
 template<typename T1>
 inline
 bool
-auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
+auxlib::solve_approx_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_type>& A, const Base<typename T1::elem_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3471,9 +3471,17 @@ auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
     
     arma_debug_assert_blas_size(A,B);
     
-    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols, fill::zeros );
+    Mat<eT> tmp( (std::max)(A.n_rows, A.n_cols), B.n_cols );
     
-    tmp(0,0, size(B)) = B;
+    if(size(tmp) == size(B))
+      {
+      tmp = B;
+      }
+    else
+      {
+      tmp.zeros();
+      tmp(0,0, size(B)) = B;
+      }
     
     char      trans = 'N';
     blas_int  m     = blas_int(A.n_rows);
@@ -3490,9 +3498,23 @@ auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
     arma_extra_debug_print("lapack::gels()");
     lapack::gels<eT>( &trans, &m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, work.memptr(), &lwork, &info );
     
-    out = tmp.head_rows(A.n_cols);
-    
-    return (info == 0);
+    if(info == 0)
+      {
+      if(tmp.n_rows == A.n_cols)
+        {
+        out.steal_mem(tmp);
+        }
+      else
+        {
+        out = tmp.head_rows(A.n_cols);
+        }
+      
+      return true;
+      }
+    else
+      {
+      return false;
+      }
     }
   #else
     {
@@ -3510,7 +3532,7 @@ auxlib::solve_nonsquare(Mat<typename T1::elem_type>& out, Mat<typename T1::elem_
 template<typename T1>
 inline
 bool
-auxlib::solve_approx(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
+auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
@@ -3608,7 +3630,7 @@ auxlib::solve_approx(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>
 template<typename T1>
 inline
 bool
-auxlib::solve_approx(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
+auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr)
   {
   arma_extra_debug_sigprint();
   
