@@ -136,6 +136,16 @@
   #define arma_cgges  cgges
   #define arma_zgges  zgges
   
+  #define arma_slange slange
+  #define arma_dlange dlange
+  #define arma_clange clange
+  #define arma_zlange zlange
+  
+  #define arma_sgecon sgecon
+  #define arma_dgecon dgecon
+  #define arma_cgecon cgecon
+  #define arma_zgecon zgecon
+  
 #else
   
   #define arma_sgetrf SGETRF
@@ -257,6 +267,16 @@
   #define arma_dgges  DGGES
   #define arma_cgges  CGGES
   #define arma_zgges  ZGGES
+  
+  #define arma_slange SLANGE
+  #define arma_dlange DLANGE
+  #define arma_clange CLANGE
+  #define arma_zlange ZLANGE
+  
+  #define arma_sgecon SGECON
+  #define arma_dgecon DGECON
+  #define arma_cgecon CGECON
+  #define arma_zgecon ZGECON
   
 #endif
 
@@ -421,6 +441,20 @@ extern "C"
   // QZ decomposition (complex matrices)
   void arma_fortran(arma_cgges)(char* jobvsl, char* jobvsr, char* sort, void* selctg, blas_int* n, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* sdim, void* alpha, void* beta, void* vsl, blas_int* ldvsl, void* vsr, blas_int* ldvsr, void* work, blas_int* lwork,  float* rwork,  float* bwork, blas_int* info);
   void arma_fortran(arma_zgges)(char* jobvsl, char* jobvsr, char* sort, void* selctg, blas_int* n, void* a, blas_int* lda, void* b, blas_int* ldb, blas_int* sdim, void* alpha, void* beta, void* vsl, blas_int* ldvsl, void* vsr, blas_int* ldvsr, void* work, blas_int* lwork, double* rwork, double* bwork, blas_int* info);
+  
+  // 1-norm
+  void arma_fortran(arma_slange)(char* norm, blas_int* m, blas_int* n,  float* a, blas_int* lda,  float* work);
+  void arma_fortran(arma_dlange)(char* norm, blas_int* m, blas_int* n, double* a, blas_int* lda, double* work);
+  void arma_fortran(arma_clange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda,  float* work);
+  void arma_fortran(arma_zlange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda, double* work);
+  
+  // reciprocal of condition number (real)
+  void arma_fortran(arma_sgecon)(char* norm, blas_int* n,  float* a, blas_int* lda,  float* anorm,  float* rcond,  float* work, blas_int* iwork, blas_int* info);
+  void arma_fortran(arma_dgecon)(char* norm, blas_int* n, double* a, blas_int* lda, double* anorm, double* rcond, double* work, blas_int* iwork, blas_int* info);
+  
+  // reciprocal of condition number (complex)
+  void arma_fortran(arma_cgecon)(char* norm, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info);
+  void arma_fortran(arma_zgecon)(char* norm, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info);
   }
 
 

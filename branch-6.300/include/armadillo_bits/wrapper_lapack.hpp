@@ -1015,6 +1015,45 @@ namespace lapack
     }
   
   
+  
+  template<typename eT>
+  inline
+  typename get_pod_type<eT>::result
+  lange(char* norm, blas_int* m, blas_int* n, eT* a, blas_int* lda, typename get_pod_type<eT>::result* work)
+    {
+    arma_type_check(( is_supported_blas_type<eT>::value == false ));
+    
+    typedef typename get_pod_type<eT>::result out_T;
+    
+    if(is_float<eT>::value)
+      {
+      typedef float pod_T;
+      typedef float     T;
+      return out_T( arma_fortran(arma_slange)(norm, m, n, (T*)a, lda, (pod_T*)work) );
+      }
+    else
+    if(is_double<eT>::value)
+      {
+      typedef double pod_T;
+      typedef double     T;
+      return out_T( arma_fortran(arma_dlange)(norm, m, n, (T*)a, lda, (pod_T*)work) );
+      }
+    else
+    if(is_supported_complex_float<eT>::value)
+      {
+      typedef float               pod_T;
+      typedef std::complex<float>     T;
+      return out_T( arma_fortran(arma_clange)(norm, m, n, (T*)a, lda, (pod_T*)work) );
+      }
+    else
+    if(is_supported_complex_double<eT>::value)
+      {
+      typedef double               pod_T;
+      typedef std::complex<double>     T;
+      return out_T( arma_fortran(arma_zslange)(norm, m, n, (T*)a, lda, (pod_T*)work) );
+      }
+    }
+  
   }
 
 
