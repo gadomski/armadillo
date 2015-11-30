@@ -3729,7 +3729,7 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     
     blas_int lwork  = static_cast<blas_int>( access::tmp_real( work_query[0]) );
     
-    podarray<eT> work(static_cast<uword>(lwork ));
+    podarray<eT> work( static_cast<uword>(lwork) );
     
     arma_extra_debug_print("lapack::cx_gelsd()");
     lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), iwork.memptr(), &info);
