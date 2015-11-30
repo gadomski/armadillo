@@ -171,8 +171,9 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(equilibrate)  { arma_debug_warn("solve(): option 'equilibrate' ignored for triangular matrices"); }
   
   const unwrap_check<T1> U(A_expr.get_ref(), out);
+  const Mat<eT>& A     = U.M;
   
-  const Mat<eT>& A = U.M;
+  arma_debug_check( (A.is_square() == false), "solve(): matrix marked as triangular must be square sized" );
   
   const uword layout = (triu) ? uword(0) : uword(1);
   
