@@ -209,7 +209,7 @@ Base<elem_type,derived>::max(uword& row_of_max_val, uword& col_of_max_val) const
 template<typename derived>
 arma_inline
 const Op<derived,op_inv>
-Base_inv_yes<derived>::i() const   // argument kept only for compatibility with old user code
+Base_inv_yes<derived>::i() const
   {
   return Op<derived,op_inv>(static_cast<const derived&>(*this));
   }
