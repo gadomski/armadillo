@@ -722,6 +722,52 @@ extern "C"
       arma_fortran_noprefix(arma_zgges)(jobvsl, jobvsr, sort, selctg, n, a, lda, b, ldb, sdim, alpha, beta, vsl, ldvsl, vsr, ldvsr, work, lwork, rwork, bwork, info);
       }
     
+    
+    
+    
+    float  arma_fortran_prefix(arma_slange)(char* norm, blas_int* m, blas_int* n,  float* a, blas_int* lda,  float* work)
+      {
+      return arma_fortran_noprefix(arma_slange)(norm, m, n, a, lda, work);
+      }
+    
+    double arma_fortran_prefix(arma_dlange)(char* norm, blas_int* m, blas_int* n, double* a, blas_int* lda, double* work)
+      {
+      return arma_fortran_noprefix(arma_dlange)(norm, m, n, a, lda, work);
+      }
+    
+    float  arma_fortran_prefix(arma_clange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda,  float* work)
+      {
+      return arma_fortran_noprefix(arma_clange)(norm, m, n, a, lda, work);
+      }
+    
+    double arma_fortran_prefix(arma_zlange)(char* norm, blas_int* m, blas_int* n,   void* a, blas_int* lda, double* work)
+      {
+      return arma_fortran_noprefix(arma_zlange)(norm, m, n, a, lda, work);
+      }
+    
+    
+    
+    
+    void arma_fortran_prefix(arma_sgecon)(char* norm, blas_int* n,  float* a, blas_int* lda,  float* anorm,  float* rcond,  float* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_sgecon)(norm, n, a, lda, anorm, rcond, work, iwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_dgecon)(char* norm, blas_int* n, double* a, blas_int* lda, double* anorm, double* rcond, double* work, blas_int* iwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_dgecon)(norm, n, a, lda, anorm, rcond, work, iwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_cgecon)(char* norm, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_cgecon)(norm, n, a, lda, anorm, rcond, work, rwork, info);
+      }
+    
+    void arma_fortran_prefix(arma_zgecon)(char* norm, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info)
+      {
+      arma_fortran_noprefix(arma_zgecon)(norm, n, a, lda, anorm, rcond, work, rwork, info);
+      }
+  
   #endif
   
   
