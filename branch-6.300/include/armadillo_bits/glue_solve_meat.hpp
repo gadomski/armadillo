@@ -28,7 +28,6 @@ glue_solve_gen::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_so
   
   if(status == false)
     {
-    out.reset();
     arma_bad("solve(): solution not found");
     }
   }
@@ -118,6 +117,9 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       }
     }
   
+  
+  if(status == false)  { out.reset(); }
+  
   return status;
   }
 
@@ -138,7 +140,6 @@ glue_solve_tri::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_so
   
   if(status == false)
     {
-    out.reset();
     arma_bad("solve(): solution not found");
     }
   }
@@ -189,6 +190,9 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     status = auxlib::solve_approx_svd(out, triA, B_expr.get_ref());  // triA is overwritten
     }
+  
+  
+  if(status == false)  { out.reset(); }
   
   return status;
   }
