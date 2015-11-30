@@ -3593,9 +3593,8 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int n3 = nrhs;
     blas_int n4 = lda;
     
-    blas_int smlsiz = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4);
-    
-    blas_int smlsiz_p1 = blas_int(1) + (std::max)( blas_int(25), smlsiz );
+    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );
+    blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
     blas_int nlvl   = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
     blas_int liwork = (std::max)( blas_int(1), (blas_int(3)*blas_int(min_mn)*nlvl + blas_int(11)*blas_int(min_mn)) );
@@ -3689,27 +3688,48 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
     
-    const uword minmn = (std::min)(A.n_rows, A.n_cols);
+    const uword min_mn = (std::min)(A.n_rows, A.n_cols);
     
-    podarray<T> S(minmn);
+    podarray<T> S(min_mn);
+    
+    blas_int ispec = blas_int(9);
+    
+    const char* const_name = (is_float<T>::value) ? "CGELSD" : "ZGELSD";
+    const char* const_opts = "";
+    
+    char* name = const_cast<char*>(const_name);
+    char* opts = const_cast<char*>(const_opts);
+    
+    blas_int n1 = m;
+    blas_int n2 = n;
+    blas_int n3 = nrhs;
+    blas_int n4 = lda;
+    
+    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );
+    blas_int smlsiz_p1 = blas_int(1) + smlsiz;
+    
+    blas_int nlvl = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
+    
+    blas_int lrwork = (m >= n)
+      ? blas_int(10)*n + blas_int(2)*n*smlsiz + blas_int(8)*n*nlvl + blas_int(3)*smlsiz*nrhs + (std::max)( (smlsiz_p1)*(smlsiz_p1), n*(blas_int(1)+nrhs) + blas_int(2)*nrhs )
+      : blas_int(10)*m + blas_int(2)*m*smlsiz + blas_int(8)*m*nlvl + blas_int(3)*smlsiz*nrhs + (std::max)( (smlsiz_p1)*(smlsiz_p1), n*(blas_int(1)+nrhs) + blas_int(2)*nrhs );
+    
+    blas_int liwork = (std::max)( blas_int(1), (blas_int(3)*blas_int(min_mn)*nlvl + blas_int(11)*blas_int(min_mn)) );
+    
+    podarray<T>        rwork( static_cast<uword>(lrwork) );
+    podarray<blas_int> iwork( static_cast<uword>(liwork) );
     
     eT        work_query[2];
-     T       rwork_query[2];
-    blas_int iwork_query[2];
     blas_int lwork_query = blas_int(-1);
     
     arma_extra_debug_print("lapack::cx_gelsd()");
-    lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &rwork_query[0], &iwork_query[0], &info);
+    lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, rwork.memptr(), iwork.memptr(), &info);
     
     if(info != 0)  { return false; }
     
     blas_int lwork  = static_cast<blas_int>( access::tmp_real( work_query[0]) );
-    blas_int lrwork = static_cast<blas_int>( access::tmp_real(rwork_query[0]) );
-    blas_int liwork = iwork_query[0];
     
-    podarray<eT>        work(static_cast<uword>(lwork ));
-    podarray< T>       rwork(static_cast<uword>(lrwork));
-    podarray<blas_int> iwork(static_cast<uword>(liwork));
+    podarray<eT> work(static_cast<uword>(lwork ));
     
     arma_extra_debug_print("lapack::cx_gelsd()");
     lapack::cx_gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, rwork.memptr(), iwork.memptr(), &info);
