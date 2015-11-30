@@ -3575,31 +3575,44 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
     
-    const uword minmn = (std::min)(A.n_rows, A.n_cols);
+    const uword min_mn = (std::min)(A.n_rows, A.n_cols);
     
-    podarray<eT> S(minmn);
+    podarray<eT> S(min_mn);
+    
+    
+    blas_int ispec = blas_int(9);
+    
+    const char* const_name = (is_float<eT>::value) ? "SGELSD" : "DGELSD";
+    const char* const_opts = "";
+    
+    char* name = const_cast<char*>(const_name);
+    char* opts = const_cast<char*>(const_opts);
+    
+    blas_int n1 = m;
+    blas_int n2 = n;
+    blas_int n3 = nrhs;
+    blas_int n4 = lda;
+    
+    blas_int smlsiz = lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4);
+    
+    blas_int smlsiz_p1 = blas_int(1) + (std::max)( blas_int(25), smlsiz );
+    
+    blas_int nlvl   = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
+    blas_int liwork = (std::max)( blas_int(1), (blas_int(3)*blas_int(min_mn)*nlvl + blas_int(11)*blas_int(min_mn)) );
+    
+    podarray<blas_int> iwork( static_cast<uword>(liwork) );
     
     eT        work_query[2];
-    blas_int iwork_query[2];
     blas_int lwork_query = blas_int(-1);
     
-    // ilaenv (ISPEC, NAME, OPTS, N1, N2, N3, N4) 
-    // ISPEC = 9: maximum size of the subproblems at the bottom of the computation tree in the divide-and-conquer algorithm (used by xGELSD and xGESDD)
-    // 
-    // SMLSIZ is returned by ILAENV and is equal to the maximum size of the subproblems at the bottom of the computation tree (usually about 25)
-    // NLVL   = NLVL = MAX( 0, INT( LOG_2( MIN( M,N )/(SMLSIZ+1) ) ) + 1 )
-    // liwork = max(1, 3 * MINMN * NLVL + 11 * MINMN),
-    
     arma_extra_debug_print("lapack::gelsd()");
-    lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &iwork_query[0], &info);
+    lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, iwork.memptr(), &info);
     
     if(info != 0)  { return false; }
     
-    blas_int lwork  = static_cast<blas_int>( access::tmp_real(work_query[0]) );
-    blas_int liwork = iwork_query[0];
+    blas_int lwork = static_cast<blas_int>( access::tmp_real(work_query[0]) );
     
-    podarray<eT>        work(static_cast<uword>(lwork ));
-    podarray<blas_int> iwork(static_cast<uword>(liwork));
+    podarray<eT> work( static_cast<uword>(lwork) );
     
     arma_extra_debug_print("lapack::gelsd()");
     lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, work.memptr(), &lwork, iwork.memptr(), &info);

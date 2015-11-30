@@ -1104,6 +1104,14 @@ namespace lapack
       }
     }
   
+  
+  
+  inline
+  blas_int
+  laenv(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
+    {
+    return arma_fortran(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
+    }
   }
 
 

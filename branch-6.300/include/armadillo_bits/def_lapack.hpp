@@ -146,6 +146,8 @@
   #define arma_cgecon cgecon
   #define arma_zgecon zgecon
   
+  #define arma_ilaenv ilaenv
+  
 #else
   
   #define arma_sgetrf SGETRF
@@ -277,6 +279,8 @@
   #define arma_dgecon DGECON
   #define arma_cgecon CGECON
   #define arma_zgecon ZGECON
+  
+  #define arma_ilaenv ILAENV
   
 #endif
 
@@ -455,6 +459,9 @@ extern "C"
   // reciprocal of condition number (complex)
   void arma_fortran(arma_cgecon)(char* norm, blas_int* n, void* a, blas_int* lda,  float* anorm,  float* rcond, void* work,  float* rwork, blas_int* info);
   void arma_fortran(arma_zgecon)(char* norm, blas_int* n, void* a, blas_int* lda, double* anorm, double* rcond, void* work, double* rwork, blas_int* info);
+  
+  // obtain parameters according to the local configuration of lapack
+  blas_int arma_fortran(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4);
   }
 
 
