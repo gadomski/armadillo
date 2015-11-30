@@ -8606,7 +8606,7 @@ See also:
 <b>rcond( A )</b>
 <ul>
 <li>
-Estimate of the reciprocal of the condition number of matrix <i>A</i>
+Estimate of the reciprocal of the condition number of square matrix <i>A</i>
 </li>
 <br>
 <li>
@@ -8615,6 +8615,10 @@ Values close to 1 suggest that <i>A</i> is well-conditioned
 <br>
 <li>
 Values close to 0 suggest that <i>A</i> is badly conditioned
+</li>
+<br>
+<li>
+If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>
