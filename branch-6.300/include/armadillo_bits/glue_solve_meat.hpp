@@ -172,6 +172,8 @@ glue_solve_tri::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     {
     arma_extra_debug_print("glue_solve_tri::apply(): solving rank deficient system");
     
+    arma_debug_warn("system appears singular to machine precision; attempting approximate solution");
+    
     Mat<eT> triA = (triu) ? trimatu( A_expr.get_ref() ) : trimatl( A_expr.get_ref() );
     
     status = auxlib::solve_approx_svd(out, triA, B_expr.get_ref());  // triA is overwritten
