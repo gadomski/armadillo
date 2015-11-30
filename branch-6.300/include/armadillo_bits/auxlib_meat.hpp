@@ -3583,6 +3583,13 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int iwork_query[2];
     blas_int lwork_query = blas_int(-1);
     
+    // ilaenv (ISPEC, NAME, OPTS, N1, N2, N3, N4) 
+    // ISPEC = 9: maximum size of the subproblems at the bottom of the computation tree in the divide-and-conquer algorithm (used by xGELSD and xGESDD)
+    // 
+    // SMLSIZ is returned by ILAENV and is equal to the maximum size of the subproblems at the bottom of the computation tree (usually about 25)
+    // NLVL   = NLVL = MAX( 0, INT( LOG_2( MIN( M,N )/(SMLSIZ+1) ) ) + 1 )
+    // liwork = max(1, 3 * MINMN * NLVL + 11 * MINMN),
+    
     arma_extra_debug_print("lapack::gelsd()");
     lapack::gelsd(&m, &n, &nrhs, A.memptr(), &lda, tmp.memptr(), &ldb, S.memptr(), &rcond, &rank, &work_query[0], &lwork_query, &iwork_query[0], &info);
     
