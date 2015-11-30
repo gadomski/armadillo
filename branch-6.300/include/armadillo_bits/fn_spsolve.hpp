@@ -75,7 +75,7 @@ spsolve_helper
       
       typename get_pod_type<eT>::result rcond;
       
-      status = auxlib::solve_square_refine(out, rcond, AA, B.get_ref());
+      status = auxlib::solve_square_refine(out, rcond, AA, B.get_ref(), false);
       }
     }
   
