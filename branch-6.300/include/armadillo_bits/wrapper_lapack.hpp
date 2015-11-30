@@ -748,11 +748,13 @@ namespace lapack
   
   
   
-  template<typename T, typename eT>
+  template<typename T>
   inline
   void
-  cx_gelsd(blas_int* m, blas_int* n, blas_int* nrhs, void* a, blas_int* lda, void* b, blas_int* ldb, T* S, T* rcond, blas_int* rank, void* work, blas_int* lwork, T* rwork, blas_int* iwork, blas_int* info)
+  cx_gelsd(blas_int* m, blas_int* n, blas_int* nrhs, std::complex<T>* a, blas_int* lda, std::complex<T>* b, blas_int* ldb, T* S, T* rcond, blas_int* rank, std::complex<T>* work, blas_int* lwork, T* rwork, blas_int* iwork, blas_int* info)
     {
+    typedef typename std::complex<T> eT;
+    
     arma_type_check(( is_supported_blas_type<eT>::value == false ));
     
     if(is_supported_complex_float<eT>::value)
