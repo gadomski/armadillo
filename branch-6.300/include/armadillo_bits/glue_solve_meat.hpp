@@ -80,7 +80,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
     
     if( (status == false) && (no_approx == false) )
       {
-      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system; rcond: ", rcond);
+      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
       
       if(rcond > T(0))
         {
