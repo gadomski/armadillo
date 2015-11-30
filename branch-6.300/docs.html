@@ -4847,7 +4847,7 @@ Provides an inverse of the matrix expression
 </li>
 <br>
 <li>
-If the matrix expression is not square, a <i>std::logic_error</i> exception is thrown
+If the matrix expression is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>
@@ -7308,7 +7308,7 @@ Determinant of square matrix <i>A</i>
 </li>
 <br>
 <li>
-If <i>A</i> is not square, a <i>std::logic_error</i> exception is thrown
+If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>
@@ -7580,7 +7580,7 @@ See also:
 <ul>
 <li>Return the matrix exponential of square matrix <i>X</i></li>
 <br>
-<li>If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li><b>Caveat</b>: the matrix exponential operation is <b>not</b> the same as applying the <a href="#misc_fns">exp()</a> function to each element
 </li>
@@ -9802,7 +9802,7 @@ See also:
 <br>
 <li>The eigenvalues are in ascending order</li>
 <br>
-<li>If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>
 The <i>method</i> argument is optional; <i>method</i> is either <code>"dc"</code> or <code>"std"</code>
@@ -9886,7 +9886,7 @@ Eigen decomposition of <b>dense</b> general (non-symmetric/non-hermitian) square
 <br>
 <li>The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively</li>
 <br>
-<li>If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>If the decomposition fails:
 <ul>
@@ -9941,7 +9941,7 @@ such that <i>A*eigvec&nbsp;=&nbsp;B*eigvec*diagmat(eigval)</i>
 <br>
 <li>The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively</li>
 <br>
-<li>If <i>A</i> or <i>B</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>A</i> or <i>B</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>If the decomposition fails:
 <ul>
@@ -10018,7 +10018,7 @@ The argument <i>tol</i> is optional; it specifies the tolerance for convergence
 <br>
 <li>The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively</li>
 <br>
-<li>If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>If the decomposition fails:
 <ul>
@@ -10105,7 +10105,7 @@ The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <
 </li>
 <br>
 <li>
-If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown
+If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>If the decomposition fails:
@@ -10253,7 +10253,7 @@ Inverse of square matrix <i>A</i>
 </li>
 <br>
 <li>
-If <i>A</i> is not square, a <i>std::logic_error</i> exception is thrown
+If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>If <i>A</i> appears to be singular:
@@ -10317,7 +10317,7 @@ Inverse of symmetric positive definite matrix <i>A</i>
 </li>
 <br>
 <li>
-If <i>A</i> is not square, a <i>std::logic_error</i> exception is thrown
+If <i>A</i> is not square sized, a <i>std::logic_error</i> exception is thrown
 </li>
 <br>
 <li>
@@ -10780,7 +10780,7 @@ Generalised Schur decomposition for pair of general square matrices <i>A</i> and
 <br>
 <li>In the complex-valued problem, the generalised eigenvalues are found in <i>diagvec(AA) / diagvec(BB)</i></li>
 <br>
-<li>If <i>A</i> or <i>B</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>A</i> or <i>B</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>If the decomposition fails, <i>AA</i>, <i>BB</i>, <i>Q</i> and <i>Z</i> are reset, and the function returns a bool set to <i>false</i> (exception is not thrown)</li>
 <br>
@@ -10826,7 +10826,7 @@ See also:
 <br>
 <li><i>S</i> is an upper triangular matrix, called the Schur form of <i>X</i></li>
 <br>
-<li>If <i>X</i> is not square, a <i>std::logic_error</i> exception is thrown</li>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
 <br>
 <li>If the decomposition fails:
 <ul>
