@@ -698,10 +698,10 @@ extern "C"
       {
       arma_fortran_noprefix(arma_zsytri)(uplo, n, a, lda, ipiv, work, info);
       }
-  
-  
-  
-  
+    
+    
+    
+    
     void arma_fortran_prefix(arma_sgges)(char* jobvsl, char* jobvsr, char* sort, void* selctg, blas_int* n,  float* a, blas_int* lda,  float* b, blas_int* ldb, blas_int* sdim,  float* alphar,  float* alphai,  float* beta,  float* vsl, blas_int* ldvsl,  float* vsr, blas_int* ldvsr,  float* work, blas_int* lwork,  float* bwork, blas_int* info)
       {
       arma_fortran_noprefix(arma_sgges)(jobvsl, jobvsr, sort, selctg, n, a, lda, b, ldb, sdim, alphar, alphai, beta, vsl, ldvsl, vsr, ldvsr, work, lwork, bwork, info);
@@ -767,7 +767,16 @@ extern "C"
       {
       arma_fortran_noprefix(arma_zgecon)(norm, n, a, lda, anorm, rcond, work, rwork, info);
       }
-  
+    
+    
+    
+    
+    blas_int arma_fortran_prefix(arma_ilaenv)(blas_int* ispec, char* name, char* opts, blas_int* n1, blas_int* n2, blas_int* n3, blas_int* n4)
+      {
+      return arma_fortran_noprefix(arma_ilaenv)(ispec, name, opts, n1, n2, n3, n4);
+      }
+    
+    
   #endif
   
   
