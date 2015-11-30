@@ -3271,7 +3271,7 @@ auxlib::solve_square_fast(Mat<typename T1::elem_type>& out, Mat<typename T1::ele
 template<typename T1>
 inline
 bool
-auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, typename T1::pod_type& out_rcond, Mat<typename T1::pod_type>& A, const Base<typename T1::pod_type,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3341,11 +3341,14 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, Mat<typename T1::po
     // 
     // return (singular == false);
     
+    out_rcond = rcond;
+    
     return (info == 0);
     }
   #else
     {
     arma_ignore(out);
+    arma_ignore(out_rcond);
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
@@ -3360,7 +3363,7 @@ auxlib::solve_square_refine(Mat<typename T1::pod_type>& out, Mat<typename T1::po
 template<typename T1>
 inline
 bool
-auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
+auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typename T1::pod_type& out_rcond, Mat< std::complex<typename T1::pod_type> >& A, const Base<std::complex<typename T1::pod_type>,T1>& B_expr, const bool equilibrate)
   {
   arma_extra_debug_sigprint();
   
@@ -3431,11 +3434,14 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, Mat
     // 
     // return (singular == false);
     
+    out_rcond = rcond;
+    
     return (info == 0);
     }
   #else
     {
     arma_ignore(out);
+    arma_ignore(out_rcond);
     arma_ignore(A);
     arma_ignore(B_expr);
     arma_stop("solve(): use of LAPACK must be enabled");
@@ -3565,7 +3571,7 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
     blas_int ldb   = blas_int(tmp.n_rows);
-    eT       rcond = eT(-1);  // use machine precision
+    eT       rcond = eT(-1);  // -1 means "use machine precision"
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
     
@@ -3659,7 +3665,7 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     blas_int nrhs  = blas_int(B.n_cols);
     blas_int lda   = blas_int(A.n_rows);
     blas_int ldb   = blas_int(tmp.n_rows);
-    T        rcond = T(-1);  // use machine precision
+    T        rcond = T(-1);  // -1 means "use machine precision"
     blas_int rank  = blas_int(0);
     blas_int info  = blas_int(0);
     

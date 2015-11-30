@@ -42,6 +42,8 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   {
   arma_extra_debug_sigprint();
   
+  typedef typename get_pod_type<eT>::result T;
+  
   const bool fast        = bool(flags & solve_opts::flag_fast       );
   const bool equilibrate = bool(flags & solve_opts::flag_equilibrate);
   const bool no_approx   = bool(flags & solve_opts::flag_no_approx  );
@@ -52,6 +54,7 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
   if(equilibrate)  { arma_extra_debug_print("equilibrate"); }
   if(no_approx  )  { arma_extra_debug_print("no_approx");   }
   
+  T    rcond  = T(0);
   bool status = false;
   
   Mat<eT> A = A_expr.get_ref();
@@ -72,14 +75,21 @@ glue_solve_gen::apply(Mat<eT>& out, const Base<eT,T1>& A_expr, const Base<eT,T2>
       {
       arma_extra_debug_print("glue_solve_gen::apply(): (refine)");
       
-      status = auxlib::solve_square_refine(out, A, B_expr, equilibrate);  // A is overwritten
+      status = auxlib::solve_square_refine(out, rcond, A, B_expr, equilibrate);  // A is overwritten
       }
     
     if( (status == false) && (no_approx == false) )
       {
-      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system");
+      arma_extra_debug_print("glue_solve_gen::apply(): solving rank deficient system; rcond: ", rcond);
       
-      arma_debug_warn("system appears singular to machine precision; attempting approximate solution");
+      if(rcond > T(0))
+        {
+        arma_debug_warn("system appears singular to machine precision (rcond: ", rcond, "); attempting approximate solution");
+        }
+      else
+        {
+        arma_debug_warn("system appears singular to machine precision; attempting approximate solution");
+        }
       
       Mat<eT> AA = A_expr.get_ref();
       status = auxlib::solve_approx_svd(out, AA, B_expr.get_ref());  // AA is overwritten
