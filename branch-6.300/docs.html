@@ -11018,11 +11018,11 @@ when <i>solver</i> is "superlu", <i>settings</i> is an instance of the <i>superl
 <pre>
 struct superlu_opts
   {
-  bool             equilibrate;  // default: true
+  bool             equilibrate;  // default: false
   bool             symmetric;    // default: false
   double           pivot_thresh; // default: 1.0
   permutation_type permutation;  // default: superlu_opts::COLAMD
-  refine_type      refine;       // default: superlu_opts::REF_NONE
+  refine_type      refine;       // default: superlu_opts::REF_DOUBLE
   };
 </pre>
 </li>
@@ -11084,6 +11084,7 @@ spsolve(x, A, b, "superlu");  // use SuperLU solver
 superlu_opts settings;
 
 settings.permutation = superlu_opts::NATURAL;
+settings.refine      = superlu_opts::REF_NONE;
 
 spsolve(x, A, b, "superlu", settings);
 </pre>

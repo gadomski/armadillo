@@ -420,7 +420,7 @@ sp_auxlib::eigs_gen(Col< std::complex<T> >& eigval, Mat< std::complex<T> >& eigv
 template<typename T1, typename T2>
 inline
 bool
-sp_auxlib::spsolve(Mat<typename T1::elem_type>& X, const SpBase<typename T1::elem_type, T1>& A_expr, const Base<typename T1::elem_type, T2>& B_expr, const superlu_opts& user_opts)
+sp_auxlib::spsolve_simple(Mat<typename T1::elem_type>& X, const SpBase<typename T1::elem_type, T1>& A_expr, const Base<typename T1::elem_type, T2>& B_expr, const superlu_opts& user_opts)
   {
   arma_extra_debug_sigprint();
   
@@ -497,6 +497,9 @@ sp_auxlib::spsolve(Mat<typename T1::elem_type>& X, const SpBase<typename T1::ele
     superlu::superlu_options_t options;
     superlu::set_default_opts(&options);
     
+    // our settings
+    
+    options.Trans = superlu::NOTRANS;
     
     // process user_opts
     
@@ -538,23 +541,19 @@ sp_auxlib::spsolve(Mat<typename T1::elem_type>& X, const SpBase<typename T1::ele
     // Process the return code.
     if( (info > 0) && (info <= int(A.n_cols)) )
       {
-      std::stringstream tmp;
-      tmp << "spsolve(): could not solve system; LU factorisation completed, but detected zero in U(" << (info-1) << ',' << (info-1) << ')';
-      arma_debug_warn(tmp.str());
+      // std::stringstream tmp;
+      // tmp << "spsolve(): could not solve system; LU factorisation completed, but detected zero in U(" << (info-1) << ',' << (info-1) << ')';
+      // arma_debug_warn(tmp.str());
       }
     else
     if(info > int(A.n_cols))
       {
-      std::stringstream tmp;
-      tmp << "spsolve(): memory allocation failure: could not allocate " << (info - int(A.n_cols)) << " bytes";
-      arma_debug_warn(tmp.str());
+      arma_debug_warn("spsolve(): memory allocation failure: could not allocate ", (info - int(A.n_cols)), " bytes");
       }
     else
     if(info < 0)
       {
-      std::stringstream tmp;
-      tmp << "spsolve(): unknown SuperLU error code from gssv(): " << info;
-      arma_debug_warn(tmp.str());
+      arma_debug_warn("spsolve(): unknown SuperLU error code from gssv(): ", info);
       }
     
     
@@ -574,6 +573,211 @@ sp_auxlib::spsolve(Mat<typename T1::elem_type>& X, const SpBase<typename T1::ele
   #else
     {
     arma_ignore(X);
+    arma_ignore(A_expr);
+    arma_ignore(B_expr);
+    arma_ignore(user_opts);
+    arma_stop("spsolve(): use of SuperLU must be enabled");
+    return false;
+    }
+  #endif
+  }
+
+
+
+template<typename T1, typename T2>
+inline
+bool
+sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type& out_rcond, const SpBase<typename T1::elem_type, T1>& A_expr, const Base<typename T1::elem_type, T2>& B_expr, const superlu_opts& user_opts)
+  {
+  arma_extra_debug_sigprint();
+  
+  #if defined(ARMA_USE_SUPERLU)
+    {
+    // The goal is to solve the system A*X = B for the matrix X.
+    
+    // The first thing we need to do is create SuperMatrix structures to call
+    // the SuperLU functions with.  SuperLU will overwrite the B matrix with
+    // the output matrix, so we'll unwrap B into X temporarily.
+    
+    typedef typename T1::pod_type   T;
+    typedef typename T1::elem_type eT;
+    
+    const unwrap_spmat<T1> tmp1(A_expr.get_ref());
+    const SpMat<eT>& A =   tmp1.M;
+    
+    const unwrap<T2>   tmp2(B_expr.get_ref());
+    const Mat<eT>& B = tmp2.M;
+    
+    if(A.n_rows > A.n_cols)
+      {
+      arma_stop("spsolve(): solving over-determined systems currently not supported");
+      X.reset();
+      return false;
+      }
+    else if(A.n_rows < A.n_cols)
+      {
+      arma_stop("spsolve(): solving under-determined systems currently not supported");
+      X.reset();
+      return false;
+      }
+    
+    arma_debug_check( (A.n_rows != B.n_rows), "spsolve(): number of rows in the given objects must be the same" );
+    
+    if(A.is_empty() || B.is_empty())
+      {
+      X.zeros(A.n_cols, B.n_cols);
+      return true;
+      }
+    
+    if(arma_config::debug)
+      {
+      bool overflow;
+      
+      overflow = (A.n_nonzero > INT_MAX);
+      overflow = (A.n_rows > INT_MAX) || overflow;
+      overflow = (A.n_cols > INT_MAX) || overflow;
+      overflow = (X.n_rows > INT_MAX) || overflow;
+      overflow = (X.n_cols > INT_MAX) || overflow;
+      
+      if(overflow)
+        {
+        arma_bad("spsolve(): integer overflow: matrix dimensions are too large for integer type used by SuperLU");
+        }
+      }
+    
+    X.zeros(A.n_cols, B.n_cols);  // set the elements to zero, as we don't trust the SuperLU spaghetti code
+    
+    superlu::SuperMatrix x;  arrayops::inplace_set(reinterpret_cast<char*>(&x), char(0), sizeof(superlu::SuperMatrix));
+    superlu::SuperMatrix a;  arrayops::inplace_set(reinterpret_cast<char*>(&a), char(0), sizeof(superlu::SuperMatrix));
+    superlu::SuperMatrix b;  arrayops::inplace_set(reinterpret_cast<char*>(&b), char(0), sizeof(superlu::SuperMatrix));
+    
+    const bool status_x = convert_to_supermatrix(x, X);
+    const bool status_a = convert_to_supermatrix(a, A);
+    const bool status_b = convert_to_supermatrix(b, B);
+    
+    if( (status_x == false) || (status_a == false) || (status_b == false) )
+      {
+      destroy_supermatrix(x);
+      destroy_supermatrix(a);
+      destroy_supermatrix(b);
+      X.reset();
+      return false;
+      }
+    
+    superlu::SuperMatrix l;  arrayops::inplace_set(reinterpret_cast<char*>(&l), char(0), sizeof(superlu::SuperMatrix));
+    superlu::SuperMatrix u;  arrayops::inplace_set(reinterpret_cast<char*>(&u), char(0), sizeof(superlu::SuperMatrix));
+    
+    // Use default options.
+    superlu::superlu_options_t options;
+    superlu::set_default_opts(&options);
+    
+    // our settings
+    
+    options.Trans           = superlu::NOTRANS;
+    options.ConditionNumber = superlu::YES;
+   
+    // process user_opts
+    
+    if(user_opts.equilibrate == true)   { options.Equil = superlu::YES; }
+    if(user_opts.equilibrate == false)  { options.Equil = superlu::NO;  }
+    
+    if(user_opts.symmetric == true)   { options.SymmetricMode = superlu::YES; }
+    if(user_opts.symmetric == false)  { options.SymmetricMode = superlu::NO;  }
+    
+    options.DiagPivotThresh = user_opts.pivot_thresh;
+    
+    if(user_opts.permutation == superlu_opts::NATURAL)        { options.ColPerm = superlu::NATURAL;       }
+    if(user_opts.permutation == superlu_opts::MMD_ATA)        { options.ColPerm = superlu::MMD_ATA;       }
+    if(user_opts.permutation == superlu_opts::MMD_AT_PLUS_A)  { options.ColPerm = superlu::MMD_AT_PLUS_A; }
+    if(user_opts.permutation == superlu_opts::COLAMD)         { options.ColPerm = superlu::COLAMD;        }
+    
+    if(user_opts.refine == superlu_opts::REF_NONE)    { options.IterRefine = superlu::NOREFINE;   }
+    if(user_opts.refine == superlu_opts::REF_SINGLE)  { options.IterRefine = superlu::SLU_SINGLE; }
+    if(user_opts.refine == superlu_opts::REF_DOUBLE)  { options.IterRefine = superlu::SLU_DOUBLE; }
+    if(user_opts.refine == superlu_opts::REF_EXTRA)   { options.IterRefine = superlu::SLU_EXTRA;  }
+    
+    
+    // paranoia: use SuperLU's memory allocation, in case it reallocs
+    
+    int* perm_c = (int*) superlu::malloc( (A.n_cols+1) * sizeof(int) );  // extra paranoia: increase array length by 1
+    int* perm_r = (int*) superlu::malloc( (A.n_rows+1) * sizeof(int) );
+    int* etree  = (int*) superlu::malloc( (A.n_cols+1) * sizeof(int) );
+    
+    T* R    = (T*) superlu::malloc( (A.n_rows+1) * sizeof(T) );
+    T* C    = (T*) superlu::malloc( (A.n_cols+1) * sizeof(T) );
+    T* ferr = (T*) superlu::malloc( (B.n_cols+1) * sizeof(T) );
+    T* berr = (T*) superlu::malloc( (B.n_cols+1) * sizeof(T) );
+    
+    arrayops::inplace_set(perm_c, int(0), A.n_cols+1);
+    arrayops::inplace_set(perm_r, int(0), A.n_rows+1);
+    arrayops::inplace_set(etree,  int(0), A.n_cols+1);
+    
+    arrayops::inplace_set(R,    T(0), A.n_rows+1);
+    arrayops::inplace_set(C,    T(0), A.n_cols+1);
+    arrayops::inplace_set(ferr, T(0), B.n_cols+1);
+    arrayops::inplace_set(berr, T(0), B.n_cols+1);
+    
+    superlu::mem_usage_t   mu;    arrayops::inplace_set(reinterpret_cast<char*>(&mu), char(0), sizeof(superlu::mem_usage_t));
+    superlu::SuperLUStat_t stat;  superlu::init_stat(&stat);
+    
+    char equed[8];       // extra characters for paranoia
+    T    rpg   = T(0);
+    T    rcond = T(0);
+    int  info  = int(0); // Return code.
+    
+    char  work[8];
+    int  lwork = int(0);  // 0 means superlu will allocate memory
+    
+    superlu::gssvx<eT>(&options, &a, perm_c, perm_r, etree, equed, R, C, &l, &u, &work[0], int(0), &b, &x, &rpg, &rcond, ferr, berr, &mu, &stat, &info);
+    
+    // Process the return code.
+    if( (info > 0) && (info <= int(A.n_cols)) )
+      {
+      // std::stringstream tmp;
+      // tmp << "spsolve(): could not solve system; LU factorisation completed, but detected zero in U(" << (info-1) << ',' << (info-1) << ')';
+      // arma_debug_warn(tmp.str());
+      }
+    else
+    if(info == (A.n_cols+1))
+      {
+      // arma_debug_warn("spsolve(): system solved, but rcond is less than machine precision");
+      }
+    else
+    if(info > int(A.n_cols+1))
+      {
+      arma_debug_warn("spsolve(): memory allocation failure: could not allocate ", (info - int(A.n_cols)), " bytes");
+      }
+    else
+    if(info < 0)
+      {
+      arma_debug_warn("spsolve(): unknown SuperLU error code from gssvx(): ", info);
+      }
+    
+    superlu::free_stat(&stat);
+    
+    superlu::free(perm_c);
+    superlu::free(perm_r);
+    superlu::free(etree);
+    superlu::free(R);
+    superlu::free(C);
+    superlu::free(ferr);
+    superlu::free(berr);
+    
+    // No need to extract the matrix, since it's still using the same memory.
+    destroy_supermatrix(x);
+    destroy_supermatrix(a);
+    destroy_supermatrix(b);
+    destroy_supermatrix(u);
+    destroy_supermatrix(l);
+    
+    out_rcond = rcond;
+    
+    return (info == 0);
+    }
+  #else
+    {
+    arma_ignore(X);
+    arma_ignore(out_rcond);
     arma_ignore(A_expr);
     arma_ignore(B_expr);
     arma_ignore(user_opts);

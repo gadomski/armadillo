@@ -46,7 +46,10 @@ class sp_auxlib
   // spsolve() via SuperLU
   
   template<typename T1, typename T2>
-  inline static bool spsolve(Mat<typename T1::elem_type>& out, const SpBase<typename T1::elem_type, T1>& A, const Base<typename T1::elem_type, T2>& B, const superlu_opts& user_opts);
+  inline static bool spsolve_simple(Mat<typename T1::elem_type>& out, const SpBase<typename T1::elem_type, T1>& A, const Base<typename T1::elem_type, T2>& B, const superlu_opts& user_opts);
+  
+  template<typename T1, typename T2>
+  inline static bool spsolve_refine(Mat<typename T1::elem_type>& out, typename T1::pod_type& out_rcond, const SpBase<typename T1::elem_type, T1>& A, const Base<typename T1::elem_type, T2>& B, const superlu_opts& user_opts);
   
   #if defined(ARMA_USE_SUPERLU)
     template<typename eT>
