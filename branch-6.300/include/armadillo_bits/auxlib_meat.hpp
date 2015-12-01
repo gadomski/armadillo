@@ -3593,7 +3593,7 @@ auxlib::solve_approx_svd(Mat<typename T1::pod_type>& out, Mat<typename T1::pod_t
     blas_int n3 = nrhs;
     blas_int n4 = lda;
     
-    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );
+    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );  // in case lapack::laenv() returns -1
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
     blas_int nlvl   = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
@@ -3705,7 +3705,7 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
     blas_int n3 = nrhs;
     blas_int n4 = lda;
     
-    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );
+    blas_int smlsiz = (std::max)( blas_int(25), lapack::laenv(&ispec, name, opts, &n1, &n2, &n3, &n4) );  // in case lapack::laenv() returns -1
     blas_int smlsiz_p1 = blas_int(1) + smlsiz;
     
     blas_int nlvl = (std::max)( blas_int(0), blas_int(1) + blas_int( std::log(double(min_mn) / double(smlsiz_p1))/double(0.69314718055994530942) ) );
