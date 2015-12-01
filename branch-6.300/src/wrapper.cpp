@@ -1076,6 +1076,32 @@ extern "C"
       zgssv(a,b,c,d,e,f,g,h,i);
       }
     
+    
+    
+    
+    void wrapper_sgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f,  float* g,  float* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n,  float* o,  float* p,  float* q,  float* r, superlu::mem_usage_t* s, superlu::SuperLUStat_t* t, int* u)
+      {
+      sgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u);
+      }
+    
+    void wrapper_dgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f, double* g, double* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n, double* o, double* p, double* q, double* r, superlu::mem_usage_t* s, superlu::SuperLUStat_t* t, int* u)
+      {
+      dgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u);
+      }
+    
+    void wrapper_cgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f,  float* g,  float* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n,  float* o,  float* p,  float* q,  float* r, superlu::mem_usage_t* s, superlu::SuperLUStat_t* t, int* u)
+      {
+      cgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u);
+      }
+    
+    void wrapper_zgssvx(superlu::superlu_options_t* a, superlu::SuperMatrix* b, int* c, int* d, int* e, char* f, double* g, double* h, superlu::SuperMatrix* i, superlu::SuperMatrix* j, void* k, int l, superlu::SuperMatrix* m, superlu::SuperMatrix* n, double* o, double* p, double* q, double* r, superlu::mem_usage_t* s, superlu::SuperLUStat_t* t, int* u)
+      {
+      zgssvx(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u);
+      }
+    
+    
+    
+    
     void wrapper_StatInit(superlu::SuperLUStat_t* a)
       {
       StatInit(a);
