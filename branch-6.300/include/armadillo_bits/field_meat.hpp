@@ -21,7 +21,7 @@ field<oT>::~field()
   
   delete_objects();
   
-  if(n_elem > field_prealloc_n_elem::val )
+  if(n_elem > field_prealloc_n_elem::val)
     {
     delete [] mem;
     }
@@ -1907,12 +1907,12 @@ field<oT>::init(const uword n_rows_in, const uword n_cols_in, const uword n_slic
     {
     delete_objects();
     
-    if(n_elem > sizeof(mem_local)/sizeof(oT*) )
+    if(n_elem > field_prealloc_n_elem::val)
       {
       delete [] mem;
       }
     
-    if(n_elem_new <= sizeof(mem_local)/sizeof(oT*) )
+    if(n_elem_new <= field_prealloc_n_elem::val)
       {
       mem = mem_local;
       }
