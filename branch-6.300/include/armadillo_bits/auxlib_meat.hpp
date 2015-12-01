@@ -4177,6 +4177,8 @@ auxlib::rcond(const Base<typename T1::pod_type,T1>& A_expr)
     
     arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
     
+    if(A.is_empty()) { return Datum<T>::inf; }
+    
     arma_debug_assert_blas_size(A);
     
     char     norm_id  = '1';
@@ -4228,6 +4230,8 @@ auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
     Mat<eT> A = A_expr.get_ref();
     
     arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
+    
+    if(A.is_empty()) { return Datum<T>::inf; }
     
     arma_debug_assert_blas_size(A);
     
