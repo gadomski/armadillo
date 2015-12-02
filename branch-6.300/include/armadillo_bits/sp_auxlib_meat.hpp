@@ -476,8 +476,8 @@ sp_auxlib::spsolve_simple(Mat<typename T1::elem_type>& X, const SpBase<typename 
     superlu::SuperMatrix x;  arrayops::inplace_set(reinterpret_cast<char*>(&x), char(0), sizeof(superlu::SuperMatrix));
     superlu::SuperMatrix a;  arrayops::inplace_set(reinterpret_cast<char*>(&a), char(0), sizeof(superlu::SuperMatrix));
     
-    const bool status_x = convert_to_supermatrix(x, X);
-    const bool status_a = convert_to_supermatrix(a, A);
+    const bool status_x = wrap_to_supermatrix(x, X);
+    const bool status_a = copy_to_supermatrix(a, A);
     
     if( (status_x == false) || (status_a == false) )
       {
@@ -494,6 +494,9 @@ sp_auxlib::spsolve_simple(Mat<typename T1::elem_type>& X, const SpBase<typename 
     
     int* perm_c = (int*) superlu::malloc( (A.n_cols+1) * sizeof(int));  // extra paranoia: increase array length by 1
     int* perm_r = (int*) superlu::malloc( (A.n_rows+1) * sizeof(int));
+    
+    arma_check_bad_alloc( (perm_c == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (perm_r == 0), "spsolve(): out of memory" );
     
     arrayops::inplace_set(perm_c, 0, A.n_cols+1);
     arrayops::inplace_set(perm_r, 0, A.n_rows+1);
@@ -533,7 +536,7 @@ sp_auxlib::spsolve_simple(Mat<typename T1::elem_type>& X, const SpBase<typename 
     destroy_supermatrix(u);
     destroy_supermatrix(l);
     destroy_supermatrix(a);
-    destroy_supermatrix(x);  // No need to extract the matrix, since it's still using the same memory.
+    destroy_supermatrix(x);  // No need to extract the data from x, since it's using the same memory as X
     
     return (info == 0);
     }
@@ -567,10 +570,16 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
     sp_auxlib::set_superlu_opts(options, user_opts);
     
     const unwrap_spmat<T1> tmp1(A_expr.get_ref());
-    const SpMat<eT>& A =   tmp1.M;    // TODO: A is modified if equilibration is enabled!
+    const SpMat<eT>& A =   tmp1.M;
     
-    const unwrap<T2>   tmp2(B_expr.get_ref());
-    const Mat<eT>& B = tmp2.M;        // TODO: B is modified if equilibration is enabled!
+    const unwrap<T2>          tmp2(B_expr.get_ref());
+    const Mat<eT>& B_unwrap = tmp2.M;
+    
+    const bool B_is_modified = ( (user_opts.equilibrate) || (&B_unwrap == &X) );
+    
+    Mat<eT> B_copy;  if(B_is_modified)  { B_copy = B_unwrap; }
+    
+    const Mat<eT>& B = (B_is_modified) ?  B_copy : B_unwrap;
     
     if(A.n_rows > A.n_cols)
       {
@@ -587,9 +596,10 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
     
     arma_debug_check( (A.n_rows != B.n_rows), "spsolve(): number of rows in the given objects must be the same" );
     
+    X.zeros(A.n_cols, B.n_cols);  // set the elements to zero, as we don't trust the SuperLU spaghetti code
+    
     if(A.is_empty() || B.is_empty())
       {
-      X.zeros(A.n_cols, B.n_cols);
       return true;
       }
     
@@ -600,6 +610,8 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
       overflow = (A.n_nonzero > INT_MAX);
       overflow = (A.n_rows > INT_MAX) || overflow;
       overflow = (A.n_cols > INT_MAX) || overflow;
+      overflow = (B.n_rows > INT_MAX) || overflow;
+      overflow = (B.n_cols > INT_MAX) || overflow;
       overflow = (X.n_rows > INT_MAX) || overflow;
       overflow = (X.n_cols > INT_MAX) || overflow;
       
@@ -609,15 +621,13 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
         }
       }
     
-    X.zeros(A.n_cols, B.n_cols);  // set the elements to zero, as we don't trust the SuperLU spaghetti code
-    
     superlu::SuperMatrix x;  arrayops::inplace_set(reinterpret_cast<char*>(&x), char(0), sizeof(superlu::SuperMatrix));
     superlu::SuperMatrix a;  arrayops::inplace_set(reinterpret_cast<char*>(&a), char(0), sizeof(superlu::SuperMatrix));
     superlu::SuperMatrix b;  arrayops::inplace_set(reinterpret_cast<char*>(&b), char(0), sizeof(superlu::SuperMatrix));
     
-    const bool status_x = convert_to_supermatrix(x, X);
-    const bool status_a = convert_to_supermatrix(a, A);
-    const bool status_b = convert_to_supermatrix(b, B);
+    const bool status_x = wrap_to_supermatrix(x, X);
+    const bool status_a = copy_to_supermatrix(a, A);  // NOTE: superlu::gssvx() modifies 'a' if equilibration is enabled
+    const bool status_b = wrap_to_supermatrix(b, B);  // NOTE: superlu::gssvx() modifies 'b' if equilibration is enabled
     
     if( (status_x == false) || (status_a == false) || (status_b == false) )
       {
@@ -641,6 +651,15 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
     T* C    = (T*) superlu::malloc( (A.n_cols+1) * sizeof(T) );
     T* ferr = (T*) superlu::malloc( (B.n_cols+1) * sizeof(T) );
     T* berr = (T*) superlu::malloc( (B.n_cols+1) * sizeof(T) );
+    
+    arma_check_bad_alloc( (perm_c == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (perm_r == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (etree  == 0), "spsolve(): out of memory" );
+    
+    arma_check_bad_alloc( (R    == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (C    == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (ferr == 0), "spsolve(): out of memory" );
+    arma_check_bad_alloc( (berr == 0), "spsolve(): out of memory" );
     
     arrayops::inplace_set(perm_c, int(0), A.n_cols+1);
     arrayops::inplace_set(perm_r, int(0), A.n_rows+1);
@@ -704,7 +723,7 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
     destroy_supermatrix(l);
     destroy_supermatrix(b);
     destroy_supermatrix(a);
-    destroy_supermatrix(x);  // No need to extract the matrix, since it's still using the same memory.
+    destroy_supermatrix(x);  // No need to extract the data from x, since it's using the same memory as X
     
     out_rcond = rcond;
     
@@ -766,7 +785,7 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
   template<typename eT>
   inline
   bool
-  sp_auxlib::convert_to_supermatrix(superlu::SuperMatrix& out, const SpMat<eT>& A)
+  sp_auxlib::copy_to_supermatrix(superlu::SuperMatrix& out, const SpMat<eT>& A)
     {
     arma_extra_debug_sigprint();
     
@@ -832,9 +851,11 @@ sp_auxlib::spsolve_refine(Mat<typename T1::elem_type>& X, typename T1::pod_type&
   template<typename eT>
   inline
   bool
-  sp_auxlib::convert_to_supermatrix(superlu::SuperMatrix& out, const Mat<eT>& A)
+  sp_auxlib::wrap_to_supermatrix(superlu::SuperMatrix& out, const Mat<eT>& A)
     {
     arma_extra_debug_sigprint();
+    
+    // NOTE: this function re-uses memory from matrix A
     
     // This is being stored as a dense matrix.
     out.Stype = superlu::SLU_DN;

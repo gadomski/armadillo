@@ -55,10 +55,10 @@ class sp_auxlib
     inline static void set_superlu_opts(superlu::superlu_options_t& options, const superlu_opts& user_opts);
     
     template<typename eT>
-    inline static bool convert_to_supermatrix(superlu::SuperMatrix& out, const SpMat<eT>& A);
+    inline static bool copy_to_supermatrix(superlu::SuperMatrix& out, const SpMat<eT>& A);
     
     template<typename eT>
-    inline static bool convert_to_supermatrix(superlu::SuperMatrix& out, const Mat<eT>& A);
+    inline static bool wrap_to_supermatrix(superlu::SuperMatrix& out, const Mat<eT>& A);
     
     inline static void destroy_supermatrix(superlu::SuperMatrix& out);
   #endif
