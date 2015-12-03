@@ -455,12 +455,14 @@ Notable contributors:
 * MLPACK: C++ library for machine learning and pattern recognition, built on top of Armadillo.
   http://mlpack.org
   
+* Mantella: C++ library for analysing and solving optimisation problems
+  https://github.com/SebastianNiemann/Mantella
+  
 * libpca: C++ library for principal component analysis
   http://sourceforge.net/projects/libpca/
   
-* KL1p: C++ library for sparse recovery of underdetermined linear systems, such as compressed sensing.
-  http://kl1p.sourceforge.net  
-  
 * ArmaNpy: interfaces Armadillo matrices with Python
   http://sourceforge.net/projects/armanpy/
-
+  
+* matlab2cpp: conversion of Matlab code to Armadillo based C++ code
+  https://github.com/jonathf/matlab2cpp
