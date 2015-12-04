@@ -1568,7 +1568,7 @@ gmm_diag<eT>::generate_initial_dcovs_and_hefts(const Mat<eT>& X, const eT var_fl
   
   for(uword g=0; g<N_gaus; ++g)
     {
-    access::rw(hefts)(g) = (rs(g).count() >= eT(1)) ? (eT(rs(g).count()) / eT(X.n_cols)) : std::numeric_limits<eT>::min();
+    access::rw(hefts)(g) = (rs(g).count() >= eT(1)) ? (rs(g).count() / eT(X.n_cols)) : std::numeric_limits<eT>::min();
     }
   
   em_fix_params(var_floor);
