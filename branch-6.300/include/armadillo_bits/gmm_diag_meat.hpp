@@ -205,9 +205,21 @@ gmm_diag<eT>::set_hefts(const Base<eT,T1>& in_hefts_expr)
   
   arma_debug_check( ((s < (eT(1) - Datum<eT>::eps)) || (s > (eT(1) + Datum<eT>::eps))), "gmm_diag::set_hefts(): sum of given hefts is not 1" );
   
-  access::rw(hefts) = in_hefts;
+  // make sure all hefts are positive and non-zero
   
-  log_hefts = log(hefts);  // TODO: possible issue when one of the hefts is zero
+  const eT* in_hefts_mem = in_hefts.memptr();
+        eT*    hefts_mem = access::rw(hefts).memptr();
+  
+  for(uword i=0; i < hefts.n_elem; ++i)
+    {
+    const eT val = in_hefts_mem[i];
+    
+    hefts_mem[i] = (val > eT(0)) ? val : std::numeric_limits<eT>::min();
+    }
+  
+  access::rw(hefts) /= accu(hefts);
+  
+  log_hefts = log(hefts);
   }
 
 
@@ -832,7 +844,16 @@ gmm_diag<eT>::init_constants()
     log_det_etc[i] = eT(-1) * ( tmp + eT(0.5) * logdet );
     }
   
-  log_hefts = log(hefts);  // TODO: possible issue when one of the hefts is zero
+  eT* hefts_mem = access::rw(hefts).memptr();
+  
+  for(uword i=0; i<N_gaus; ++i)
+    {
+    const eT val = hefts_mem[i];
+    
+    hefts_mem[i] = (val > eT(0)) ? val : std::numeric_limits<eT>::min();
+    }
+  
+  log_hefts = log(hefts);
   }
 
 
@@ -1543,8 +1564,11 @@ gmm_diag<eT>::generate_initial_dcovs_and_hefts(const Mat<eT>& X, const eT var_fl
       {
       access::rw(dcovs).col(g).ones();
       }
-    
-    access::rw(hefts)(g) = (std::max)(eT(1), rs(g).count()) / eT(X.n_cols);
+    }
+  
+  for(uword g=0; g<N_gaus; ++g)
+    {
+    access::rw(hefts)(g) = (rs(g).count() >= eT(1)) ? (eT(rs(g).count()) / eT(X.n_cols)) : std::numeric_limits<eT>::min();
     }
   
   em_fix_params(var_floor);
