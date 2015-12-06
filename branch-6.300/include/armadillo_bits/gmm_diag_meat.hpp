@@ -212,9 +212,7 @@ gmm_diag<eT>::set_hefts(const Base<eT,T1>& in_hefts_expr)
   
   for(uword i=0; i < hefts.n_elem; ++i)
     {
-    const eT val = in_hefts_mem[i];
-    
-    hefts_mem[i] = (val > eT(0)) ? val : std::numeric_limits<eT>::min();
+    hefts_mem[i] = (std::max)( in_hefts_mem[i], std::numeric_limits<eT>::min() );
     }
   
   access::rw(hefts) /= accu(hefts);
@@ -848,9 +846,7 @@ gmm_diag<eT>::init_constants()
   
   for(uword i=0; i<N_gaus; ++i)
     {
-    const eT val = hefts_mem[i];
-    
-    hefts_mem[i] = (val > eT(0)) ? val : std::numeric_limits<eT>::min();
+    hefts_mem[i] = (std::max)( hefts_mem[i], std::numeric_limits<eT>::min() );
     }
   
   log_hefts = log(hefts);
@@ -1564,11 +1560,8 @@ gmm_diag<eT>::generate_initial_dcovs_and_hefts(const Mat<eT>& X, const eT var_fl
       {
       access::rw(dcovs).col(g).ones();
       }
-    }
-  
-  for(uword g=0; g<N_gaus; ++g)
-    {
-    access::rw(hefts)(g) = (rs(g).count() >= eT(1)) ? (rs(g).count() / eT(X.n_cols)) : std::numeric_limits<eT>::min();
+    
+    access::rw(hefts)(g) = (std::max)( (rs(g).count() / eT(X.n_cols)), std::numeric_limits<eT>::min() );
     }
   
   em_fix_params(var_floor);
@@ -2013,7 +2006,7 @@ gmm_diag<eT>::em_update_params
     eT* acc_mean_mem = final_acc_means.colptr(g);
     eT* acc_dcov_mem = final_acc_dcovs.colptr(g);
     
-    const eT acc_norm_lhood = final_acc_norm_lhoods[g];
+    const eT acc_norm_lhood = (std::max)( final_acc_norm_lhoods[g], std::numeric_limits<eT>::min() );
     
     hefts_mem[g] = acc_norm_lhood / eT(X.n_cols);
     
