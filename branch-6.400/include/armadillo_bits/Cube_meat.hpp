@@ -3115,6 +3115,27 @@ Cube<eT>::imbue(functor F)
 
 
 
+//! apply a functor to each slice
+template<typename eT>
+template<typename functor>
+inline
+const Cube<eT>&
+Cube<eT>::for_each_slice(functor F)
+  {
+  arma_extra_debug_sigprint();
+  
+  for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+    {
+    Mat<eT> tmp('j', slice_memptr(slice_id), n_rows, n_cols);
+    
+    F(tmp);
+    }
+  
+  return *this;
+  }
+
+
+
 //! fill the cube with the specified value
 template<typename eT>
 inline
