@@ -1480,12 +1480,12 @@ Cube<eT>::each_slice(const Base<uword, T1>& indices) const
 
 
 
+#if defined(ARMA_USE_CXX11)
 //! apply a functor to each slice
 template<typename eT>
-template<typename functor>
 inline
 const Cube<eT>&
-Cube<eT>::each_slice(functor F)
+Cube<eT>::each_slice(const std::function<void(Mat<eT>&)>& F)
   {
   arma_extra_debug_sigprint();
   
@@ -1498,6 +1498,7 @@ Cube<eT>::each_slice(functor F)
   
   return *this;
   }
+#endif
 
 
 
