@@ -2045,8 +2045,11 @@ subview<eT>::each_row(functor F)
   podarray<eT> array1(n_cols);
   podarray<eT> array2(n_cols);
   
-  eT* array1_mem = array1.memptr();
-  eT* array2_mem = array2.memptr();
+  Row<eT> tmp1( array1.memptr(), n_cols, false, true );
+  Row<eT> tmp2( array2.memptr(), n_cols, false, true );
+  
+  eT* tmp1_mem = tmp1.memptr();
+  eT* tmp2_mem = tmp2.memptr();
   
   uword ii, jj;
   
@@ -2056,12 +2059,9 @@ subview<eT>::each_row(functor F)
       {
       const eT* col_mem = colptr(col_id);
       
-      array1_mem[col_id] = col_mem[ii];
-      array2_mem[col_id] = col_mem[jj];
+      tmp1_mem[col_id] = col_mem[ii];
+      tmp2_mem[col_id] = col_mem[jj];
       }
-    
-    Row<eT> tmp1( array1.memptr(), n_cols, false, true );
-    Row<eT> tmp2( array2.memptr(), n_cols, false, true );
     
     F(tmp1);
     F(tmp2);
@@ -2070,15 +2070,13 @@ subview<eT>::each_row(functor F)
       {
       eT* col_mem = colptr(col_id);
       
-      col_mem[ii] = array1_mem[col_id];
-      col_mem[jj] = array2_mem[col_id];
+      col_mem[ii] = tmp1_mem[col_id];
+      col_mem[jj] = tmp2_mem[col_id];
       }
     }
   
   if(ii < n_rows)
     {
-    Row<eT> tmp1( array1.memptr(), n_cols, false, true );
-    
     tmp1 = (*this).row(ii);
     
     F(tmp1);
