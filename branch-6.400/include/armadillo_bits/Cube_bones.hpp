@@ -141,8 +141,10 @@ class Cube : public BaseCube< eT, Cube<eT> >
   
   template<typename T1> inline       subview_cube_each2<eT, T1> each_slice(const Base<uword, T1>& indices);
   template<typename T1> inline const subview_cube_each2<eT, T1> each_slice(const Base<uword, T1>& indices) const;
-
-
+  
+  template<typename functor> inline const Cube& each_slice(functor F);
+  
+  
   inline void shed_slice(const uword slice_num);
   
   inline void shed_slices(const uword in_slice1, const uword in_slice2);
@@ -265,12 +267,9 @@ class Cube : public BaseCube< eT, Cube<eT> >
   
   template<typename eT2> inline void copy_size(const Cube<eT2>& m);
   
-  
   template<typename functor> inline const Cube&  for_each(functor F);
   template<typename functor> inline const Cube& transform(functor F);
   template<typename functor> inline const Cube&     imbue(functor F);
-  
-  template<typename functor> inline const Cube& for_each_slice(functor F);
   
   inline const Cube& fill(const eT val);
   
