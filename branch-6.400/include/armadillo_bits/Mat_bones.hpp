@@ -689,6 +689,7 @@ class Mat : public Base< eT, Mat<eT> >
   
   
   friend class Cube<eT>;
+  friend class subview_cube<eT>;
   friend class glue_join;
   friend class op_strans;
   friend class op_htrans;
