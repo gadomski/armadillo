@@ -392,7 +392,6 @@
   #pragma warning(disable: 4624)  // destructor can't be generated
   #pragma warning(disable: 4625)  // copy constructor can't be generated
   #pragma warning(disable: 4626)  // assignment operator can't be generated
-  #pragma warning(disable: 4702)  // unreachable code
   #pragma warning(disable: 4710)  // function not inlined
   #pragma warning(disable: 4711)  // call was inlined
   #pragma warning(disable: 4714)  // __forceinline can't be inlined

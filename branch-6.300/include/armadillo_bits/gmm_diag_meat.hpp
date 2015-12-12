@@ -205,19 +205,9 @@ gmm_diag<eT>::set_hefts(const Base<eT,T1>& in_hefts_expr)
   
   arma_debug_check( ((s < (eT(1) - Datum<eT>::eps)) || (s > (eT(1) + Datum<eT>::eps))), "gmm_diag::set_hefts(): sum of given hefts is not 1" );
   
-  // make sure all hefts are positive and non-zero
+  access::rw(hefts) = in_hefts;
   
-  const eT* in_hefts_mem = in_hefts.memptr();
-        eT*    hefts_mem = access::rw(hefts).memptr();
-  
-  for(uword i=0; i < hefts.n_elem; ++i)
-    {
-    hefts_mem[i] = (std::max)( in_hefts_mem[i], std::numeric_limits<eT>::min() );
-    }
-  
-  access::rw(hefts) /= accu(hefts);
-  
-  log_hefts = log(hefts);
+  log_hefts = log(hefts);  // TODO: possible issue when one of the hefts is zero
   }
 
 
@@ -842,14 +832,7 @@ gmm_diag<eT>::init_constants()
     log_det_etc[i] = eT(-1) * ( tmp + eT(0.5) * logdet );
     }
   
-  eT* hefts_mem = access::rw(hefts).memptr();
-  
-  for(uword i=0; i<N_gaus; ++i)
-    {
-    hefts_mem[i] = (std::max)( hefts_mem[i], std::numeric_limits<eT>::min() );
-    }
-  
-  log_hefts = log(hefts);
+  log_hefts = log(hefts);  // TODO: possible issue when one of the hefts is zero
   }
 
 
@@ -1505,7 +1488,7 @@ gmm_diag<eT>::generate_initial_means(const Mat<eT>& X, const gmm_seed_mode& seed
         
         if( (rs.mean() >= max_dist) && (ignore_i == false))
           {
-          max_dist = eT(rs.mean()); best_i = i;
+          max_dist = rs.mean(); best_i = i;
           }
         }
       
@@ -1561,7 +1544,7 @@ gmm_diag<eT>::generate_initial_dcovs_and_hefts(const Mat<eT>& X, const eT var_fl
       access::rw(dcovs).col(g).ones();
       }
     
-    access::rw(hefts)(g) = (std::max)( (rs(g).count() / eT(X.n_cols)), std::numeric_limits<eT>::min() );
+    access::rw(hefts)(g) = (std::max)(eT(1), rs(g).count()) / eT(X.n_cols);
     }
   
   em_fix_params(var_floor);
@@ -2006,7 +1989,7 @@ gmm_diag<eT>::em_update_params
     eT* acc_mean_mem = final_acc_means.colptr(g);
     eT* acc_dcov_mem = final_acc_dcovs.colptr(g);
     
-    const eT acc_norm_lhood = (std::max)( final_acc_norm_lhoods[g], std::numeric_limits<eT>::min() );
+    const eT acc_norm_lhood = final_acc_norm_lhoods[g];
     
     hefts_mem[g] = acc_norm_lhood / eT(X.n_cols);
     

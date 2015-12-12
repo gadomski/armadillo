@@ -1490,17 +1490,7 @@ auxlib::eig_pair
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
-    {
-    arma_ignore(vals);
-    arma_ignore(vecs);
-    arma_ignore(mode);
-    arma_ignore(A_expr);
-    arma_ignore(B_expr);
-    arma_stop("eig_pair() for complex matrices not available due to crippled LAPACK");
-    return false;
-    }
-  #elif defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_LAPACK)
     {
     typedef typename T1::pod_type     T;
     typedef typename std::complex<T> eT;
@@ -2807,9 +2797,9 @@ auxlib::svd_dc(Col<T>& S, const Base<std::complex<T>, T1>& X, uword& X_n_rows, u
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
+  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_DONT_USE_CX_GESDD))
     {
-    arma_extra_debug_print("auxlib::svd_dc(): redirecting to auxlib::svd() due to crippled LAPACK");
+    arma_extra_debug_print("auxlib::svd_dc(): redirecting to auxlib::svd(), as use of lapack::cx_gesdd() is disabled");
     
     return auxlib::svd(S, X, X_n_rows, X_n_cols);
     }
@@ -2966,9 +2956,9 @@ auxlib::svd_dc(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >& V, 
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
+  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_DONT_USE_CX_GESDD))
     {
-    arma_extra_debug_print("auxlib::svd_dc(): redirecting to auxlib::svd() due to crippled LAPACK");
+    arma_extra_debug_print("auxlib::svd_dc(): redirecting to auxlib::svd(), as use of lapack::cx_gesdd() is disabled");
     
     return auxlib::svd(U, S, V, X);
     }
@@ -3105,9 +3095,9 @@ auxlib::svd_dc_econ(Mat< std::complex<T> >& U, Col<T>& S, Mat< std::complex<T> >
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
+  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_DONT_USE_CX_GESDD))
     {
-    arma_extra_debug_print("auxlib::svd_dc_econ(): redirecting to auxlib::svd_econ() due to crippled LAPACK");
+    arma_extra_debug_print("auxlib::svd_dc_econ(): redirecting to auxlib::svd_econ(), as use of lapack::cx_gesdd() is disabled");
     
     return auxlib::svd_econ(U, S, V, X, 'b');
     }
@@ -3377,16 +3367,7 @@ auxlib::solve_square_refine(Mat< std::complex<typename T1::pod_type> >& out, typ
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
-    {
-    arma_ignore(out_rcond);
-    arma_ignore(equilibrate);
-    
-    arma_debug_warn("solve(): refinement and/or equilibration not done due to crippled LAPACK");
-    
-    return auxlib::solve_square_fast(out, A, B_expr);
-    }
-  #elif defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_LAPACK)
     {
     typedef typename T1::pod_type     T;
     typedef typename std::complex<T> eT;
@@ -3668,15 +3649,7 @@ auxlib::solve_approx_svd(Mat< std::complex<typename T1::pod_type> >& out, Mat< s
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
-    {
-    arma_ignore(out);
-    arma_ignore(A);
-    arma_ignore(B_expr);
-    arma_debug_warn("solve() for rank-deficient matrices not available due to crippled LAPACK");
-    return false;
-    }
-  #elif defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_LAPACK)
     {
     typedef typename T1::pod_type     T;
     typedef typename std::complex<T> eT;
@@ -3906,16 +3879,7 @@ auxlib::schur(Mat<std::complex<T> >& U, Mat<std::complex<T> >& S, const Base<std
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
-    {
-    arma_ignore(U);
-    arma_ignore(S);
-    arma_ignore(X);
-    arma_ignore(calc_U);
-    arma_stop("schur() for complex matrices not available due to crippled LAPACK");
-    return false;
-    }
-  #elif defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_LAPACK)
     {
     typedef std::complex<T> eT;
   
@@ -3960,7 +3924,6 @@ auxlib::schur(Mat<std::complex<T> >& U, Mat<std::complex<T> >& S, const Base<std
     arma_ignore(U);
     arma_ignore(S);
     arma_ignore(X);
-    arma_ignore(calc_U);
     arma_stop("schur(): use of LAPACK must be enabled");
     return false;
     }
@@ -4127,18 +4090,7 @@ auxlib::qz(Mat< std::complex<T> >& A, Mat< std::complex<T> >& B, Mat< std::compl
   {
   arma_extra_debug_sigprint();
   
-  #if (defined(ARMA_USE_LAPACK) && defined(ARMA_CRIPPLED_LAPACK))
-    {
-    arma_ignore(A);
-    arma_ignore(B);
-    arma_ignore(vsl);
-    arma_ignore(vsr);
-    arma_ignore(X_expr);
-    arma_ignore(Y_expr);
-    arma_stop("qz() for complex matrices not available due to crippled LAPACK");
-    return false;
-    }
-  #elif defined(ARMA_USE_LAPACK)
+  #if defined(ARMA_USE_LAPACK)
     {
     typedef typename std::complex<T> eT;
     
