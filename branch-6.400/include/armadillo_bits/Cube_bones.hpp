@@ -143,7 +143,7 @@ class Cube : public BaseCube< eT, Cube<eT> >
   template<typename T1> inline const subview_cube_each2<eT, T1> each_slice(const Base<uword, T1>& indices) const;
   
   #if defined(ARMA_USE_CXX11)
-  inline const Cube& each_slice(const std::function<void(Mat<eT>&)>& F);
+  inline const Cube& each_slice(const std::function< void(Mat<eT>&) >& F);
   #endif
   
   

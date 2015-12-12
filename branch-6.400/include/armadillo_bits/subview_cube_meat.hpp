@@ -1085,33 +1085,36 @@ subview_cube<eT>::imbue(functor F)
 
 
 
-//! apply a functor to each slice
-template<typename eT>
-template<typename functor>
-inline
-void
-subview_cube<eT>::each_slice(functor F)
-  {
-  arma_extra_debug_sigprint();
+#if defined(ARMA_USE_CXX11)
   
-  Mat<eT> tmp1(n_rows, n_cols);
-  Mat<eT> tmp2('j', tmp1.memptr(), n_rows, n_cols);
-  
-  for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+  //! apply a lambda function to each slice, where each slice is interpreted as a matrix
+  template<typename eT>
+  inline
+  void
+  subview_cube<eT>::each_slice(const std::function< void(Mat<eT>&) >& F)
     {
-    for(uword col_id=0; col_id < n_cols; ++col_id)
-      {
-      arrayops::copy( tmp1.colptr(col_id), slice_colptr(slice_id, col_id), n_rows );
-      }
+    arma_extra_debug_sigprint();
     
-    F(tmp2);
+    Mat<eT> tmp1(n_rows, n_cols);
+    Mat<eT> tmp2('j', tmp1.memptr(), n_rows, n_cols);
     
-    for(uword col_id=0; col_id < n_cols; ++col_id)
+    for(uword slice_id=0; slice_id < n_slices; ++slice_id)
       {
-      arrayops::copy( slice_colptr(slice_id, col_id), tmp1.colptr(col_id), n_rows );
+      for(uword col_id=0; col_id < n_cols; ++col_id)
+        {
+        arrayops::copy( tmp1.colptr(col_id), slice_colptr(slice_id, col_id), n_rows );
+        }
+      
+      F(tmp2);
+      
+      for(uword col_id=0; col_id < n_cols; ++col_id)
+        {
+        arrayops::copy( slice_colptr(slice_id, col_id), tmp1.colptr(col_id), n_rows );
+        }
       }
     }
-  }
+  
+#endif
 
 
 

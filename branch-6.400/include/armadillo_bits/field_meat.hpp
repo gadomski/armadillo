@@ -1380,24 +1380,44 @@ field<oT>::print(std::ostream& user_stream, const std::string extra_text) const
 
 
 
-//! apply a functor to each object
-template<typename oT>
-template<typename functor>
-inline
-const field<oT>&
-field<oT>::for_each(functor F)
-  {
-  arma_extra_debug_sigprint();
+#if defined(ARMA_USE_CXX11)
   
-  const uword N = n_elem;
-  
-  for(uword i=0; i < N; ++i)
+  //! apply a lambda function to each object
+  template<typename oT>
+  inline
+  const field<oT>&
+  field<oT>::for_each(const std::function< void(oT&) >& F)
     {
-    F(operator[](i));
+    arma_extra_debug_sigprint();
+    
+    for(uword i=0; i < n_elem; ++i)
+      {
+      F(operator[](i));
+      }
+    
+    return *this;
     }
   
-  return *this;
-  }
+#else
+  
+  //! apply a functor to each object
+  template<typename oT>
+  template<typename functor>
+  inline
+  const field<oT>&
+  field<oT>::for_each(functor F)
+    {
+    arma_extra_debug_sigprint();
+    
+    for(uword i=0; i < n_elem; ++i)
+      {
+      F(operator[](i));
+      }
+    
+    return *this;
+    }
+  
+#endif
 
 
 

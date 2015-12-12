@@ -157,7 +157,11 @@ class field
   inline void print(                           const std::string extra_text = "") const;
   inline void print(std::ostream& user_stream, const std::string extra_text = "") const;
   
+  #if defined(ARMA_USE_CXX11)
+                             inline const field& for_each(const std::function< void(oT&) >& F);
+  #else
   template<typename functor> inline const field& for_each(functor F);
+  #endif
   
   inline const field& fill(const oT& x);
   

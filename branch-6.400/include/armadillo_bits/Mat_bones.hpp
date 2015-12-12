@@ -266,8 +266,10 @@ class Mat : public Base< eT, Mat<eT> >
   template<typename T1> inline const subview_each2< Mat<eT>, 0, T1 > each_col(const Base<uword, T1>& indices) const;
   template<typename T1> inline const subview_each2< Mat<eT>, 1, T1 > each_row(const Base<uword, T1>& indices) const;
   
-  template<typename functor> inline const Mat& each_col(functor F);
-  template<typename functor> inline const Mat& each_row(functor F);
+  #if defined(ARMA_USE_CXX11)
+  inline const Mat& each_col(const std::function< void(Col<eT>&) >& F);
+  inline const Mat& each_row(const std::function< void(Row<eT>&) >& F);
+  #endif
   
   
   arma_inline       diagview<eT> diag(const sword in_id = 0);

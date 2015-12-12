@@ -85,7 +85,9 @@ class subview_cube : public BaseCube<eT, subview_cube<eT> >
   template<typename functor> inline void transform(functor F);
   template<typename functor> inline void     imbue(functor F);
   
-  template<typename functor> inline void each_slice(functor F);
+  #if defined(ARMA_USE_CXX11)
+  inline void each_slice(const std::function< void(Mat<eT>&) >& F);
+  #endif
   
   inline void fill(const eT val);
   inline void zeros();

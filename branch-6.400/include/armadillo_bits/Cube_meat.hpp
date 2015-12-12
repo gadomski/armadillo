@@ -1481,23 +1481,25 @@ Cube<eT>::each_slice(const Base<uword, T1>& indices) const
 
 
 #if defined(ARMA_USE_CXX11)
-//! apply a functor to each slice
-template<typename eT>
-inline
-const Cube<eT>&
-Cube<eT>::each_slice(const std::function<void(Mat<eT>&)>& F)
-  {
-  arma_extra_debug_sigprint();
   
-  for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+  //! apply a lambda function to each slice, where each slice is interpreted as a matrix
+  template<typename eT>
+  inline
+  const Cube<eT>&
+  Cube<eT>::each_slice(const std::function< void(Mat<eT>&) >& F)
     {
-    Mat<eT> tmp('j', slice_memptr(slice_id), n_rows, n_cols);
+    arma_extra_debug_sigprint();
     
-    F(tmp);
+    for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+      {
+      Mat<eT> tmp('j', slice_memptr(slice_id), n_rows, n_cols);
+      
+      F(tmp);
+      }
+    
+    return *this;
     }
   
-  return *this;
-  }
 #endif
 
 
