@@ -3719,16 +3719,18 @@ mat Y = X.each_col() + v;  // generate Y by adding v to each column vector of X
 // subtract v from columns 0 through to 3 in X
 X.cols(0,3).each_col() -= v;
 
+
 uvec indices(2);
 indices(0) = 2;
 indices(1) = 4;
 
 X.each_col(indices) = v;   // copy v to columns 2 and 4 in X
 
-X.each_col( [](vec&amp; v){ v.print("v:"); } );    // lambda function with non-const vector
 
-const mat&amp; Y = X;
-Y.each_col( [](const vec&amp; v){ v.print("v:"); } );  // lambda function with const vector
+X.each_col( [](vec&amp; a){ a.print(); } );     // lambda function with non-const vector
+
+const mat&amp; XX = X;
+XX.each_col( [](const vec&amp; b){ b.print(); } );  // lambda function with const vector
 </pre>
 </ul>
 </li>
@@ -3800,11 +3802,18 @@ C.each_slice() += M;          // in-place addition of M to each slice of C
 
 cube D = C.each_slice() + M;  // generate D by adding M to each slice of C
 
+
 uvec indices(2);
 indices(0) = 2;
 indices(1) = 4;
 
 C.each_slice(indices) = M;    // copy M to slices 2 and 4 in C
+
+
+C.each_slice( [](mat&amp; X){ X.print(); } );     // lambda function with non-const matrix
+
+const cube&amp; CC = C;
+CC.each_slice( [](const mat&amp; X){ X.print(); } );  // lambda function with const matrix
 </pre>
 </ul>
 </li>
