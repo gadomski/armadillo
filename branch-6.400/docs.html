@@ -2876,7 +2876,7 @@ F.for_each( [](mat&amp; X) { X.zeros(4,5); } );  // NOTE: the '&amp;' is crucial
 See also:
 <ul>
 <li><a href="#transform">.transform()</a></li>
-<li><a href="#operators">overloaded operators</a></li>
+<li><a href="#each_colrow">.each_col() &amp; .each_row()</a></li>
 <li><a href="#misc_fns">miscellaneous element-wise functions</a> &nbsp; (exp, log, pow, sqrt, square, round, ...)</li>
 <li><a href="http://en.wikipedia.org/wiki/Function_object">function object</a> at Wikipedia</li>
 <li><a href="http://en.wikipedia.org/wiki/C%2B%2B11#Lambda_functions_and_expressions">C++11 lambda functions</a> at Wikipedia</li>
@@ -3741,6 +3741,7 @@ See also:
 <li><a href="#submat">submatrix views</a></li>
 <li><a href="#diag">diagonal views</a></li>
 <li><a href="#repmat">repmat()</a></li>
+<li><a href="#for_each">.for_each()</a></li>
 <li><a href="#each_slice">.each_slice()</a></li>
 </ul>
 </li>
@@ -3822,6 +3823,7 @@ CC.each_slice( [](const mat&amp; X){ X.print(); } );  // lambda function with co
 See also:
 <ul>
 <li><a href="#subcube">subcube views</a></li>
+<li><a href="#for_each">.for_each()</a></li>
 <li><a href="#each_colrow">.each_col() &amp; .each_row()</a> &nbsp;</li>
 </ul>
 </li>
