@@ -3830,6 +3830,24 @@ Mat<eT>::each_row(const Base<uword, T1>& indices) const
 
 
 
+  template<typename eT>
+  inline
+  const Mat<eT>&
+  Mat<eT>::each_col(const std::function< void(const Col<eT>&) >& F) const
+    {
+    arma_extra_debug_sigprint();
+    
+    for(uword ii=0; ii < n_cols; ++ii)
+      {
+      const Col<eT> tmp(colptr(ii), n_rows, false, true);
+      F(tmp);
+      }
+    
+    return *this;
+    }
+
+
+
   //! apply a lambda function to each row, where each row is interpreted as a row vector
   template<typename eT>
   inline
@@ -3883,6 +3901,50 @@ Mat<eT>::each_row(const Base<uword, T1>& indices) const
     return *this;
     }
   
+  
+  
+  template<typename eT>
+  inline
+  const Mat<eT>&
+  Mat<eT>::each_row(const std::function< void(const Row<eT>&) >& F) const
+    {
+    arma_extra_debug_sigprint();
+    
+    podarray<eT> array1(n_cols);
+    podarray<eT> array2(n_cols);
+    
+    Row<eT> tmp1( array1.memptr(), n_cols, false, true );
+    Row<eT> tmp2( array2.memptr(), n_cols, false, true );
+    
+    eT* tmp1_mem = tmp1.memptr();
+    eT* tmp2_mem = tmp2.memptr();
+    
+    uword ii, jj;
+    
+    for(ii=0, jj=1; jj < n_rows; ii+=2, jj+=2)
+      {
+      for(uword col_id = 0; col_id < n_cols; ++col_id)
+        {
+        const eT* col_mem = colptr(col_id);
+        
+        tmp1_mem[col_id] = col_mem[ii];
+        tmp2_mem[col_id] = col_mem[jj];
+        }
+      
+      F(tmp1);
+      F(tmp2);
+      }
+    
+    if(ii < n_rows)
+      {
+      tmp1 = (*this).row(ii);
+      
+      F(tmp1);
+      }
+    
+    return *this;
+    }
+
 #endif
 
 

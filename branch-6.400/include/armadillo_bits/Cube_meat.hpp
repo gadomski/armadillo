@@ -1500,6 +1500,25 @@ Cube<eT>::each_slice(const Base<uword, T1>& indices) const
     return *this;
     }
   
+  
+  
+  template<typename eT>
+  inline
+  const Cube<eT>&
+  Cube<eT>::each_slice(const std::function< void(const Mat<eT>&) >& F) const
+    {
+    arma_extra_debug_sigprint();
+    
+    for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+      {
+      const Mat<eT> tmp('j', slice_memptr(slice_id), n_rows, n_cols);
+      
+      F(tmp);
+      }
+    
+    return *this;
+    }
+  
 #endif
 
 

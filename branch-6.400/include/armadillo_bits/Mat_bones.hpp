@@ -267,8 +267,11 @@ class Mat : public Base< eT, Mat<eT> >
   template<typename T1> inline const subview_each2< Mat<eT>, 1, T1 > each_row(const Base<uword, T1>& indices) const;
   
   #if defined(ARMA_USE_CXX11)
-  inline const Mat& each_col(const std::function< void(Col<eT>&) >& F);
-  inline const Mat& each_row(const std::function< void(Row<eT>&) >& F);
+  inline const Mat& each_col(const std::function< void(      Col<eT>&) >& F);
+  inline const Mat& each_col(const std::function< void(const Col<eT>&) >& F) const;
+  
+  inline const Mat& each_row(const std::function< void(      Row<eT>&) >& F);
+  inline const Mat& each_row(const std::function< void(const Row<eT>&) >& F) const;
   #endif
   
   

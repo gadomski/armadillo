@@ -1114,6 +1114,29 @@ subview_cube<eT>::imbue(functor F)
       }
     }
   
+  
+  
+  template<typename eT>
+  inline
+  void
+  subview_cube<eT>::each_slice(const std::function< void(const Mat<eT>&) >& F) const
+    {
+    arma_extra_debug_sigprint();
+    
+          Mat<eT> tmp1(n_rows, n_cols);
+    const Mat<eT> tmp2('j', tmp1.memptr(), n_rows, n_cols);
+    
+    for(uword slice_id=0; slice_id < n_slices; ++slice_id)
+      {
+      for(uword col_id=0; col_id < n_cols; ++col_id)
+        {
+        arrayops::copy( tmp1.colptr(col_id), slice_colptr(slice_id, col_id), n_rows );
+        }
+      
+      F(tmp2);
+      }
+    }
+  
 #endif
 
 
