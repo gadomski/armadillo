@@ -139,7 +139,7 @@ hr.greyline
   <tbody>
     <tr>
       <td style="text-align: left; vertical-align: top;">
-          <font size=+2><b>Reference for Armadillo 6.350</b></font>
+          <font size=+2><b>Reference for Armadillo 6.400</b></font>
         <br>
       </td>
       <td style="text-align: right; vertical-align: top;">
@@ -2178,7 +2178,7 @@ Not recommended for use unless your code has been thoroughly debugged.
                           <td style="vertical-align: top;"><br>
                           </td>
                           <td style="vertical-align: top;">
-For <i>mat</i> and <i>field</i> classes, access the element/object stored at the <i>i</i>-th row and <i>j</i>-th column.
+For <i>mat</i> and <i>2D field</i> classes, access the element/object stored at the <i>i</i>-th row and <i>j</i>-th column.
 A&nbsp;<i>std::logic_error</i> exception is thrown if the requested element is out of bounds.
 The bounds check can be <a href="#element_access_bounds_check_note">optionally disabled</a> at compile-time to get more speed.
                           </td>
@@ -2213,7 +2213,7 @@ Not recommended for use unless your code has been thoroughly debugged.
                           <td style="vertical-align: top;"><br>
                           </td>
                           <td style="vertical-align: top;">
-Cube only: access the element stored at the <i>i</i>-th row, <i>j</i>-th column and <i>k</i>-th slice.
+For <i>cube</i> and <i>3D field</i> classes, access the element/object stored at the <i>i</i>-th row, <i>j</i>-th column and <i>k</i>-th slice.
 A&nbsp;<i>std::logic_error</i> exception is thrown if the requested element is out of bounds.
 The bounds check can be <a href="#element_access_bounds_check_note">optionally disabled</a> at compile-time to get more speed.
                           </td>
@@ -3661,9 +3661,14 @@ See also:
 <b>.each_row()</b>
 <br>
 <br>
-<b>.each_col( vector_of_indices )</b>
+<b>.each_col(</b>&nbsp;vector_of_indices&nbsp;<b>)</b>
 <br>
-<b>.each_row( vector_of_indices )</b>
+<b>.each_row(</b>&nbsp;vector_of_indices&nbsp;<b>)</b>
+<br>
+<br>
+<b>.each_col(</b> lambda_function <b>)</b>&nbsp;&nbsp;&nbsp;<i>(C++11 only)</i>
+<br>
+<b>.each_row(</b> lambda_function <b>)</b>&nbsp;&nbsp;&nbsp;<i>(C++11 only)</i>
 <ul>
 <li>
 Member functions of <i>Mat</i>
@@ -3674,20 +3679,9 @@ Repeat a vector operation on each column or row of a matrix
 </li>
 <br>
 <li>
-Supported operations in version 5.500 and earlier:
-<ul>
-<table>
-<tr><td><code><b>+=</b></code></td><td>&nbsp;</td><td>in-place addition</td></tr>
-<tr><td><code><b>-=</b></code></td><td>&nbsp;</td><td>in-place subtraction</td></tr>
-<tr><td><code><b>%=</b></code></td><td>&nbsp;</td><td>in-place element-wise multiplication</td></tr>
-<tr><td><code><b>/=</b></code></td><td>&nbsp;</td><td>in-place element-wise division</td></tr>
-<tr><td><code><b>&nbsp;=</b></code></td><td>&nbsp;</td><td>assignment (copy)</td></tr>
-</table>
-</ul>
-</li>
+Supported operations for <i>.each_col()&nbsp;/&nbsp;.each_row()</i> and <i>.each_col(vector_of_indices)&nbsp;/&nbsp;.each_row(vector_of_indices)</i> forms:
 <br>
-<li>
-Supported operations in version 5.600+:
+<br>
 <ul>
 <table>
 <tr><td><code><b>+</b></code></td><td>&nbsp;</td><td>addition</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><code><b>+=</b></code></td><td>&nbsp;</td><td>in-place addition</td></tr>
@@ -3704,6 +3698,11 @@ Supported operations in version 5.600+:
 <li>
 If the argument <i>vector_of_indices</i> is specified, it must evaluate to a vector of type <i><a href="#Col">uvec</a></i>;
 the vector contains a list of indices of the columns or rows to be used
+</li>
+<br>
+<li>
+If the <i>lambda_function</i> is specified,
+the function must accept a reference to a <a href="#Col">Col</a> or <a href="#Row">Row</a> object with the same element type as the underlying matrix
 </li>
 <br>
 <li>
@@ -3725,6 +3724,11 @@ indices(0) = 2;
 indices(1) = 4;
 
 X.each_col(indices) = v;   // copy v to columns 2 and 4 in X
+
+X.each_col( [](vec&amp; v){ v.print("v:"); } );    // lambda function with non-const vector
+
+const mat&amp; Y = X;
+Y.each_col( [](const vec&amp; v){ v.print("v:"); } );  // lambda function with const vector
 </pre>
 </ul>
 </li>
@@ -3745,7 +3749,9 @@ See also:
 <a name="each_slice"></a>
 <b>.each_slice()</b>
 <br>
-<b>.each_slice( vector_of_indices )</b>
+<b>.each_slice(</b>&nbsp;vector_of_indices&nbsp;<b>)</b>
+<br>
+<b>.each_slice(</b>&nbsp;lambda_function&nbsp;<b>)</b>&nbsp;&nbsp;&nbsp;<i>(C++11 only)</i>
 <ul>
 <li>
 Member function of <i>Cube</i>
@@ -3756,7 +3762,9 @@ Repeat a matrix operation on each slice of a cube
 </li>
 <br>
 <li>
-Supported operations:
+Supported operations for <i>.each_slice()</i> and <i>.each_slice(vector_of_indices)</i> forms:
+<br>
+<br>
 <ul>
 <table>
 <tr><td><code><b>+</b></code></td><td>&nbsp;</td><td>addition</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><code><b>+=</b></code></td><td>&nbsp;</td><td>in-place addition</td></tr>
@@ -3773,6 +3781,11 @@ Supported operations:
 <li>
 If the argument <i>vector_of_indices</i> is specified, it must evaluate to a vector of type <i><a href="#Col">uvec</a></i>;
 the vector contains a list of indices of the slices to be used
+</li>
+<br>
+<li>
+If the <i>lambda_function</i> is specified,
+the function must accept a reference to a <a href="#Mat">Mat</a> object with the same element type as the underlying cube
 </li>
 <br>
 <li>
