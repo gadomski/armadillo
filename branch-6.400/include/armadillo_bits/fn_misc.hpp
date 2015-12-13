@@ -407,7 +407,7 @@ sub2ind(const SizeMat& s, const uword row, const uword col)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( ((row >= s.n_rows) || (col >= s.n_cols)), "sub2ind(): index out of range" );
+  arma_debug_check( ((row >= s.n_rows) || (col >= s.n_cols)), "sub2ind(): subscript out of range" );
   
   return uword(row + col*s.n_rows);
   }
@@ -420,9 +420,9 @@ sub2ind(const SizeCube& s, const uword row, const uword col, const uword slice)
   {
   arma_extra_debug_sigprint();
   
-  arma_debug_check( ((row >= s.n_rows) || (col >= s.n_cols) || (slice >= s.n_slices)), "sub2ind(): index out of range" );
+  arma_debug_check( ((row >= s.n_rows) || (col >= s.n_cols) || (slice >= s.n_slices)), "sub2ind(): subscript out of range" );
   
-  return uword( (slice * s.n_rows * s.n_cols) + (col * s.n_rows) + row);
+  return uword( (slice * s.n_rows * s.n_cols) + (col * s.n_rows) + row );
   }
 
 
