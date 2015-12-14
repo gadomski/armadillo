@@ -1398,6 +1398,23 @@ field<oT>::print(std::ostream& user_stream, const std::string extra_text) const
     return *this;
     }
   
+  
+  
+  template<typename oT>
+  inline
+  const field<oT>&
+  field<oT>::for_each(const std::function< void(const oT&) >& F) const
+    {
+    arma_extra_debug_sigprint();
+    
+    for(uword i=0; i < n_elem; ++i)
+      {
+      F(operator[](i));
+      }
+    
+    return *this;
+    }
+  
 #else
   
   //! apply a functor to each object
