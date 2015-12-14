@@ -3827,9 +3827,9 @@ Mat<eT>::each_row(const Base<uword, T1>& indices) const
     
     return *this;
     }
-
-
-
+  
+  
+  
   template<typename eT>
   inline
   const Mat<eT>&
@@ -3845,9 +3845,9 @@ Mat<eT>::each_row(const Base<uword, T1>& indices) const
     
     return *this;
     }
-
-
-
+  
+  
+  
   //! apply a lambda function to each row, where each row is interpreted as a row vector
   template<typename eT>
   inline
@@ -3944,7 +3944,7 @@ Mat<eT>::each_row(const Base<uword, T1>& indices) const
     
     return *this;
     }
-
+  
 #endif
 
 
