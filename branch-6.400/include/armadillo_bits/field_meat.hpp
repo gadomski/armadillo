@@ -454,9 +454,9 @@ field<oT>::operator[] (const uword i)
   {
   return (*mem[i]);
   }
-  
-  
-  
+
+
+
 //! linear element accessor (treats the field as a vector); no bounds check
 template<typename oT>
 arma_inline
@@ -476,9 +476,9 @@ field<oT>::at(const uword i)
   {
   return (*mem[i]);
   }
-  
-  
-  
+
+
+
 //! linear element accessor (treats the field as a vector); no bounds check
 template<typename oT>
 arma_inline
@@ -499,9 +499,9 @@ field<oT>::operator() (const uword i)
   arma_debug_check( (i >= n_elem), "field::operator(): index out of bounds");
   return (*mem[i]);
   }
-  
-  
-  
+
+
+
 //! linear element accessor (treats the field as a vector); bounds checking not done when ARMA_NO_DEBUG is defined
 template<typename oT>
 arma_inline
@@ -1993,9 +1993,7 @@ field<oT>::init(const uword n_rows_in, const uword n_cols_in, const uword n_slic
       }
     
     create_objects();
-    
     }
-  
   }
 
 
@@ -2015,7 +2013,6 @@ field<oT>::delete_objects()
       mem[i] = 0;
       }
     }
-  
   }
 
 
@@ -2031,7 +2028,6 @@ field<oT>::create_objects()
     {
     mem[i] = new oT;
     }
-  
   }
 
 
@@ -2371,9 +2367,9 @@ field_aux::reset_objects(field< Col<eT> >& x)
     (*(x.mem[i])).reset();
     }
   }
-  
-  
-  
+
+
+
 template<typename eT>
 inline
 void
