@@ -708,16 +708,13 @@ subview<eT>::for_each(functor F)
   {
   arma_extra_debug_sigprint();
   
-  const uword local_n_cols = n_cols;
-  const uword local_n_rows = n_rows;
-  
   Mat<eT>& X = const_cast< Mat<eT>& >(m);
   
-  if(local_n_rows == 1)
+  if(n_rows == 1)
     {
     const uword urow          = aux_row1;
     const uword start_col     = aux_col1;
-    const uword end_col_plus1 = start_col + local_n_cols;
+    const uword end_col_plus1 = start_col + n_cols;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
       {
@@ -729,8 +726,47 @@ subview<eT>::for_each(functor F)
     const uword start_col = aux_col1;
     const uword start_row = aux_row1;
     
-    const uword end_col_plus1 = start_col + local_n_cols;
-    const uword end_row_plus1 = start_row + local_n_rows;
+    const uword end_col_plus1 = start_col + n_cols;
+    const uword end_row_plus1 = start_row + n_rows;
+    
+    for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
+    for(uword urow = start_row; urow < end_row_plus1; ++urow)
+      {
+      F( X.at(urow, ucol) );
+      }
+    }
+  }
+
+
+
+template<typename eT>
+template<typename functor>
+inline
+void
+subview<eT>::for_each(functor F) const
+  {
+  arma_extra_debug_sigprint();
+  
+  const Mat<eT>& X = m;
+  
+  if(n_rows == 1)
+    {
+    const uword urow          = aux_row1;
+    const uword start_col     = aux_col1;
+    const uword end_col_plus1 = start_col + n_cols;
+    
+    for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
+      {
+      F( X.at(urow, ucol) );
+      }
+    }
+  else
+    {
+    const uword start_col = aux_col1;
+    const uword start_row = aux_row1;
+    
+    const uword end_col_plus1 = start_col + n_cols;
+    const uword end_row_plus1 = start_row + n_rows;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
     for(uword urow = start_row; urow < end_row_plus1; ++urow)
@@ -751,16 +787,13 @@ subview<eT>::transform(functor F)
   {
   arma_extra_debug_sigprint();
   
-  const uword local_n_cols = n_cols;
-  const uword local_n_rows = n_rows;
-  
   Mat<eT>& X = const_cast< Mat<eT>& >(m);
   
-  if(local_n_rows == 1)
+  if(n_rows == 1)
     {
     const uword urow          = aux_row1;
     const uword start_col     = aux_col1;
-    const uword end_col_plus1 = start_col + local_n_cols;
+    const uword end_col_plus1 = start_col + n_cols;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
       {
@@ -772,8 +805,8 @@ subview<eT>::transform(functor F)
     const uword start_col = aux_col1;
     const uword start_row = aux_row1;
     
-    const uword end_col_plus1 = start_col + local_n_cols;
-    const uword end_row_plus1 = start_row + local_n_rows;
+    const uword end_col_plus1 = start_col + n_cols;
+    const uword end_row_plus1 = start_row + n_rows;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
     for(uword urow = start_row; urow < end_row_plus1; ++urow)
@@ -794,16 +827,13 @@ subview<eT>::imbue(functor F)
   {
   arma_extra_debug_sigprint();
   
-  const uword local_n_cols = n_cols;
-  const uword local_n_rows = n_rows;
-  
   Mat<eT>& X = const_cast< Mat<eT>& >(m);
   
-  if(local_n_rows == 1)
+  if(n_rows == 1)
     {
     const uword urow          = aux_row1;
     const uword start_col     = aux_col1;
-    const uword end_col_plus1 = start_col + local_n_cols;
+    const uword end_col_plus1 = start_col + n_cols;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
       {
@@ -815,8 +845,8 @@ subview<eT>::imbue(functor F)
     const uword start_col = aux_col1;
     const uword start_row = aux_row1;
     
-    const uword end_col_plus1 = start_col + local_n_cols;
-    const uword end_row_plus1 = start_row + local_n_rows;
+    const uword end_col_plus1 = start_col + n_cols;
+    const uword end_row_plus1 = start_row + n_rows;
     
     for(uword ucol = start_col; ucol < end_col_plus1; ++ucol)
     for(uword urow = start_row; urow < end_row_plus1; ++urow)

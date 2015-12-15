@@ -162,6 +162,7 @@ class field
   inline const field& for_each(const std::function< void(const oT&) >& F) const;
   #else
   template<typename functor> inline const field& for_each(functor F);
+  template<typename functor> inline const field& for_each(functor F) const;
   #endif
   
   inline const field& fill(const oT& x);

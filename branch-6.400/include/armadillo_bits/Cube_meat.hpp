@@ -3087,6 +3087,36 @@ Cube<eT>::for_each(functor F)
 
 
 
+template<typename eT>
+template<typename functor>
+inline
+const Cube<eT>&
+Cube<eT>::for_each(functor F) const
+  {
+  arma_extra_debug_sigprint();
+  
+  const eT* data = memptr();
+  
+  const uword N = n_elem;
+  
+  uword ii, jj;
+  
+  for(ii=0, jj=1; jj < N; ii+=2, jj+=2)
+    {
+    F(data[ii]);
+    F(data[jj]);
+    }
+  
+  if(ii < N)
+    {
+    F(data[ii]);
+    }
+  
+  return *this;
+  }
+
+
+
 //! transform each element in the cube using a functor
 template<typename eT>
 template<typename functor>
