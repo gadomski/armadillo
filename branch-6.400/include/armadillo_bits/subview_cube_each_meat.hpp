@@ -19,7 +19,7 @@
 template<typename eT>
 inline
 subview_cube_each_common<eT>::subview_cube_each_common(const Cube<eT>& in_p)
-  : p(in_p)
+  : P(in_p)
   {
   arma_extra_debug_sigprint();
   }
@@ -33,7 +33,7 @@ subview_cube_each_common<eT>::check_size(const Mat<eT>& A) const
   {
   if(arma_config::debug == true)
     {
-    if( (A.n_rows != p.n_rows) || (A.n_cols != p.n_cols) )
+    if( (A.n_rows != P.n_rows) || (A.n_cols != P.n_cols) )
       {
       arma_stop( incompat_size_string(A) );
       }
@@ -50,7 +50,7 @@ subview_cube_each_common<eT>::incompat_size_string(const Mat<eT>& A) const
   {
   std::stringstream tmp;
   
-  tmp << "each_slice(): incompatible size; expected " << p.n_rows << 'x' << p.n_cols << ", got " << A.n_rows << 'x' << A.n_cols;
+  tmp << "each_slice(): incompatible size; expected " << P.n_rows << 'x' << P.n_cols << ", got " << A.n_rows << 'x' << A.n_cols;
   
   return tmp.str();
   }
@@ -90,7 +90,7 @@ subview_cube_each1<eT>::operator= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -115,7 +115,7 @@ subview_cube_each1<eT>::operator+= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -140,7 +140,7 @@ subview_cube_each1<eT>::operator-= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -165,7 +165,7 @@ subview_cube_each1<eT>::operator%= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -190,7 +190,7 @@ subview_cube_each1<eT>::operator/= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -251,7 +251,7 @@ subview_cube_each2<eT,TB>::operator= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -290,7 +290,7 @@ subview_cube_each2<eT,TB>::operator+= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -329,7 +329,7 @@ subview_cube_each2<eT,TB>::operator-= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -368,7 +368,7 @@ subview_cube_each2<eT,TB>::operator%= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -407,7 +407,7 @@ subview_cube_each2<eT,TB>::operator/= (const Base<eT,T1>& in)
   {
   arma_extra_debug_sigprint();
   
-  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::p);
+  Cube<eT>& p = access::rw(subview_cube_each_common<eT>::P);
   
   const unwrap<T1>   tmp( in.get_ref() );
   const Mat<eT>& A = tmp.M;
@@ -455,7 +455,7 @@ subview_cube_each1_aux::operator_plus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -492,7 +492,7 @@ subview_cube_each1_aux::operator_minus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -529,7 +529,7 @@ subview_cube_each1_aux::operator_minus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = Y.p;
+  const Cube<eT>& p = Y.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -566,7 +566,7 @@ subview_cube_each1_aux::operator_schur
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -603,7 +603,7 @@ subview_cube_each1_aux::operator_div
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -640,7 +640,7 @@ subview_cube_each1_aux::operator_div
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = Y.p;
+  const Cube<eT>& p = Y.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -683,7 +683,7 @@ subview_cube_each2_aux::operator_plus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_slices     = p.n_slices;
   const uword p_n_elem_slice = p.n_elem_slice;
@@ -728,7 +728,7 @@ subview_cube_each2_aux::operator_minus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_slices     = p.n_slices;
   const uword p_n_elem_slice = p.n_elem_slice;
@@ -773,7 +773,7 @@ subview_cube_each2_aux::operator_minus
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = Y.p;
+  const Cube<eT>& p = Y.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
@@ -820,7 +820,7 @@ subview_cube_each2_aux::operator_schur
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_slices     = p.n_slices;
   const uword p_n_elem_slice = p.n_elem_slice;
@@ -865,7 +865,7 @@ subview_cube_each2_aux::operator_div
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = X.p;
+  const Cube<eT>& p = X.P;
   
   const uword p_n_slices     = p.n_slices;
   const uword p_n_elem_slice = p.n_elem_slice;
@@ -910,7 +910,7 @@ subview_cube_each2_aux::operator_div
   {
   arma_extra_debug_sigprint();
   
-  const Cube<eT>& p = Y.p;
+  const Cube<eT>& p = Y.P;
   
   const uword p_n_rows   = p.n_rows;
   const uword p_n_cols   = p.n_cols;
