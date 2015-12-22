@@ -4862,10 +4862,9 @@ See also:
 
 <a name="i_member"></a>
 <b>.i()</b>
-<br><b>.i( method )</b>
 <ul>
 <li>
-Member functions of any matrix expression
+Member function of any matrix expression
 </li>
 <br>
 <li>
@@ -4878,13 +4877,6 @@ If the matrix expression is not square sized, a <i>std::logic_error</i> exceptio
 <br>
 <li>
 If the matrix expression appears to be singular, the output matrix is reset and a <i>std::runtime_error</i> exception is thrown
-</li>
-<br>
-<li>The <i>method</i> argument is optional.
-For matrix sizes &le; 4x4, a fast algorithm is used.
-In rare instances, the fast algorithm might be less precise than the standard algorithm.
-To force the use of the standard algorithm, set the <i>method</i> argument to <code>"std"</code>.
-For matrix sizes greater than 4x4, the standard algorithm is always used
 </li>
 <br>
 <li>
