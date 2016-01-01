@@ -12,6 +12,9 @@ find_path(SuperLU_INCLUDE_DIR slu_cdefs.h
   /usr/local/include/superlu/
   /usr/local/include/SuperLU/
   /usr/local/include/
+  /opt/local/include/superlu/
+  /opt/local/include/SuperLU/
+  /opt/local/include/
 )
 
 find_library(SuperLU_LIBRARY
