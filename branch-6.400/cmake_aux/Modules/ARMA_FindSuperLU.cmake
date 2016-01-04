@@ -19,7 +19,7 @@ find_path(SuperLU_INCLUDE_DIR slu_cdefs.h
 
 find_library(SuperLU_LIBRARY
   NAMES superlu
-  PATHS /usr/lib64 /usr/lib /usr/local/lib64 /usr/local/lib
+  PATHS /usr/lib64 /usr/lib /usr/local/lib64 /usr/local/lib /opt/local/lib64 /opt/local/lib
 )
 
 SET(SuperLU_FOUND NO)
