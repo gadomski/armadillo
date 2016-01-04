@@ -173,7 +173,7 @@ see the <a href="#syntax">syntax conversion table</a>
 </li>
 <br>
 <li>
-First time users may want to have a look at a short <a href="#example_prog">example program</a>
+First time users: please see the short <a href="#example_prog">example program</a>
 </li>
 <br>
 <li>
@@ -14055,13 +14055,6 @@ A&nbsp;<font size=-1>&lt;&lt;</font> 1 <font size=-1>&lt;&lt;</font> 2 <font siz
 <b>example program</b>
 <br>
 <ul>
-<li>
-If you save the program below as <i>example.cpp</i>,
-under Linux you can compile it using:
-<br>
-g++ example.cpp -o example -O2 -larmadillo
-</li>
-<ul>
 <pre>
 #include &lt;iostream&gt;
 #include &lt;armadillo&gt;
@@ -14069,7 +14062,7 @@ g++ example.cpp -o example -O2 -larmadillo
 using namespace std;
 using namespace arma;
 
-int main(int argc, char** argv)
+int main()
   {
   mat A = randu&lt;mat&gt;(4,5);
   mat B = randu&lt;mat&gt;(4,5);
@@ -14079,14 +14072,20 @@ int main(int argc, char** argv)
   return 0;
   }
 </pre>
-</ul>
 <li>
-See also the example programs that come with the Armadillo archive
+If you save the above program as <i>example.cpp</i>,
+under Linux and Mac OS X it can be compiled using:
+<br>
+<code>g++ example.cpp -o example -O2 -larmadillo</code>
 </li>
 <br>
 <li>
-As Armadillo is a template library, we strongly recommended to have optimisation enabled when compiling programs
-(eg. when compiling with GCC or clang, use the -O1 or -O2 options)
+As Armadillo is a template library, we strongly recommended to have enable optimisation when compiling programs
+(eg. when compiling with GCC or clang, use the -O2 or -O3 options)
+</li>
+<br>
+<li>
+See also the example program that comes with the Armadillo archive
 </li>
 </ul>
 <br>
