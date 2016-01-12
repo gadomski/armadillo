@@ -495,6 +495,8 @@ namespace arma
     #include "armadillo_bits/gmm_diag_meat.hpp"
   #endif
   
+  #include "armadillo_bits/fn_kmeans.hpp"
+  
   //
   // classes implementing various forms of dense matrix multiplication
   
