@@ -451,7 +451,8 @@ Technical Report, NICTA, 2010.
 <ul>
 <table>
 <tbody>
-<tr><td><a href="#gmm_diag">gmm_diag</a></td><td>&nbsp;</td><td>model data as a Gaussian Mixture Model (GMM); includes k-means and EM algorithms</td></tr>
+<tr><td><a href="#kmeans">kmeans</a></td><td>&nbsp;</td><td>cluster data using k-means algorithm</td></tr>
+<tr><td><a href="#gmm_diag">gmm_diag</a></td><td>&nbsp;</td><td>model data as a Gaussian Mixture Model (GMM)</td></tr>
 <tr><td><a href="#running_stat">running_stat</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled one dimensional process/signal</td></tr>
 <tr><td><a href="#running_stat_vec">running_stat_vec</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled multi-dimensional process/signal</td></tr>
 </tbody>
@@ -11491,11 +11492,117 @@ See also:
 <hr class="greyline">
 <br>
 <br>
-<font size=+1><b>Statistical Modelling</b></font>
+<font size=+1><b>Statistical Modelling &amp; Clustering</b></font>
 <br>
 <br>
 <hr class="greyline">
 <br>
+
+<a name="kmeans"></a>
+<b>kmeans(</b> means<b>,</b> data<b>,</b> k<b>,</b> seed_mode<b>,</b> n_iter<b>,</b> print_mode <b>)</b>
+<ul>
+<li>
+Cluster given data using the k-means algorithm
+</li>
+<br>
+<li>
+The <i>means</i> parameter is the output matrix containing the resulting means, with each mean stored as a column vector
+</li>
+<br>
+<li>
+The <i>data</i> parameter is the input data matrix, with each sample stored as a column vector
+</li>
+<br>
+<li>
+The <i>k</i> parameter indicates the number of means
+</li>
+<br>
+<li>
+The <i>seed_mode</i> parameter specifies how the initial means are seeded prior to running k-means; it is one of:
+<ul>
+<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+  <tr><td><code>keep_existing</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>use the means specified in the <i>means</i> matrix as the starting point</td></tr>
+  <tr><td><code>static_subset</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>use a subset of the data vectors (repeatable)</td></tr>
+  <tr><td><code>random_subset</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>use a subset of the data vectors (random)</td></tr>
+  <tr><td><code>static_spread</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>use a maximally spread subset of data vectors (repeatable)</td></tr>
+  <tr><td><code>random_spread</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>use a maximally spread subset of data vectors (random start)</td></tr>
+  </tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+The <i>n_iter</i> parameter specifies the number of iterations of the k-means algorithm; a sufficient number of iterations is typically about 10
+</li>
+<br>
+<li>
+The <i>print_mode</i> parameter is either <i>true</i> or <i>false</i>, indicating whether progress is printed during clustering
+</li>
+<br>
+<li>
+If the k-means algorithm fails, the <i>means</i> matrix is reset and a bool set to <i>false</i> is returned
+</li>
+<br>
+<li>
+The k-means algorithm will run faster on multi-core machines when OpenMP is enabled in your compiler (eg. <i>-fopenmp</i> in GCC)
+</li>
+<br>
+<li>
+<b>Caveats</b>:
+<ul>
+<br>
+<li>
+the number of data vectors (number of columns in the <i>data</i> matrix) should be much larger than <i>k</i>&nbsp; (number of means)
+</li>
+<br>
+<li>
+seeding the initial means with <code>static_spread</code> and <code>random_spread</code>
+can be much more time consuming than with <code>static_subset</code> and <code>random_subset</code>
+</li>
+</ul>
+</li>
+<br>
+
+
+<li>
+Examples:
+<ul>
+<pre>
+uword d = 5;       // dimensionality
+uword N = 10000;   // number of vectors
+
+mat data(d, N, fill::randu);
+
+mat means;
+
+bool status = kmeans(means, data, 2, random_subset, 10, true);
+
+if(status == false)
+  {
+  cout &lt;&lt; "k-means failed" &lt;&lt; endl;
+  }
+else
+  {
+  means.print("means:");
+  }
+</pre>
+</ul>
+</li>
+<br>
+<li>See also:
+<ul>
+<li><a href="#gmm_diag">gmm_diag</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#running_stat_vec">running_stat_vec</a></li>
+<li><a href="http://en.wikipedia.org/wiki/K-means_clustering">k-means clustering in Wikipedia</a></li>
+<li><a href="http://mathworld.wolfram.com/K-MeansClusteringAlgorithm.html">k-means clustering in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/OpenMP">OpenMP in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
 
 <a name="gmm_diag"></a>
 <b>gmm_diag</b>
@@ -12051,8 +12158,8 @@ Examples:
 <pre>
 // create synthetic data with 2 Gaussians
 
-uword N = 10000;
-uword d = 5;
+uword d = 5;       // dimensionality
+uword N = 10000;   // number of vectors
 
 mat data(d, N, fill::zeros);
 
@@ -12068,6 +12175,8 @@ while(i &lt; N)
   if(i &lt; N)  { data.col(i) = mean1 + randn&lt;vec&gt;(d); ++i; }
   }
 
+
+// model the data as a GMM with 2 gaussians
 
 gmm_diag model;
 
@@ -12095,6 +12204,7 @@ model.save("my_model.gmm");
 <ul>
 <li><a href="#stats_fns">statistics functions</a></li>
 <li><a href="#running_stat_vec">running_stat_vec</a></li>
+<li><a href="#kmeans">kmeans()</a></li>
 <li><a href="#diagmat">diagmat()</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Mahalanobis_distance">Mahalanobis distance in Wikipedia</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Normal_distribution">normal distribution in Wikipedia</a></li>
@@ -14830,6 +14940,13 @@ List of additions and changes for each version:
 <br>
 <ul>
 
+<a name="version_6500"></a>
+<li>Version 6.500:
+<ul>
+<li>added stand-alone <a href="#kmeans">kmeans()</a> function for clustering data</li>
+</ul>
+</li>
+<br>
 <a name="version_6400"></a>
 <li>Version 6.400:
 <ul>
