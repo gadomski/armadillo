@@ -1,4 +1,4 @@
-// Copyright (C) 2014 National ICT Australia (NICTA)
+// Copyright (C) 2014-2016 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -248,30 +248,47 @@ arma_hot
 eT
 distance<eT, uword(1)>::eval(const uword N, const eT* A, const eT* B, const eT*)
   {
-  eT acc1 = eT(0);
-  eT acc2 = eT(0);
-  
-  uword i,j;
-  for(i=0, j=1; j<N; i+=2, j+=2)
+  #if defined(ARMA_SIMPLE_LOOPS)  // TODO: see if this makes a difference under clang
     {
-    eT tmp_i = A[i];
-    eT tmp_j = A[j];
+    eT acc = eT(0);
     
-    tmp_i -= B[i];
-    tmp_j -= B[j];
+    for(uword i=0; i<N; ++i)
+      {
+      const eT tmp = A[i] - B[i];
+      
+      acc += tmp*tmp;
+      }
     
-    acc1 += tmp_i*tmp_i;
-    acc2 += tmp_j*tmp_j;
+    return acc;
     }
-  
-  if(i < N)
+  #else
     {
-    const eT tmp_i = A[i] - B[i];
+    eT acc1 = eT(0);
+    eT acc2 = eT(0);
     
-    acc1 += tmp_i*tmp_i;
+    uword i,j;
+    for(i=0, j=1; j<N; i+=2, j+=2)
+      {
+      eT tmp_i = A[i];
+      eT tmp_j = A[j];
+      
+      tmp_i -= B[i];
+      tmp_j -= B[j];
+      
+      acc1 += tmp_i*tmp_i;
+      acc2 += tmp_j*tmp_j;
+      }
+    
+    if(i < N)
+      {
+      const eT tmp_i = A[i] - B[i];
+      
+      acc1 += tmp_i*tmp_i;
+      }
+    
+    return (acc1 + acc2);
     }
-  
-  return (acc1 + acc2);
+  #endif
   }
 
 
