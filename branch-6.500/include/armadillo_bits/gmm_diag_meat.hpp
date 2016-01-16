@@ -1690,7 +1690,7 @@ gmm_diag<eT>::km_iterate(const Mat<eT>& X, const uword max_iter, const bool verb
     
     for(uword t=0; t < n_threads; ++t)  { t_running_means[t].set_size(N_gaus); }
     
-    vec tmp_mean(N_dims);
+    Col<eT> tmp_mean(N_dims);
     
     if(verbose)
       {
