@@ -173,7 +173,7 @@ see the <a href="#syntax">syntax conversion table</a>
 </li>
 <br>
 <li>
-First time users: please see the short <a href="#example_prog">example program</a>
+First time users may want to have a look at a short <a href="#example_prog">example program</a>
 </li>
 <br>
 <li>
@@ -658,7 +658,7 @@ Create a matrix using data from writable auxiliary (external) memory, where <i>p
 By default the matrix allocates its own memory and copies data from the auxiliary memory (for safety).
 However, if <i>copy_aux_mem</i> is set to <i>false</i>,
 the matrix will instead directly use the auxiliary memory (ie. no copying);
-this is faster, but can be dangerous unless you know what you are doing!
+this is faster, but can be dangerous unless you know what you're doing!
 <br>
 <br>
 The <i>strict</i> parameter comes into effect only when <i>copy_aux_mem</i> is set to <i>false</i>
@@ -954,7 +954,7 @@ Create a column vector using data from writable auxiliary (external) memory, whe
 By default the vector allocates its own memory and copies data from the auxiliary memory (for safety).
 However, if <i>copy_aux_mem</i> is set to <i>false</i>,
 the vector will instead directly use the auxiliary memory (ie. no copying);
-this is faster, but can be dangerous unless you know what you are doing!
+this is faster, but can be dangerous unless you know what you're doing!
 <br>
 <br>
 The <i>strict</i> parameter comes into effect only when <i>copy_aux_mem</i> is set to <i>false</i>
@@ -1185,7 +1185,7 @@ Create a row vector using data from writable auxiliary (external) memory, where 
 By default the vector allocates its own memory and copies data from the auxiliary memory (for safety).
 However, if <i>copy_aux_mem</i> is set to <i>false</i>,
 the vector will instead directly use the auxiliary memory (ie. no copying);
-this is faster, but can be dangerous unless you know what you are doing!
+this is faster, but can be dangerous unless you know what you're doing!
 <br>
 <br>
 The <i>strict</i> parameter comes into effect only when <i>copy_aux_mem</i> is set to <i>false</i>
@@ -1431,7 +1431,7 @@ Create a cube using data from writable auxiliary (external) memory, where <i>ptr
 By default the cube allocates its own memory and copies data from the auxiliary memory (for safety).
 However, if <i>copy_aux_mem</i> is set to <i>false</i>,
 the cube will instead directly use the auxiliary memory (ie. no copying);
-this is faster, but can be dangerous unless you know what you are doing!
+this is faster, but can be dangerous unless you know what you're doing!
 <br>
 <br>
 The <i>strict</i> parameter comes into effect only when <i>copy_aux_mem</i> is set to <i>false</i>
@@ -1559,7 +1559,7 @@ Constructors, where <i>object_type</i> is another class, eg. <i>vec</i>, <i>mat<
 </li>
 <br>
 <li>
-<b>Caveat</b>: to store a set of matrices of the same size, the <a href="#Cube">Cube</a> class is more efficient
+<b>Caveat</b>: if you want to store a set of matrices of the same size, the <a href="#Cube">Cube</a> class is more efficient
 </li>
 <br>
 <li>
@@ -3024,11 +3024,11 @@ do not use <i>.reshape()</i> if you simply want to change the size without prese
 use <a href="#set_size">.set_size()</a> instead, which is much faster
 </li>
 <li>
-to grow/shrink the object while preserving the elements <b>as well as</b> the layout of the elements,
+if you wish to grow/shrink the object while preserving the elements <b>as well as</b> the layout of the elements,
 use <a href="#resize_member">.resize()</a> instead
 </li>
 <li>
-to create a vector representation of a matrix (ie. concatenate all the columns or rows),
+if you want to create a vector representation of a matrix (ie. concatenate all the columns or rows),
 use <a href="#vectorise">vectorise()</a> instead
 </li>
 </ul>
@@ -3352,7 +3352,7 @@ The aggregate set of the specified elements is treated as a column vector
 </li>
 <br>
 <li>
-The function <i>.unsafe_col()</i> is provided for speed reasons and should be used only if you know what you are doing.
+The function <i>.unsafe_col()</i> is provided for speed reasons and should be used only if you know what you're doing.
 It creates a seemingly independent <i>Col</i> vector object (eg.&nbsp;<i>vec</i>),
 but uses memory from the existing matrix object.
 As such, the created vector is not alias safe,
@@ -3864,7 +3864,7 @@ C.set_imag(B);
 <br>
 <li>
 <b>Caveat:</b>
-to directly construct a complex matrix out of two real matrices,
+if you want to directly construct a complex matrix out of two real matrices,
 the following code is faster:
 <ul>
 <pre>
@@ -4157,7 +4157,7 @@ Data for cubes is stored in a slice-by-slice (matrix-by-matrix) order
 </li>
 <br>
 <li>
-<b>Caveat:</b> this function is not recommended for use unless you know what you are doing!
+<b>Caveat:</b> this function is not recommended for use unless you know what you're doing!
 </li>
 <br>
 <li>
@@ -4204,8 +4204,8 @@ Obtain a raw pointer to the memory used by the specified column
 </li>
 <br>
 <li>
-<b>Caveat:</b> this function is not recommended for use unless you know what you are doing
--- it is safer to use <a href="#submat">submatrix views</a> instead
+<b>Caveat:</b> this function is not recommended for use unless you know what you're doing
+-- you may wish to use <a href="#submat">submatrix views</a> instead
 </li>
 <br>
 <li>
@@ -4886,7 +4886,7 @@ If the matrix expression appears to be singular, the output matrix is reset and 
 if matrix <i>A</i> is know to be symmetric positive definite, it's faster to use <a href="#inv_sympd">inv_sympd()</a> instead 
 </li>
 <li>
-to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
+if you want to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
 it is faster and more accurate to use <a href="#solve">solve()</a> instead
 </li>
 </ul>
@@ -6202,7 +6202,7 @@ To change the RNG seed, use <i>arma_rng::set_seed(value)</i> or <i>arma_rng::set
 </li>
 <br>
 <li>
-<b>Caveat:</b> to generate a continuous distribution with floating point values (ie. <i>float</i> or <i>double</i>),
+<b>Caveat:</b> if you want to generate a continuous distribution with floating point values (ie. <i>float</i> or <i>double</i>),
 use <a href="#randu_randn_standalone">randu()</a> or <a href="#randu_randn_standalone">randn()</a> instead 
 </li>
 <br>
@@ -6269,7 +6269,7 @@ To change the RNG seed, use <i>arma_rng::set_seed(value)</i> or <i>arma_rng::set
 </li>
 <br>
 <li>
-<b>Caveat:</b> to generate a matrix with random integer values instead of floating point values,
+<b>Caveat:</b> if you want to generate a matrix with random integer values instead of floating point values,
 use <a href="#randi">randi()</a> instead 
 </li>
 <br>
@@ -7537,7 +7537,7 @@ vec b = diff(a);
 </li>
 <br>
 <li>
-<b>Caveat:</b> to calculate the norm, the <a href="#norm">norm()</a> function is more robust
+<b>Caveat:</b> if you want to calculate the norm, the <a href="#norm">norm()</a> function is more robust
 </li>
 <br>
 <li>
@@ -8785,11 +8785,11 @@ do not use <i>reshape()</i> if you simply want to change the size without preser
 use <a href="#set_size">.set_size()</a> instead, which is much faster
 </li>
 <li>
-to grow/shrink a matrix while preserving the elements <b>as well as</b> the layout of the elements,
+if you wish to grow/shrink a matrix while preserving the elements <b>as well as</b> the layout of the elements,
 use <a href="#resize">resize()</a> instead
 </li>
 <li>
-to create a vector representation of a matrix (ie. concatenate all the columns or rows),
+if you want to create a vector representation of a matrix (ie. concatenate all the columns or rows),
 use <a href="#vectorise">vectorise()</a> instead
 </li>
 </ul>
@@ -10381,7 +10381,7 @@ if matrix <i>A</i> is know to be symmetric positive definite, it's faster to use
 if matrix <i>A</i> is know to be diagonal, use <i>inv(&nbsp;diagmat(A)&nbsp;)</i>
 </li>
 <li>
-to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
+if you want to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
 it is faster and more accurate to use <a href="#solve">solve()</a> instead
 </li>
 </ul>
@@ -10441,7 +10441,7 @@ There is currently no explicit check whether <i>A</i> is symmetric or positive d
 <br>
 <li>
 <b>Caveat:</b> 
-to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
+if you want to solve a system of linear equations, such as <i>Z&nbsp;=&nbsp;inv(X)*Y</i>,
 it is faster and more accurate to use <a href="#solve">solve()</a> instead
 </li>
 <br>
@@ -12973,7 +12973,7 @@ cout &lt;&lt; more_stats.cov() / (sd.t() * sd);
 <li>
 <b>Caveat:</b>
 <code>datum::nan</code> is not equal to anything, even itself;
-to check whether a given number <i>x</i> is finite,
+if you wish to check whether a given number <i>x</i> is finite,
 use <a href="#is_finite">is_finite</a>(<i>x</i>)
 </li>
 <br>
@@ -14055,6 +14055,13 @@ A&nbsp;<font size=-1>&lt;&lt;</font> 1 <font size=-1>&lt;&lt;</font> 2 <font siz
 <b>example program</b>
 <br>
 <ul>
+<li>
+If you save the program below as <i>example.cpp</i>,
+under Linux you can compile it using:
+<br>
+g++ example.cpp -o example -O2 -larmadillo
+</li>
+<ul>
 <pre>
 #include &lt;iostream&gt;
 #include &lt;armadillo&gt;
@@ -14062,7 +14069,7 @@ A&nbsp;<font size=-1>&lt;&lt;</font> 1 <font size=-1>&lt;&lt;</font> 2 <font siz
 using namespace std;
 using namespace arma;
 
-int main()
+int main(int argc, char** argv)
   {
   mat A = randu&lt;mat&gt;(4,5);
   mat B = randu&lt;mat&gt;(4,5);
@@ -14072,20 +14079,14 @@ int main()
   return 0;
   }
 </pre>
+</ul>
 <li>
-If you save the above program as <i>example.cpp</i>,
-under Linux and Mac OS X it can be compiled using:
-<br>
-<code>g++ example.cpp -o example -O2 -larmadillo</code>
+See also the example programs that come with the Armadillo archive
 </li>
 <br>
 <li>
-As Armadillo is a template library, we strongly recommend to enable optimisation when compiling programs
-(eg. when compiling with GCC or clang, use the -O2 or -O3 options)
-</li>
-<br>
-<li>
-See also the example program that comes with the Armadillo archive
+As Armadillo is a template library, we strongly recommended to have optimisation enabled when compiling programs
+(eg. when compiling with GCC or clang, use the -O1 or -O2 options)
 </li>
 </ul>
 <br>
