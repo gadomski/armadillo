@@ -29,6 +29,8 @@ class glue_conv2
   {
   public:
   
+  template<typename eT> inline static void apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B);
+  
   template<typename T1, typename T2> inline static void apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>& expr);
   };
 

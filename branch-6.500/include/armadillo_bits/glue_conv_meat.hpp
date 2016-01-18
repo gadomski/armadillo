@@ -125,20 +125,12 @@ glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& 
 
 //! rudimentary implementation of 2D convolution operation
 
-template<typename T1, typename T2>
+template<typename eT>
 inline
 void
-glue_conv2::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>& expr)
+glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
   {
   arma_extra_debug_sigprint();
-  
-  typedef typename T1::elem_type eT;
-  
-  const quasi_unwrap<T1> UA(expr.A);
-  const quasi_unwrap<T2> UB(expr.B);
-  
-  const Mat<eT>& A = UA.M;
-  const Mat<eT>& B = UB.M;
   
   const Mat<eT>& G = (A.n_elem <= B.n_elem) ? A : B;   // unflipped filter coefficients
   const Mat<eT>& W = (A.n_elem <= B.n_elem) ? B : A;   // original 2D image
@@ -169,7 +161,7 @@ glue_conv2::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>
       }
     }
   
-  Mat<eT> X( (W.n_rows + 2*(H_n_rows - 1)), (W.n_cols + 2*(H_n_cols - 1)), fill::zeros );
+  Mat<eT> X( (W.n_rows + 2*(H_n_rows_m1)), (W.n_cols + 2*(H_n_cols_m1)), fill::zeros );
   
   X( H_n_rows-1, H_n_cols-1, size(W) ) = W;  // zero padded version of 2D image
   
@@ -181,6 +173,50 @@ glue_conv2::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>
       {
       // out.at(row, col) = accu( H % X(row, col, size(H)) );
       out_colptr[row] = accu( H % X.submat(row, col, (row + H_n_rows_m1), (col + H_n_cols_m1)) );
+      }
+    }
+  }
+
+
+
+template<typename T1, typename T2>
+inline
+void
+glue_conv2::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type eT;
+  
+  const quasi_unwrap<T1> UA(expr.A);
+  const quasi_unwrap<T2> UB(expr.B);
+  
+  const Mat<eT>& A = UA.M;
+  const Mat<eT>& B = UB.M;
+  
+  const uword mode = expr.aux_uword;
+  
+  if(mode == 0)  // full convolution
+    {
+    glue_conv2::apply(out, A, B);
+    }
+  else
+  if(mode == 1)  // same size as A
+    {
+    Mat<eT> tmp;
+    
+    glue_conv2::apply(tmp, A, B);
+    
+    if( (tmp.is_empty() == false) && (A.is_empty() == false) && (B.is_empty() == false) )
+      {
+      const uword start_row = std::floor( double(B.n_rows) / double(2) );
+      const uword start_col = std::floor( double(B.n_cols) / double(2) );
+      
+      out = tmp(start_row, start_col, size(A));
+      }
+    else
+      {
+      out.zeros(A.n_rows, A.n_cols);
       }
     }
   }

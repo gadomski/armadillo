@@ -40,11 +40,17 @@ enable_if2
   (is_arma_type<T1>::value && is_arma_type<T2>::value && is_same_type<typename T1::elem_type, typename T2::elem_type>::value),
   const Glue<T1, T2, glue_conv2>
   >::result
-conv2(const T1& A, const T2& B)
+conv2(const T1& A, const T2& B, const char* shape = "full")
   {
   arma_extra_debug_sigprint();
   
-  return Glue<T1, T2, glue_conv2>(A, B);
+  const char sig = (shape != NULL) ? shape[0] : char(0);
+  
+  arma_debug_check( ((sig != 'f') && (sig != 's')), "conv2(): unsupported value of 'shape' parameter" );
+  
+  const uword mode = (sig == 's') ? uword(1) : uword(0);
+  
+  return Glue<T1, T2, glue_conv2>(A, B, mode);
   }
 
 
