@@ -15,7 +15,7 @@
 template<typename eT>
 inline
 void
-glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const bool A_is_col)
+glue_conv::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const bool A_is_col)
   {
   arma_extra_debug_sigprint();
   
@@ -31,80 +31,31 @@ glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const
   
   if( (h_n_elem == 0) || (x_n_elem == 0) )  { out.zeros(); return; }
   
-  const eT*   h_mem = h.memptr();
-  const eT*   x_mem = x.memptr();
-        eT* out_mem = out.memptr();
   
+  Col<eT> hh(h_n_elem);  // flipped version of h
   
-  // if(x_n_elem < 1)  // TODO: threshold
-  if(false)
+  const eT*   h_mem =  h.memptr();
+        eT*  hh_mem = hh.memptr();
+  
+  for(uword i=0; i < h_n_elem; ++i)
     {
-    // direct implementation with no memory overhead
-    
-    for(uword out_i = 0; out_i < (h_n_elem_m1); ++out_i)
-      {
-      eT acc = eT(0);
-      
-      uword h_i = out_i;
-      
-      for(uword x_i = 0; x_i <= out_i; ++x_i, --h_i)
-        {
-        acc += h_mem[h_i] * x_mem[x_i];
-        }
-      
-      out_mem[out_i] = acc;
-      }
-    
-    
-    for(uword out_i = h_n_elem_m1; out_i < out_n_elem - (h_n_elem_m1); ++out_i)
-      {
-      eT acc = eT(0);
-     
-      uword h_i = h_n_elem - 1;
-      
-      for(uword x_i = out_i - h_n_elem + 1; x_i <= out_i; ++x_i, --h_i)
-        {
-        acc += h_mem[h_i] * x_mem[x_i];
-        }
-        
-      out_mem[out_i] = acc;
-      }
-    
-    
-    for(uword out_i = out_n_elem - (h_n_elem_m1); out_i < out_n_elem; ++out_i)
-      {
-      eT acc = eT(0);
-      
-      uword h_i = h_n_elem - 1;
-      
-      for(uword x_i = out_i - h_n_elem + 1; x_i < x_n_elem; ++x_i, --h_i)
-        {
-        acc += h_mem[h_i] * x_mem[x_i];
-        }
-      
-      out_mem[out_i] = acc;
-      }
+    hh_mem[h_n_elem_m1-i] = h_mem[i];
     }
-  else
+  
+  
+  Col<eT> xx( (x_n_elem + 2*h_n_elem_m1), fill::zeros );  // zero padded version of x
+  
+  const eT*  x_mem =  x.memptr();
+        eT* xx_mem = xx.memptr();
+  
+  arrayops::copy( &(xx_mem[h_n_elem_m1]), x_mem, x_n_elem );
+  
+  
+  eT* out_mem = out.memptr();
+        
+  for(uword i=0; i < out_n_elem; ++i)
     {
-    // high-speed implementation with memory overhead
-    
-    Col<eT> hh(h_n_elem);  // flipped version of h
-    
-    eT* hh_mem = hh.memptr();
-    
-    for(uword i=0; i < h_n_elem; ++i)  { hh_mem[h_n_elem_m1-i] = h_mem[i]; }
-    
-    Col<eT> xx( (x_n_elem + 2*h_n_elem_m1), fill::zeros );
-    
-    eT* xx_mem = xx.memptr();
-    
-    arrayops::copy( &(xx_mem[h_n_elem_m1]), x_mem, x_n_elem );  // zero padded version of x
-    
-    for(uword i=0; i < out_n_elem; ++i)
-      {
-      out_mem[i] = dot( hh, xx.subvec(i, (i + h_n_elem_m1)) );
-      }
+    out_mem[i] = dot( hh, xx.subvec(i, (i + h_n_elem_m1)) );
     }
   }
 
@@ -122,47 +73,39 @@ glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& 
   const quasi_unwrap<T1> UA(expr.A);
   const quasi_unwrap<T2> UB(expr.B);
   
+  const Mat<eT>& A = UA.M;
+  const Mat<eT>& B = UB.M;
+  
   arma_debug_check
     (
-    ( ((UA.M.is_vec() == false) && (UA.M.is_empty() == false)) || ((UB.M.is_vec() == false) && (UB.M.is_empty() == false)) ),
+    ( ((A.is_vec() == false) && (A.is_empty() == false)) || ((B.is_vec() == false) && (B.is_empty() == false)) ),
     "conv(): given object is not a vector"
     );
   
-  const bool A_is_col = ((T1::is_col) || (UA.M.n_cols == 1));
+  const bool A_is_col = ((T1::is_col) || (A.n_cols == 1));
   
   const uword mode = expr.aux_uword;
   
   if(mode == 0)  // full convolution
     {
-    if(UA.is_alias(out) || UB.is_alias(out))
-      {
-      Mat<eT> tmp;
-      
-      glue_conv::apply_noalias(tmp, UA.M, UB.M, A_is_col);
-      
-      out.steal_mem(tmp);
-      }
-    else
-      {
-      glue_conv::apply_noalias(out, UA.M, UB.M, A_is_col);
-      }
+    glue_conv::apply(out, A, B, A_is_col);
     }
   else
   if(mode == 1)  // same size as A
     {
     Mat<eT> tmp;
     
-    glue_conv::apply_noalias(tmp, UA.M, UB.M, A_is_col);
+    glue_conv::apply(tmp, A, B, A_is_col);
     
-    if( (tmp.is_empty() == false) && (UA.M.is_empty() == false) && (UB.M.is_empty() == false) )
+    if( (tmp.is_empty() == false) && (A.is_empty() == false) && (B.is_empty() == false) )
       {
-      const uword start = uword( std::floor( double(UB.M.n_elem) / double(2) ) );
+      const uword start = uword( std::floor( double(B.n_elem) / double(2) ) );
       
-      out = (A_is_col) ? tmp(start, 0, size(UA.M)) : tmp(0, start, size(UA.M));
+      out = (A_is_col) ? tmp(start, 0, size(A)) : tmp(0, start, size(A));
       }
     else
       {
-      out.zeros( size(UA.M) );
+      out.zeros( size(A) );
       }
     }
   }
