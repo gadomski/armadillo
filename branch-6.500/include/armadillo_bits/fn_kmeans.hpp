@@ -54,16 +54,16 @@ kmeans
   
   const bool status = model.kmeans_wrapper(means, data.get_ref(), k, seed_mode, n_iter, print_mode);
   
-  if(status == false)
+  if(status == true)
+    {
+    means = model.means;
+    }
+  else
     {
     means.reset();
-    
-    return false;
     }
   
-  means = model.means;
-  
-  return true;
+  return status;
   }
 
 
