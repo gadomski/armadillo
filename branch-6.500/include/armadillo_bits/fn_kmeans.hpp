@@ -56,7 +56,7 @@ kmeans
   
   if(status == false)
     {
-    if(seed_mode != keep_existing)  { means.reset(); }
+    means.reset();
     
     return false;
     }
