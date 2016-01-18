@@ -1,4 +1,4 @@
-// Copyright (C) 2010-2015 National ICT Australia (NICTA)
+// Copyright (C) 2010-2016 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -28,9 +28,9 @@ glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const
   const uword   x_n_elem = x.n_elem;
   const uword out_n_elem = h_n_elem + x_n_elem - 1;
   
-  if( (h_n_elem == 0) || (x_n_elem == 0) )  { out.reset(); return; }
-  
   (A_is_col) ? out.set_size(out_n_elem, 1) : out.set_size(1, out_n_elem);
+  
+  if( (h_n_elem == 0) || (x_n_elem == 0) )  { out.zeros(); return; }
   
   const eT*   h_mem = h.memptr();
   const eT*   x_mem = x.memptr();
@@ -87,14 +87,14 @@ glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const
 template<typename T1, typename T2>
 inline
 void
-glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& X)
+glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& expr)
   {
   arma_extra_debug_sigprint();
   
   typedef typename T1::elem_type eT;
   
-  const quasi_unwrap<T1> UA(X.A);
-  const quasi_unwrap<T2> UB(X.B);
+  const quasi_unwrap<T1> UA(expr.A);
+  const quasi_unwrap<T2> UB(expr.B);
   
   arma_debug_check
     (
@@ -104,17 +104,40 @@ glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& 
   
   const bool A_is_col = ((T1::is_col) || (UA.M.n_cols == 1));
   
-  if(UA.is_alias(out) || UB.is_alias(out))
+  const uword mode = expr.aux_uword;
+  
+  if(mode == 0)  // full convolution
+    {
+    if(UA.is_alias(out) || UB.is_alias(out))
+      {
+      Mat<eT> tmp;
+      
+      glue_conv::apply_noalias(tmp, UA.M, UB.M, A_is_col);
+      
+      out.steal_mem(tmp);
+      }
+    else
+      {
+      glue_conv::apply_noalias(out, UA.M, UB.M, A_is_col);
+      }
+    }
+  else
+  if(mode == 1)  // same size as A
     {
     Mat<eT> tmp;
     
     glue_conv::apply_noalias(tmp, UA.M, UB.M, A_is_col);
     
-    out.steal_mem(tmp);
-    }
-  else
-    {
-    glue_conv::apply_noalias(out, UA.M, UB.M, A_is_col);
+    if( (tmp.is_empty() == false) && (UA.M.is_empty() == false) && (UB.M.is_empty() == false) )
+      {
+      const uword start = uword( std::floor( double(UB.M.n_elem) / double(2) ) );
+      
+      out = (A_is_col) ? tmp(start, 0, size(UA.M)) : tmp(0, start, size(UA.M));
+      }
+    else
+      {
+      out.zeros( size(UA.M) );
+      }
     }
   }
 
@@ -138,9 +161,9 @@ glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
   const uword out_n_rows = ((W.n_rows > 0) || (G.n_rows > 0)) ? (W.n_rows + G.n_rows - 1) : uword(0);
   const uword out_n_cols = ((W.n_cols > 0) || (G.n_cols > 0)) ? (W.n_cols + G.n_cols - 1) : uword(0);
   
-  out.zeros( out_n_rows, out_n_cols );
+  out.set_size( out_n_rows, out_n_cols );
   
-  if(G.is_empty() || W.is_empty())  { return; }
+  if(G.is_empty() || W.is_empty())  { out.zeros(); return; }
   
   Mat<eT> H(G.n_rows, G.n_cols);  // flipped filter coefficients
   
@@ -209,14 +232,14 @@ glue_conv2::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv2>
     
     if( (tmp.is_empty() == false) && (A.is_empty() == false) && (B.is_empty() == false) )
       {
-      const uword start_row = std::floor( double(B.n_rows) / double(2) );
-      const uword start_col = std::floor( double(B.n_cols) / double(2) );
+      const uword start_row = uword( std::floor( double(B.n_rows) / double(2) ) );
+      const uword start_col = uword( std::floor( double(B.n_cols) / double(2) ) );
       
       out = tmp(start_row, start_col, size(A));
       }
     else
       {
-      out.zeros(A.n_rows, A.n_cols);
+      out.zeros( size(A) );
       }
     }
   }
