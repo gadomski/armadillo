@@ -12,6 +12,7 @@
 //! @{
 
 
+
 template<typename eT>
 inline
 void
@@ -55,7 +56,9 @@ glue_conv::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const bool A_
         
   for(uword i=0; i < out_n_elem; ++i)
     {
-    out_mem[i] = dot( hh, xx.subvec(i, (i + h_n_elem_m1)) );
+    // out_mem[i] = dot( hh, xx.subvec(i, (i + h_n_elem_m1)) );
+    
+    out_mem[i] = op_dot::direct_dot( h_n_elem, hh_mem, &(xx_mem[i]) );
     }
   }
 
@@ -115,7 +118,6 @@ glue_conv::apply(Mat<typename T1::elem_type>& out, const Glue<T1,T2,glue_conv>& 
 ///
 
 
-//! rudimentary implementation of 2D convolution operation
 
 template<typename eT>
 inline
@@ -164,7 +166,17 @@ glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
     for(uword row=0; row < out_n_rows; ++row)
       {
       // out.at(row, col) = accu( H % X(row, col, size(H)) );
-      out_colptr[row] = accu( H % X.submat(row, col, (row + H_n_rows_m1), (col + H_n_cols_m1)) );  // TODO: use dot() instead?
+      
+      eT acc = eT(0);
+      
+      for(uword H_col = 0; H_col < H_n_cols; ++H_col)
+        {
+        const eT* X_colptr = X.colptr(col + H_col);
+        
+        acc += op_dot::direct_dot( H_n_rows, H.colptr(H_col), &(X_colptr[row]) );
+        }
+      
+      out_colptr[row] = acc;
       }
     }
   }
