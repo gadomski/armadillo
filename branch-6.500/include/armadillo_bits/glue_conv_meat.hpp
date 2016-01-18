@@ -12,8 +12,6 @@
 //! @{
 
 
-//! rudimentary implementation of 1D convolution operation
-
 template<typename eT>
 inline
 void
@@ -24,9 +22,10 @@ glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const
   const Mat<eT>& h = (A.n_elem <= B.n_elem) ? A : B;
   const Mat<eT>& x = (A.n_elem <= B.n_elem) ? B : A;
   
-  const uword   h_n_elem = h.n_elem;
-  const uword   x_n_elem = x.n_elem;
-  const uword out_n_elem = h_n_elem + x_n_elem - 1;
+  const uword   h_n_elem    = h.n_elem;
+  const uword   h_n_elem_m1 = h_n_elem - 1;
+  const uword   x_n_elem    = x.n_elem;
+  const uword out_n_elem    = ((h_n_elem + x_n_elem) > 0) ? (h_n_elem + x_n_elem - 1) : uword(0);
   
   (A_is_col) ? out.set_size(out_n_elem, 1) : out.set_size(1, out_n_elem);
   
@@ -37,48 +36,75 @@ glue_conv::apply_noalias(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B, const
         eT* out_mem = out.memptr();
   
   
-  for(uword out_i = 0; out_i < (h_n_elem-1); ++out_i)
+  // if(x_n_elem < 1)  // TODO: threshold
+  if(false)
     {
-    eT acc = eT(0);
+    // direct implementation with no memory overhead
     
-    uword h_i = out_i;
-    
-    for(uword x_i = 0; x_i <= out_i; ++x_i, --h_i)
+    for(uword out_i = 0; out_i < (h_n_elem_m1); ++out_i)
       {
-      acc += h_mem[h_i] * x_mem[x_i];
-      }
-    
-    out_mem[out_i] = acc;
-    }
-  
-  
-  for(uword out_i = h_n_elem-1; out_i < out_n_elem - (h_n_elem-1); ++out_i)
-    {
-    eT acc = eT(0);
-   
-    uword h_i = h_n_elem - 1;
-    
-    for(uword x_i = out_i - h_n_elem + 1; x_i <= out_i; ++x_i, --h_i)
-      {
-      acc += h_mem[h_i] * x_mem[x_i];
-      }
+      eT acc = eT(0);
       
-    out_mem[out_i] = acc;
-    }
-  
-  
-  for(uword out_i = out_n_elem - (h_n_elem-1); out_i < out_n_elem; ++out_i)
-    {
-    eT acc = eT(0);
-    
-    uword h_i = h_n_elem - 1;
-    
-    for(uword x_i = out_i - h_n_elem + 1; x_i < x_n_elem; ++x_i, --h_i)
-      {
-      acc += h_mem[h_i] * x_mem[x_i];
+      uword h_i = out_i;
+      
+      for(uword x_i = 0; x_i <= out_i; ++x_i, --h_i)
+        {
+        acc += h_mem[h_i] * x_mem[x_i];
+        }
+      
+      out_mem[out_i] = acc;
       }
     
-    out_mem[out_i] = acc;
+    
+    for(uword out_i = h_n_elem_m1; out_i < out_n_elem - (h_n_elem_m1); ++out_i)
+      {
+      eT acc = eT(0);
+     
+      uword h_i = h_n_elem - 1;
+      
+      for(uword x_i = out_i - h_n_elem + 1; x_i <= out_i; ++x_i, --h_i)
+        {
+        acc += h_mem[h_i] * x_mem[x_i];
+        }
+        
+      out_mem[out_i] = acc;
+      }
+    
+    
+    for(uword out_i = out_n_elem - (h_n_elem_m1); out_i < out_n_elem; ++out_i)
+      {
+      eT acc = eT(0);
+      
+      uword h_i = h_n_elem - 1;
+      
+      for(uword x_i = out_i - h_n_elem + 1; x_i < x_n_elem; ++x_i, --h_i)
+        {
+        acc += h_mem[h_i] * x_mem[x_i];
+        }
+      
+      out_mem[out_i] = acc;
+      }
+    }
+  else
+    {
+    // high-speed implementation with memory overhead
+    
+    Col<eT> hh(h_n_elem);  // flipped version of h
+    
+    eT* hh_mem = hh.memptr();
+    
+    for(uword i=0; i < h_n_elem; ++i)  { hh_mem[h_n_elem_m1-i] = h_mem[i]; }
+    
+    Col<eT> xx( (x_n_elem + 2*h_n_elem_m1), fill::zeros );
+    
+    eT* xx_mem = xx.memptr();
+    
+    arrayops::copy( &(xx_mem[h_n_elem_m1]), x_mem, x_n_elem );  // zero padded version of x
+    
+    for(uword i=0; i < out_n_elem; ++i)
+      {
+      out_mem[i] = dot( hh, xx.subvec(i, (i + h_n_elem_m1)) );
+      }
     }
   }
 
@@ -158,8 +184,8 @@ glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
   const Mat<eT>& G = (A.n_elem <= B.n_elem) ? A : B;   // unflipped filter coefficients
   const Mat<eT>& W = (A.n_elem <= B.n_elem) ? B : A;   // original 2D image
   
-  const uword out_n_rows = ((W.n_rows > 0) || (G.n_rows > 0)) ? (W.n_rows + G.n_rows - 1) : uword(0);
-  const uword out_n_cols = ((W.n_cols > 0) || (G.n_cols > 0)) ? (W.n_cols + G.n_cols - 1) : uword(0);
+  const uword out_n_rows = ((W.n_rows + G.n_rows) > 0) ? (W.n_rows + G.n_rows - 1) : uword(0);
+  const uword out_n_cols = ((W.n_cols + G.n_cols) > 0) ? (W.n_cols + G.n_cols - 1) : uword(0);
   
   out.set_size( out_n_rows, out_n_cols );
   
@@ -184,9 +210,9 @@ glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
       }
     }
   
-  Mat<eT> X( (W.n_rows + 2*(H_n_rows_m1)), (W.n_cols + 2*(H_n_cols_m1)), fill::zeros );
+  Mat<eT> X( (W.n_rows + 2*H_n_rows_m1), (W.n_cols + 2*H_n_cols_m1), fill::zeros );
   
-  X( H_n_rows-1, H_n_cols-1, size(W) ) = W;  // zero padded version of 2D image
+  X( H_n_rows_m1, H_n_cols_m1, size(W) ) = W;  // zero padded version of 2D image
   
   for(uword col=0; col < out_n_cols; ++col)
     {
@@ -195,7 +221,7 @@ glue_conv2::apply(Mat<eT>& out, const Mat<eT>& A, const Mat<eT>& B)
     for(uword row=0; row < out_n_rows; ++row)
       {
       // out.at(row, col) = accu( H % X(row, col, size(H)) );
-      out_colptr[row] = accu( H % X.submat(row, col, (row + H_n_rows_m1), (col + H_n_cols_m1)) );
+      out_colptr[row] = accu( H % X.submat(row, col, (row + H_n_rows_m1), (col + H_n_cols_m1)) );  // TODO: use dot() instead?
       }
     }
   }
