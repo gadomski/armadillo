@@ -12176,11 +12176,16 @@ while(i &lt; N)
   }
 
 
-// model the data as a GMM with 2 gaussians
+// model the data as a GMM with 2 Gaussians
 
 gmm_diag model;
 
-model.learn(data, 2, maha_dist, random_subset, 10, 5, 1e-10, true);
+bool status = model.learn(data, 2, maha_dist, random_subset, 10, 5, 1e-10, true);
+
+if(status == false)
+  {
+  cout &lt;&lt; "learning failed" &lt;&lt; endl;
+  }
 
 model.means.print("means:");
 
