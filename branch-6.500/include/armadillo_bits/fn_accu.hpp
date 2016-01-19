@@ -1,4 +1,4 @@
-// Copyright (C) 2008-2015 National ICT Australia (NICTA)
+// Copyright (C) 2008-2016 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -134,6 +134,7 @@ accu_proxy_at(const Proxy<T1>& P)
 template<typename T1>
 arma_hot
 inline
+arma_warn_unused
 typename enable_if2< is_arma_type<T1>::value, typename T1::elem_type >::result
 accu(const T1& X)
   {
@@ -144,6 +145,38 @@ accu(const T1& X)
   const bool have_direct_mem = (is_Mat<typename Proxy<T1>::stored_type>::value) || (is_subview_col<typename Proxy<T1>::stored_type>::value);
   
   return (Proxy<T1>::prefer_at_accessor) ? accu_proxy_at(P) : (have_direct_mem ? accu_proxy_mat(P) : accu_proxy_linear(P));
+  }
+
+
+
+//! explicit handling of multiply-and-accumulate
+template<typename T1, typename T2>
+inline
+arma_warn_unused
+typename T1::elem_type
+accu(const eGlue<T1,T2,eglue_schur>& expr)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef eGlue<T1,T2,eglue_schur> expr_type;
+  
+  typedef typename expr_type::proxy1_type::stored_type P1_stored_type;
+  typedef typename expr_type::proxy2_type::stored_type P2_stored_type;
+  
+  const bool have_direct_mem_1 = (is_Mat<P1_stored_type>::value) || (is_subview_col<P1_stored_type>::value);
+  const bool have_direct_mem_2 = (is_Mat<P2_stored_type>::value) || (is_subview_col<P2_stored_type>::value);
+  
+  if(have_direct_mem_1 && have_direct_mem_2)
+    {
+    const quasi_unwrap<P1_stored_type> tmp1(expr.P1.Q);
+    const quasi_unwrap<P2_stored_type> tmp2(expr.P2.Q);
+    
+    return op_dot::direct_dot(tmp1.M.n_elem, tmp1.M.memptr(), tmp2.M.memptr());
+    }
+  
+  const Proxy<expr_type> P(expr);
+  
+  return (Proxy<expr_type>::prefer_at_accessor) ? accu_proxy_at(P) : accu_proxy_linear(P);
   }
 
 
