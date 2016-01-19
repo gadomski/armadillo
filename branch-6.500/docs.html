@@ -6674,14 +6674,15 @@ Accumulate (sum) all elements of a matrix or cube
 Examples:
 <ul>
 <pre>
-mat A = randu&lt;mat&gt;(5,5);
+mat A(5, 6, fill::randu);
+mat B(5, 6, fill::randu);
+
 double x = accu(A);
 
-mat B = randu&lt;mat&gt;(5,5);
 double y = accu(A % B);
 
-// operator % performs element-wise multiplication,
-// hence accu(A % B) is a "multiply-and-accumulate" operation
+// accu(A % B) is a "multiply-and-accumulate" operation
+// as operator % performs element-wise multiplication
 </pre>
 </ul>
 </li>
@@ -6690,6 +6691,7 @@ double y = accu(A % B);
 See also:
 <ul>
 <li><a href="#sum">sum()</a></li>
+<li><a href="#dot">dot()</a></li>
 <li><a href="#cumsum">cumsum()</a></li>
 <li><a href="#as_scalar">as_scalar()</a></li>
 <li><a href="#trace">trace()</a></li>
@@ -15014,6 +15016,7 @@ List of additions and changes for each version:
 <li>added <a href="#conv2">conv2()</a> for 2D convolution</li>
 <li>added stand-alone <a href="#kmeans">kmeans()</a> function for clustering data</li>
 <li>extended <a href="#conv">conv()</a> to optionally provide central convolution</li>
+<li>faster handling of multiply-and-accumulate by <a href="#accu">accu()</a></li>
 </ul>
 </li>
 <br>
