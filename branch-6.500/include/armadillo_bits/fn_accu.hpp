@@ -351,6 +351,71 @@ accu(const subview_col<eT>& X)
 
 
 
+template<typename T1>
+arma_hot
+inline
+typename T1::elem_type
+accu_cube_proxy(const ProxyCube<T1>& P)
+  {
+  arma_extra_debug_sigprint();
+  
+  typedef typename T1::elem_type          eT;
+  typedef typename ProxyCube<T1>::ea_type ea_type;
+  
+  if(ProxyCube<T1>::prefer_at_accessor == false)
+    {
+          ea_type Pea    = P.get_ea();
+    const uword   n_elem = P.get_n_elem();
+    
+    eT val1 = eT(0);
+    eT val2 = eT(0);
+    
+    uword i,j;
+    
+    for(i=0, j=1; j<n_elem; i+=2, j+=2)
+      {
+      val1 += Pea[i];
+      val2 += Pea[j];
+      }
+    
+    if(i < n_elem)
+      {
+      val1 += Pea[i];
+      }
+    
+    return val1 + val2;
+    }
+  else
+    {
+    const uword n_rows   = P.get_n_rows();
+    const uword n_cols   = P.get_n_cols();
+    const uword n_slices = P.get_n_slices();
+    
+    eT val1 = eT(0);
+    eT val2 = eT(0);
+    
+    for(uword slice = 0; slice < n_slices; ++slice)
+    for(uword col   = 0; col   < n_cols;   ++col  )
+      {
+      uword i,j;
+      for(i=0, j=1; j<n_rows; i+=2, j+=2)
+        {
+        val1 += P.at(i,col,slice);
+        val2 += P.at(j,col,slice);
+        }
+      
+      if(i < n_rows)
+        {
+        val1 += P.at(i,col,slice);
+        }
+      }
+    
+    return val1 + val2;
+    }
+  }
+
+
+
 //! accumulate the elements of a cube
 template<typename T1>
 arma_hot
@@ -361,69 +426,45 @@ accu(const BaseCube<typename T1::elem_type,T1>& X)
   {
   arma_extra_debug_sigprint();
   
-  typedef typename T1::elem_type          eT;
-  typedef typename ProxyCube<T1>::ea_type ea_type;
-  
-  const ProxyCube<T1> A(X.get_ref());
+  const ProxyCube<T1> P(X.get_ref());
   
   if(is_Cube<typename ProxyCube<T1>::stored_type>::value)
     {
-    unwrap_cube<typename ProxyCube<T1>::stored_type> tmp(A.Q);
+    unwrap_cube<typename ProxyCube<T1>::stored_type> tmp(P.Q);
     
     return arrayops::accumulate(tmp.M.memptr(), tmp.M.n_elem);
     }
   
+  return accu_cube_proxy(P);
+  }
+
+
+
+//! explicit handling of multiply-and-accumulate (cube version)
+template<typename T1, typename T2>
+inline
+arma_warn_unused
+typename T1::elem_type
+accu(const eGlueCube<T1,T2,eglue_schur>& expr)
+  {
+  arma_extra_debug_sigprint();
   
-  if(ProxyCube<T1>::prefer_at_accessor == false)
+  typedef eGlueCube<T1,T2,eglue_schur> expr_type;
+  
+  typedef typename ProxyCube<T1>::stored_type P1_stored_type;
+  typedef typename ProxyCube<T2>::stored_type P2_stored_type;
+  
+  if(is_Cube<P1_stored_type>::value && is_Cube<P2_stored_type>::value)
     {
-          ea_type P      = A.get_ea();
-    const uword   n_elem = A.get_n_elem();
+    const unwrap_cube<P1_stored_type> tmp1(expr.P1.Q);
+    const unwrap_cube<P2_stored_type> tmp2(expr.P2.Q);
     
-    eT val1 = eT(0);
-    eT val2 = eT(0);
-    
-    uword i,j;
-    
-    for(i=0, j=1; j<n_elem; i+=2, j+=2)
-      {
-      val1 += P[i];
-      val2 += P[j];
-      }
-    
-    if(i < n_elem)
-      {
-      val1 += P[i];
-      }
-    
-    return val1 + val2;
+    return op_dot::direct_dot(tmp1.M.n_elem, tmp1.M.memptr(), tmp2.M.memptr());
     }
-  else
-    {
-    const uword n_rows   = A.get_n_rows();
-    const uword n_cols   = A.get_n_cols();
-    const uword n_slices = A.get_n_slices();
-    
-    eT val1 = eT(0);
-    eT val2 = eT(0);
-    
-    for(uword slice=0; slice<n_slices; ++slice)
-    for(uword col=0; col<n_cols; ++col)
-      {
-      uword i,j;
-      for(i=0, j=1; j<n_rows; i+=2, j+=2)
-        {
-        val1 += A.at(i,col,slice);
-        val2 += A.at(j,col,slice);
-        }
-      
-      if(i < n_rows)
-        {
-        val1 += A.at(i,col,slice);
-        }
-      }
-    
-    return val1 + val2;
-    }
+  
+  const ProxyCube<expr_type> P(expr);
+  
+  return accu_cube_proxy(P);
   }
 
 
