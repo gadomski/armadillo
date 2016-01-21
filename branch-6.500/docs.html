@@ -111,13 +111,14 @@ hr.greyline
 
 @media all
   {
-  .page-break { display: none; }
+  .pagebreak { }
+  .noprint   { }
   }
 
 @media print
   {
-  .page-break { display: block; page-break-before: always; }
-  .no-print { display: none !important; }
+  .pagebreak { page-break-before: always; }
+  .noprint   { display: none !important;  }
   }
   -->
   </style>
@@ -127,7 +128,7 @@ hr.greyline
 
 <a name="top"></a>
 <!--  -->
-<a class="no-print" style="display:scroll; position:fixed; bottom:5px; right:5px;" href="#top"><font size=-1>[top]</font></a>
+<a class="noprint" style="display:scroll; position:fixed; bottom:5px; right:5px;" href="#top"><font size=-1>[top]</font></a>
 
 <center>
 <table style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
@@ -139,14 +140,16 @@ hr.greyline
   <tbody>
     <tr>
       <td style="text-align: left; vertical-align: top;">
-          <font size=+2><b>Reference for Armadillo 6.500</b></font>
+          <font size=+2><b>API Reference for Armadillo 6.500</b></font>
         <br>
       </td>
       <td style="text-align: right; vertical-align: top;">
+        <div class="noprint">
         <b><a href="http://arma.sourceforge.net">to Armadillo home page</a></b>
         <br>
         <b><a href="http://data61.csiro.au">to Data61 home page</a></b>
         <br>
+        </div>
       </td>
     </tr>
   </tbody>
@@ -244,6 +247,8 @@ Technical Report, NICTA, 2010.
 <tr><td><a href="#Cube">Cube&lt;<i>type</i>&gt;, cube, cx_cube</a></td><td>&nbsp;</td><td>dense cube class ("3D matrix")</td></tr>
 <tr><td><a href="#field">field&lt;<i>object&nbsp;type</i>&gt;</a></td><td>&nbsp;</td><td>class for storing arbitrary objects in matrix-like or cube-like layouts</td></tr>
 <tr><td><a href="#SpMat">SpMat&lt;<i>type</i>&gt;, sp_mat, sp_cx_mat</a></td><td>&nbsp;</td><td>sparse matrix class</td></tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td><a href="#operators">operators</a></td><td>&nbsp;</td><td><code><big>+</big>&nbsp; <big>-</big>&nbsp; <big>*</big>&nbsp; /&nbsp; %&nbsp; ==&nbsp; !=&nbsp; &lt;=&nbsp; &gt;=&nbsp; &lt;&nbsp; &gt;</code></td></tr>
 </tbody>
 </table>
 </ul>
@@ -255,7 +260,6 @@ Technical Report, NICTA, 2010.
 <table>
 <tbody>
 <tr><td><a href="#attributes">attributes</a></td><td>&nbsp;</td><td>.n_rows, .n_cols, .n_elem, .n_slices, ...</td></tr>
-<tr><td><a href="#operators">operators</a></td><td>&nbsp;</td><td><code><big>+</big>&nbsp; <big>-</big>&nbsp; <big>*</big>&nbsp; /&nbsp; %&nbsp; ==&nbsp; !=&nbsp; &lt;=&nbsp; &gt;=&nbsp; &lt;&nbsp; &gt;</code></td></tr>
 <tr><td><a href="#element_access">element&nbsp;access</a></td><td>&nbsp;</td><td>element/object access via (), [] and .at()</td></tr>
 <tr><td><a href="#element_initialisation">element&nbsp;initialisation</a></td><td>&nbsp;</td><td>set elements via &lt;&lt; operator or initialiser list</td></tr>
 <tr><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td><td><small><small>&nbsp;</small></small></td></tr>
@@ -507,6 +511,7 @@ Technical Report, NICTA, 2010.
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -517,7 +522,7 @@ Technical Report, NICTA, 2010.
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="Mat"></a><b>Mat&lt;</b><i>type</i><b>&gt;</b>
 <br><b>mat</b>
 <br><b>cx_mat</b>
@@ -670,6 +675,7 @@ with the following meanings:
 <li>
 The string format for the constructor is elements separated by spaces, and rows denoted by semicolons.
 For example, the 2x2 identity matrix can be created using <code>"1&nbsp;0;&nbsp;0&nbsp;1"</code>.
+<br>
 <b>Caveat:</b> string based initialisation is slower than directly <a href="#element_access">setting the elements</a> or using <a href="#element_initialisation">element initialisation</a>.
 </li>
 <br>
@@ -808,7 +814,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="Col"></a><b>Col&lt;</b><i>type</i><b>&gt;</b>
 <br><b>vec</b>
 <br><b>cx_vec</b>
@@ -1077,7 +1083,7 @@ vec a(5);  a.fill(123.0);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="Row"></a>
 <b>Row&lt;</b><i>type</i><b>&gt;</b>
 <br><b>rowvec</b>
@@ -1307,7 +1313,7 @@ rowvec r(5);  r.fill(123.0);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="Cube"></a>
 <b>Cube&lt;</b><i>type</i><b>&gt;</b>
 <br><b>cube</b>
@@ -1558,7 +1564,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="field"></a>
 <b>field&lt;</b><i>object_type</i><b>&gt;</b>
 <ul>
@@ -1620,7 +1626,7 @@ F.save("mat_field");
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="SpMat"></a><b>SpMat&lt;</b><i>type</i><b>&gt;</b>
 <br><b>sp_mat</b>
 <br><b>sp_cx_mat</b>
@@ -1874,8 +1880,183 @@ See also:
 <br>
 </ul>
 
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="operators"></a>
+<b>operators:&nbsp; <code><big>+</big>&nbsp; <big>-</big>&nbsp; <big>*</big>&nbsp; /&nbsp; %&nbsp; ==&nbsp; !=&nbsp; &lt;=&nbsp; &gt;=&nbsp; &lt;&nbsp; &gt;</code></b>
+<ul>
+<li>
+Overloaded operators for <i>Mat</i>, <i>Col</i>, <i>Row</i> and <i>Cube</i> classes
+</li>
+<br>
+<li>
+Meanings:
+<br>
+<br>
+<ul>
+<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;"><code><b><big>+</big></b></code></td>
+      <td style="vertical-align: top;">&nbsp;&nbsp;&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">Addition of two objects</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b><big>-</big></b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Subtraction of one object from another or negation of an object</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>/</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Element-wise division of an object by another object or a scalar</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b><big>*</big></b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Matrix multiplication of two objects; not applicable to the <i>Cube</i> class unless multiplying a cube by a scalar</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>%</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;"><a name="schur_product"></a>Schur product: element-wise multiplication of two objects</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>==</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Element-wise equality evaluation of two objects; generates a matrix of type <i>umat</i> with entries that indicate whether at a given position the two elements from the two objects are equal (1) or not equal (0)</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>!=</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">Element-wise non-equality evaluation of two objects</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>&gt;=</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "greater than or equal to"</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>&lt;=</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "less than or equal to"</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+      <td style="vertical-align: top;">&nbsp;</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>&gt;</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "greater than"</td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><code><b>&lt;</b></code></td>
+      <td style="vertical-align: top;"><br>
+      </td>
+      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "less than"</td>
+    </tr>
+  </tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+<b>Caveat:</b> operators involving an equality comparison (ie. <code><b>==</b></code>, <code><b>!=</b></code>, <code><b>&gt;=</b></code>, <code><b>&lt;=</b></code>)
+may not work as expected for floating point element types (ie. <i>float</i>, <i>double</i>)
+due to the necessarily limited precision of these types;
+these operators are (in general) not recommended for matrices of type <i>mat</i> or <i>fmat</i>
+</li>
+<br>
+<li>
+A <i>std::logic_error</i> exception is thrown if incompatible object sizes are used
+</li>
+<br>
+<li>
+If the <code><b>+</b></code>, <code><b>-</b></code> and <code><b>%</b></code> operators are chained, Armadillo will try to avoid the generation of temporaries;
+no temporaries are generated if all given objects are of the same type and size
+</li>
+<br>
+<li>
+If the <code><b>*</b></code> operator is chained, Armadillo will try to find an efficient ordering of the matrix multiplications
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,10);
+mat B = randu&lt;mat&gt;(5,10);
+mat C = randu&lt;mat&gt;(10,5);
+
+mat P = A + B;
+mat Q = A - B;
+mat R = -B;
+mat S = A / 123.0;
+mat T = A % B;
+mat U = A * C;
+
+// V is constructed without temporaries
+mat V = A + B + A + B;
+
+imat AA = "1 2 3; 4 5 6; 7 8 9;";
+imat BB = "3 2 1; 6 5 4; 9 8 7;";
+
+// compare elements
+umat ZZ = (AA >= BB);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#any">any()</a></li>
+<li><a href="#all">all()</a></li>
+<li><a href="#accu">accu()</a></li>
+<li><a href="#as_scalar">as_scalar()</a></li>
+<li><a href="#find">find()</a></li>
+<li><a href="#each_colrow">.each_col() &amp; .each_row()</a></li>
+<li><a href="#transform">.transform()</a></li>
+<li><a href="#misc_fns">miscellaneous element-wise functions</a> &nbsp; (exp, log, pow, sqrt, square, round, ...)</li>
+</ul>
+</li>
+<br>
+</ul>
 
 
+
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -1886,7 +2067,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="attributes"></a>
 <b>attributes</b>
 <ul>
@@ -1981,181 +2162,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
-<a name="operators"></a>
-<b>operators:&nbsp; <code><big>+</big>&nbsp; <big>-</big>&nbsp; <big>*</big>&nbsp; /&nbsp; %&nbsp; ==&nbsp; !=&nbsp; &lt;=&nbsp; &gt;=&nbsp; &lt;&nbsp; &gt;</code></b>
-<ul>
-<li>
-Overloaded operators for <i>mat</i>, <i>vec</i>, <i>rowvec</i> and <i>cube</i> classes
-</li>
-<br>
-<li>
-Meanings:
-<br>
-<br>
-<ul>
-<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top;"><code><b><big>+</big></b></code></td>
-      <td style="vertical-align: top;">&nbsp;&nbsp;&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">Addition of two objects</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b><big>-</big></b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">Subtraction of one object from another or negation of an object</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>/</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">Element-wise division of an object by another object or a scalar</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b><big>*</big></b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">Matrix multiplication of two objects; not applicable to the <i>cube</i> class unless multiplying a cube by a scalar</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>%</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;"><a name="schur_product"></a>Schur product: element-wise multiplication of two objects</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>==</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">Element-wise equality evaluation of two objects; generates a matrix of type <i>umat</i> with entries that indicate whether at a given position the two elements from the two objects are equal (1) or not equal (0)</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>!=</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">Element-wise non-equality evaluation of two objects</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>&gt;=</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "greater than or equal to"</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>&lt;=</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "less than or equal to"</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-      <td style="vertical-align: top;">&nbsp;</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>&gt;</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "greater than"</td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;"><code><b>&lt;</b></code></td>
-      <td style="vertical-align: top;"><br>
-      </td>
-      <td style="vertical-align: top;">As for <code>==</code>, but the check is for "less than"</td>
-    </tr>
-  </tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-<b>Caveat:</b> operators involving an equality comparison (ie. <code><b>==</b></code>, <code><b>!=</b></code>, <code><b>&gt;=</b></code>, <code><b>&lt;=</b></code>)
-may not work as expected for floating point element types (ie. <i>float</i>, <i>double</i>)
-due to the necessarily limited precision of these types;
-in other words, these operators are (in general) not recommended for matrices of type <i>mat</i> or <i>fmat</i>
-</li>
-<br>
-<li>
-A <i>std::logic_error</i> exception is thrown if incompatible object sizes are used
-</li>
-<br>
-<li>
-If the <code><b>+</b></code>, <code><b>-</b></code> and <code><b>%</b></code> operators are chained, Armadillo will try to avoid the generation of temporaries;
-no temporaries are generated if all given objects are of the same type and size
-</li>
-<br>
-<li>
-If the <code><b>*</b></code> operator is chained, Armadillo will try to find an efficient ordering of the matrix multiplications
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A = randu&lt;mat&gt;(5,10);
-mat B = randu&lt;mat&gt;(5,10);
-mat C = randu&lt;mat&gt;(10,5);
-
-mat P = A + B;
-mat Q = A - B;
-mat R = -B;
-mat S = A / 123.0;
-mat T = A % B;
-mat U = A * C;
-
-// V is constructed without temporaries
-mat V = A + B + A + B;
-
-imat AA = "1 2 3; 4 5 6; 7 8 9;";
-imat BB = "3 2 1; 6 5 4; 9 8 7;";
-
-// compare elements
-umat ZZ = (AA >= BB);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#any">any()</a></li>
-<li><a href="#all">all()</a></li>
-<li><a href="#accu">accu()</a></li>
-<li><a href="#as_scalar">as_scalar()</a></li>
-<li><a href="#find">find()</a></li>
-<li><a href="#each_colrow">.each_col() &amp; .each_row()</a></li>
-<li><a href="#transform">.transform()</a></li>
-<li><a href="#misc_fns">miscellaneous element-wise functions</a> &nbsp; (exp, log, pow, sqrt, square, round, ...)</li>
-</ul>
-</li>
-<br>
-</ul>
-
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="element_access"></a>
 <b>element/object access via (), [] and .at()</b>
 <ul>
@@ -2319,7 +2326,7 @@ double z = p[9];
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="element_initialisation"></a>
 <b>element initialisation</b>
 <ul>
@@ -2370,7 +2377,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="zeros_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -2451,7 +2458,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="ones_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -2531,7 +2538,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eye_member"></a>
 <b>.eye()</b>
 <br>
@@ -2578,7 +2585,7 @@ mat C;  C.eye( size(B) );
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="randu_randn_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -2716,7 +2723,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="fill"></a>
 <b>.fill( value )</b>
 <ul>
@@ -2752,7 +2759,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="imbue"></a>
 <b>.imbue(&nbsp;</b>functor<b>&nbsp;)</b>
 <br>
@@ -2806,7 +2813,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="transform"></a>
 <b>.transform(&nbsp;</b>functor<b>&nbsp;)</b>
 <br>
@@ -2859,7 +2866,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="for_each"></a>
 <b>.for_each(&nbsp;</b>functor<b>&nbsp;)</b>
 <br>
@@ -2916,7 +2923,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="set_size"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -2992,7 +2999,7 @@ vec v;  v.set_size(100);        // or:  vec v(100);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="reshape_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -3087,7 +3094,7 @@ A.reshape(5,4);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="resize_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -3167,7 +3174,7 @@ A.resize(7,6);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="copy_size"></a>
 <b>.copy_size( A )</b>
 <ul>
@@ -3209,7 +3216,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="reset"></a>
 <b>
 .reset()
@@ -3239,7 +3246,7 @@ A.reset();
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="submat"></a>
 <b>submatrix views</b>
 <ul>
@@ -3446,7 +3453,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="subcube"></a>
 <b>subcube views and slices</b>
 <ul>
@@ -3570,7 +3577,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="subfield"></a>
 <b>subfield views</b>
 <ul>
@@ -3629,7 +3636,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="diag"></a>
 <b>.diag()</b>
 <br><b>.diag( k )</b>
@@ -3683,7 +3690,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="each_colrow"></a>
 <b>.each_col()</b>
 <br>
@@ -3777,7 +3784,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="each_slice"></a>
 <b>.each_slice()</b>
 <br>
@@ -3859,7 +3866,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="set_imag"></a>
 <b>.set_imag( X )</b>
 <br>
@@ -3913,7 +3920,7 @@ cx_mat C = cx_mat(A,B);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="insert"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -4008,7 +4015,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="shed"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -4087,7 +4094,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="swap_rows"></a>
 <b>
 .swap_rows( row1, row2 )
@@ -4122,7 +4129,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="swap"></a>
 <b>.swap( X )</b>
 <ul>
@@ -4155,7 +4162,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="memptr"></a>
 <b>.memptr()</b>
 <ul>
@@ -4214,7 +4221,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="colptr"></a>
 <b>.colptr( col_number )</b>
 <ul>
@@ -4259,7 +4266,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="iterators_mat"></a>
 <b>iterators (matrices &amp; vectors)</b>
 <ul>
@@ -4583,7 +4590,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="iterators_cube"></a>
 <b>iterators (cubes)</b>
 <ul>
@@ -4771,7 +4778,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="stl_container_fns"></a>
 <b>STL-style container functions</b>
 <ul>
@@ -4839,7 +4846,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="t_st_members"></a>
 <b>
 .t()
@@ -4886,7 +4893,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="i_member"></a>
 <b>.i()</b>
 <ul>
@@ -4945,7 +4952,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="min_and_max_member"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -5090,7 +5097,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eval_member"></a>
 <b>.eval()</b>
 <br>
@@ -5127,7 +5134,7 @@ imag(A).eval().save("A_imag.dat", raw_ascii);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="in_range"></a>
 <table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
   <tbody>
@@ -5274,7 +5281,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_empty"></a>
 <b>.is_empty()</b>
 <ul>
@@ -5309,7 +5316,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_square"></a>
 <b>.is_square()</b>
 <ul>
@@ -5347,7 +5354,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_vec"></a>
 <b>.is_vec()</b>
 <br><b>.is_colvec()</b>
@@ -5417,7 +5424,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_sorted"></a>
 <b>.is_sorted()</b>
 <br><b>.is_sorted( sort_direction )</b>
@@ -5478,7 +5485,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_finite_member"></a>
 <b>.is_finite()</b>
 <ul>
@@ -5519,7 +5526,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="has_inf"></a>
 <b>.has_inf()</b>
 <ul>
@@ -5559,7 +5566,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="has_nan"></a>
 <b>.has_nan()</b>
 <ul>
@@ -5603,7 +5610,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="print"></a>
 <b>.print()</b>
 <br><b>.print( header )</b>
@@ -5663,7 +5670,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="raw_print"></a>
 <b>.raw_print()</b>
 <br><b>.raw_print( header )</b>
@@ -5700,7 +5707,7 @@ A.raw_print(cout, "A =");
 </ul>
 <br>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="save_load_mat"></a>
 <b>saving/loading matrices &amp; cubes</b>
 <br>
@@ -5910,7 +5917,7 @@ else
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="save_load_field"></a>
 <b>saving/loading fields</b>
 <br>
@@ -6030,6 +6037,7 @@ as each matrix element is copied and converted to an 8 bit representation
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -6040,7 +6048,7 @@ as each matrix element is copied and converted to an 8 bit representation
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eye_standalone"></a>
 <b>eye( n_rows, n_cols )</b>
 <br>
@@ -6090,7 +6098,7 @@ mat C = eye&lt;mat&gt;( size(B) );
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="linspace"></a>
 <b>linspace( start, end )</b>
 <br><b>linspace( start, end, N )</b>
@@ -6136,7 +6144,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="ones_standalone"></a>
 <b>
 ones( n_elem )
@@ -6189,7 +6197,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="randi"></a>
 <b>randi( n_elem )</b> 
 <br><b>randi( n_elem, distr_param(a,b) )</b> 
@@ -6262,7 +6270,7 @@ arma_rng::set_seed_random();  // set the seed to a random value
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="randu_randn_standalone"></a>
 <b>randu( n_elem )</b> 
 <br><b>randu( n_rows, n_cols )</b>
@@ -6334,7 +6342,7 @@ arma_rng::set_seed_random();  // set the seed to a random value
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="randg"></a>
 <b>randg( n_elem )</b> 
 <br><b>randg( n_elem, distr_param(a,b) )</b> 
@@ -6417,7 +6425,7 @@ mat X = randg&lt;mat&gt;(10, 10, distr_param(2,1));
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="speye"></a>
 <b>speye( n_rows, n_cols )</b>
 <br>
@@ -6460,7 +6468,7 @@ sp_mat A = speye&lt;sp_mat&gt;(5,5);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="spones"></a>
 <b>spones( A )</b>
 <ul>
@@ -6489,7 +6497,7 @@ sp_mat B = spones(A);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="sprandu_sprandn"></a>
 <b>sprandu( n_rows, n_cols, density )</b>
 <br><b>sprandn( n_rows, n_cols, density )</b>
@@ -6544,7 +6552,7 @@ sp_mat A = sprandu&lt;sp_mat&gt;(100, 200, 0.1);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="toeplitz"></a>
 <b>toeplitz( A )</b>
 <br><b>toeplitz( A, B )</b>
@@ -6583,7 +6591,7 @@ mat Y = circ_toeplitz(A);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="zeros_standalone"></a>
 <b>zeros( n_elem )</b>
 <br><b>zeros( n_rows, n_cols )</b>
@@ -6632,6 +6640,7 @@ See also:
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -6642,7 +6651,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="abs"></a>
 <b>abs( X )</b>
 <ul>
@@ -6693,7 +6702,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="accu"></a>
 <b>accu( X )</b>
 <ul>
@@ -6731,7 +6740,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="all"></a>
 <b>all( V )</b>
 <br><b>all( X )</b>
@@ -6797,7 +6806,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="any"></a>
 <b>any( V )</b>
 <br><b>any( X )</b>
@@ -6863,7 +6872,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="as_scalar"></a>
 <b>as_scalar( expression )</b>
 <ul>
@@ -6913,7 +6922,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="clamp"></a>
 <b>clamp( X, min_val, max_val )</b>
 <ul>
@@ -6946,7 +6955,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cond"></a>
 <b>cond( A )</b>
 <ul>
@@ -6990,7 +6999,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="conj"></a>
 <b>conj( X )</b>
 <ul>
@@ -7018,7 +7027,7 @@ cx_mat Y = conj(X);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="conv_to"></a>
 <b>
 conv_to&lt; <i>type</i> &gt;::from( X )
@@ -7067,7 +7076,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cross"></a>
 <b>cross( A, B )</b>
 <ul>
@@ -7098,7 +7107,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cumsum"></a>
 <b>cumsum( V )</b>
 <br><b>cumsum( X )</b>
@@ -7142,7 +7151,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cumprod"></a>
 <b>cumprod( V )</b>
 <br><b>cumprod( X )</b>
@@ -7184,7 +7193,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="det"></a>
 <b>det( A )</b>
 <br><b>log_det( val, sign, A )</b>
@@ -7230,7 +7239,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="diagmat"></a>
 <b>diagmat( V )</b>
 <br><b>diagmat( V, k )</b>
@@ -7290,7 +7299,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="diagvec"></a>
 <b>diagvec( A )</b>
 <br><b>diagvec( A, k )</b>
@@ -7333,7 +7342,7 @@ vec d = diagvec(A);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="diff"></a>
 <b>diff( V )</b>
 <br><b>diff( V, k )</b>
@@ -7382,7 +7391,7 @@ vec b = diff(a);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="dot"></a>
 <b>dot( A, B )</b>
 <br><b>cdot( A, B )</b>
@@ -7427,7 +7436,7 @@ double x = dot(a,b);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eps"></a>
 <b>eps( X )</b>
 <ul>
@@ -7460,7 +7469,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="expmat"></a>
 <b>expmat( X )</b>
 <ul>
@@ -7493,7 +7502,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="find"></a>
 <b>find( X )</b>
 <br><b>find( X, k )</b>
@@ -7557,7 +7566,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="find_finite"></a>
 <b>find_finite( X )</b>
 <ul>
@@ -7597,7 +7606,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="find_nonfinite"></a>
 <b>find_nonfinite( X )</b>
 <ul>
@@ -7637,7 +7646,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="find_unique"></a>
 <b>find_unique( X )</b>
 <br><b>find_unique( X, ascending_indices )</b>
@@ -7688,7 +7697,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="flip"></a>
 <b>fliplr( X )</b>
 <br><b>flipud( X )</b>
@@ -7723,7 +7732,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="imag_real"></a>
 <b>imag( X )</b>
 <br><b>real( X )</b>
@@ -7759,7 +7768,7 @@ to work around this bug, preface Armadillo's <i>imag()</i> and <i>real()</i> wit
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="ind2sub"></a>
 sub&nbsp;=&nbsp;<b>ind2sub(&nbsp;size(</b>n_rows,&nbsp;n_cols<b>),</b>&nbsp;index&nbsp;<b>)</b>
 <br>
@@ -7801,7 +7810,7 @@ cout &lt;&lt; "col: " &lt;&lt; s(1) &lt;&lt; endl;
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="inplace_trans"></a>
 <b>inplace_trans( X )
 <br>inplace_trans( X, method )
@@ -7867,7 +7876,7 @@ inplace_trans(Y, "lowmem");  // use low-memory (and slow) algorithm
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="is_finite"></a>
 <b>is_finite( X )</b>
 <ul>
@@ -7914,7 +7923,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="join"></a>
 <b>join_rows( A, B )</b>
 <br><b>join_horiz( A,  B )</b>
@@ -7959,7 +7968,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="join_slices"></a>
 <b>join_slices( cube C, cube D )</b>
 <br><b>join_slices( mat  M, mat  N )</b>
@@ -8014,7 +8023,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="kron"></a>
 <b>kron( A, B )</b>
 
@@ -8047,7 +8056,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="min_and_max"></a>
 <b>min( V )</b>
 <br><b>min( X )</b>
@@ -8115,7 +8124,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="nonzeros"></a>
 <b>nonzeros(X)</b>
 <ul>
@@ -8150,7 +8159,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="norm"></a>
 <b>norm( X )</b>
 <br><b>norm( X, p )</b>
@@ -8211,7 +8220,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="normalise"></a>
 <b>normalise( V )</b>
 <br><b>normalise( V, p )</b>
@@ -8260,7 +8269,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="prod"></a>
 <b>prod( V )</b>
 <br><b>prod( X )</b>
@@ -8313,7 +8322,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="rank"></a>
 <b>rank( X )</b>
 <br>
@@ -8365,7 +8374,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="rcond"></a>
 <b>rcond( A )</b>
 <ul>
@@ -8407,7 +8416,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="repmat"></a>
 <b>repmat( A, num_copies_per_row, num_copies_per_col )</b>
 <ul>
@@ -8445,7 +8454,7 @@ mat B = repmat(A, 4, 5);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="reshape"></a>
 <b>reshape( mat, n_rows, n_cols )</b>
 <br><b>reshape( mat, size(X) )</b>
@@ -8518,7 +8527,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="resize"></a>
 <b>resize( mat, n_rows, n_cols )</b>
 <br><b>resize( mat, size(X) )</b>
@@ -8563,7 +8572,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="shuffle"></a>
 <b>shuffle( V )</b>
 <br><b>shuffle( X )</b>
@@ -8601,7 +8610,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="size"></a>
 <b>size(&nbsp;X&nbsp;)</b>
 <br>
@@ -8664,7 +8673,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="sort"></a>
 <b>sort( V )</b>
 <br><b>sort( V, sort_direction )</b>
@@ -8707,7 +8716,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="sort_index"></a>
 <b>sort_index( X )</b>
 <br><b>sort_index( X, sort_direction )</b>
@@ -8753,7 +8762,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="sum"></a>
 <b>sum( V )</b>
 <br><b>sum( X )</b>
@@ -8811,7 +8820,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="sub2ind"></a>
 index&nbsp;=&nbsp;<b>sub2ind(&nbsp;size(</b>n_rows,&nbsp;n_cols<b>),</b>&nbsp;row<b>,</b>&nbsp;col&nbsp;<b>)</b>
 <br>
@@ -8847,7 +8856,7 @@ uword j = sub2ind( size(4, 5, 6), 2, 3, 4 );
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="symmat"></a>
 <b>symmatu( A )</b>
 <br><b>symmatu( A, do_conj )</b>
@@ -8894,7 +8903,7 @@ mat C = symmatl(A);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="trace"></a>
 <b>trace( X )</b>
 <ul>
@@ -8931,7 +8940,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="trans"></a>
 <b>trans( A )</b>
 <br><b>strans( A )</b>
@@ -8973,7 +8982,7 @@ mat C = A.t();    // equivalent to trans(A), but more compact
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="trimat"></a>
 <b>trimatu( A )</b>
 <br><b>trimatl( A )</b>
@@ -9013,7 +9022,7 @@ mat L = trimatl(A);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="unique"></a>
 <b>unique( A )</b>
 <br>
@@ -9051,7 +9060,7 @@ mat Y = unique(X);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="vectorise"></a>
 <b>vectorise( A )</b>
 <br><b>vectorise( A, dim )</b>
@@ -9099,7 +9108,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="misc_fns"></a>
 <b>
 miscellaneous element-wise functions:
@@ -9349,7 +9358,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="trig_fns"></a>
 <b>trigonometric element-wise functions (cos, sin, tan, ...)</b>
 <ul>
@@ -9407,6 +9416,7 @@ See also:
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -9417,7 +9427,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="chol"></a>
 <b>R = chol( X )</b>
 <br><b>R = chol( X, layout )</b>
@@ -9473,7 +9483,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eig_sym"></a>
 <b>vec eigval = eig_sym( X )</b>
 <br>
@@ -9559,7 +9569,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eig_gen"></a>
 <b>cx_vec eigval = eig_gen( X )</b>
 <br>
@@ -9612,7 +9622,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eig_pair"></a>
 <b>cx_vec eigval = eig_pair( A, B )</b>
 <br>
@@ -9665,7 +9675,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="inv"></a>
 <b>B = inv( A )</b>
 <br>
@@ -9730,7 +9740,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="inv_sympd"></a>
 <b>B = inv_sympd( A )</b>
 <br><b>inv_sympd( B, A )</b>
@@ -9790,7 +9800,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="lu"></a>
 <b>lu( L, U, P, X )</b>
 <br><b>lu( L, U, X )</b>
@@ -9846,7 +9856,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="null"></a>
 <b>B = null( A )</b>
 <br><b>B = null( A, tolerance )</b>
@@ -9907,7 +9917,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="orth"></a>
 <b>B = orth( A )</b>
 <br><b>B = orth( A, tolerance )</b>
@@ -9966,7 +9976,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="pinv"></a>
 <b>B = pinv( A )</b>
 <br><b>B = pinv( A, tolerance )</b>
@@ -10045,7 +10055,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="princomp"></a>
 <b>mat coeff = princomp( mat X )</b>
 <br><b>cx_mat coeff = princomp( cx_mat X )</b><br>
@@ -10110,7 +10120,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="qr"></a>
 <b>qr( Q, R, X )</b>
 <ul>
@@ -10148,7 +10158,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="qr_econ"></a>
 <b>qr_econ( Q, R, X )</b>
 <ul>
@@ -10190,7 +10200,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="qz"></a>
 <b>qz( AA, BB, Q, Z, A, B )</b>
 <ul>
@@ -10235,7 +10245,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="schur"></a>
 <b>S = schur( X )</b>
 <br>
@@ -10289,7 +10299,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="solve"></a>
 <b>X = solve( A, B )</b>
 <br><b>X = solve( A, B, options )</b> &nbsp;&nbsp;&nbsp; (version 6.300+)
@@ -10384,7 +10394,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="svd"></a>
 <b>vec s = svd( X )</b>
 <br>
@@ -10460,7 +10470,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="svd_econ"></a>
 <b>svd_econ( mat U, vec s, mat V, mat X )</b>
 <br><b>svd_econ( mat U, vec s, mat V, mat X, mode )</b>
@@ -10539,7 +10549,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="syl"></a>
 <b>X = syl( A, B, C )</b>
 <br><b>syl( X, A, B, C )</b>
@@ -10584,6 +10594,7 @@ See also:
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -10594,7 +10605,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eigs_sym"></a>
 <b>vec eigval = eigs_sym( X, k )</b>
 <br><b>vec eigval = eigs_sym( X, k, form )</b>
@@ -10674,7 +10685,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="eigs_gen"></a>
 <b>cx_vec eigval = eigs_gen( X, k )</b>
 <br><b>cx_vec eigval = eigs_gen( X, k, form )</b>
@@ -10759,7 +10770,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="spsolve"></a>
 <b>X = spsolve( A, B )</b>
 <br><b>X = spsolve( A, B, solver )</b>
@@ -10893,7 +10904,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="svds"></a>
 <b>vec s = svds( X, k )</b>
 <br><b>vec s = svds( X, k, tol )</b>
@@ -10979,6 +10990,7 @@ See also:
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -10989,7 +11001,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="conv"></a>
 <b>conv( A, B )</b>
 <br><b>conv( A, B, shape )</b>
@@ -11050,7 +11062,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="conv2"></a>
 <b>conv2( A, B )</b>
 <br><b>conv2( A, B, shape )</b>
@@ -11101,7 +11113,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="fft"></a>
 <b>cx_mat Y = &nbsp;fft( X )</b><br>
 <b>cx_mat Y = &nbsp;fft( X, n )</b><br>
@@ -11154,7 +11166,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="fft2"></a>
 <b>cx_mat Y = &nbsp;fft2( X )</b><br>
 <b>cx_mat Y = &nbsp;fft2( X, n_rows, n_cols )</b><br>
@@ -11199,7 +11211,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="interp1"></a>
 <b>interp1( X, Y, XI, YI )</b>
 <br><b>interp1( X, Y, XI, YI, method )</b>
@@ -11270,6 +11282,7 @@ See also:
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -11280,7 +11293,7 @@ See also:
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="stats_fns"></a>
 <b>mean, median, stddev, var</b>
 <ul>
@@ -11408,7 +11421,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cov"></a>
 <b>cov( X, Y )</b>
 <br><b>cov( X, Y, norm_type )</b>
@@ -11469,7 +11482,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cor"></a>
 <b>cor( X, Y )</b>
 <br><b>cor( X, Y, norm_type )</b>
@@ -11531,7 +11544,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="hist"></a>
 <b>hist( V )</b>
 <br><b>hist( V, n_bins )</b>
@@ -11586,7 +11599,7 @@ uvec h2 = hist(v, linspace&lt;vec&gt;(-2,2,11));
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="histc"></a>
 <b>histc( V, edges )</b>
 <br><b>histc( X, edges )</b>
@@ -11631,7 +11644,7 @@ uvec h = histc(v, linspace&lt;vec&gt;(-2,2,11));
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="running_stat"></a>
 <b>running_stat&lt;</b><i>type</i><b>&gt;</b>
 <ul>
@@ -11783,7 +11796,7 @@ cout &lt;&lt; "max  = " &lt;&lt; stats.max()  &lt;&lt; endl;
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="running_stat_vec"></a>
 <b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;</b>
 <br><b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;(calc_cov)</b>
@@ -11983,7 +11996,7 @@ cout &lt;&lt; more_stats.cov() / (sd.t() * sd);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="kmeans"></a>
 <b>kmeans(</b> means<b>,</b> data<b>,</b> k<b>,</b> seed_mode<b>,</b> n_iter<b>,</b> print_mode <b>)</b>
 <ul>
@@ -12087,7 +12100,7 @@ means.print("means:");
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="gmm_diag"></a>
 <b>gmm_diag</b>
 <ul>
@@ -12711,6 +12724,7 @@ model.save("my_model.gmm");
 
 
 
+<div class="pagebreak"></div>
 <hr class="greyline">
 <hr class="greyline">
 <br>
@@ -12721,7 +12735,7 @@ model.save("my_model.gmm");
 
 
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="constants"></a>
 <b>constants (pi, inf, speed of light, ...)</b>
 <br>
@@ -13275,7 +13289,7 @@ See also:
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="wall_clock"></a>
 <b>wall_clock</b>
 <ul>
@@ -13309,7 +13323,7 @@ cout &lt;&lt; "number of seconds: " &lt;&lt; n &lt;&lt; endl;
 </ul>
 <br>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="logging"></a>
 <b>logging of warnings and errors</b>
 <br>
@@ -13383,7 +13397,7 @@ See also:
 </ul>
 
 <!--
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="log_add"></a>
 <b>log_add(log_a, log_b)</b>
 <ul>
@@ -13409,7 +13423,7 @@ log_a, log_b and log_c must have the same type
 <br>
 -->
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="uword"></a>
 <b>uword</b>, <b>sword</b>
 <ul>
@@ -13437,7 +13451,7 @@ log_a, log_b and log_c must have the same type
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="cx_double"></a>
 <b>cx_double</b>, <b>cx_float</b> 
 <ul>
@@ -13470,7 +13484,7 @@ X(1,2) = cx_double(2.0, 3.0);
 <br>
 </ul>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="syntax"></a>
 <b>Examples of Matlab/Octave syntax and conceptually corresponding Armadillo syntax</b>
 <br>
@@ -14298,7 +14312,7 @@ A&nbsp;<font size=-1>&lt;&lt;</font> 1 <font size=-1>&lt;&lt;</font> 2 <font siz
 </ul>
 <br>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="example_prog"></a>
 <b>example program</b>
 <br>
@@ -14338,7 +14352,7 @@ See also the example program that comes with the Armadillo archive
 </ul>
 <br>
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="config_hpp"></a>
 <b>config.hpp</b>
 <br>
@@ -14968,7 +14982,7 @@ See also:
 </ul>
 
 <!--
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="catching_exceptions"></a>
 <br>
 <b>how to catch std::runtime_error exceptions</b>
@@ -15021,7 +15035,7 @@ See also:
 <br>
 -->
 
-<hr class="greyline"><br>
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="api_additions"></a>
 <a name="api_changes"></a>
 <b>History of API Additions, Changes and Deprecations</b>
