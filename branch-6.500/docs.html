@@ -222,10 +222,13 @@ Technical Report, NICTA, 2010.
 <br>
 <li><a href="#part_c">generated vectors&nbsp;/&nbsp;matrices&nbsp;/&nbsp;cubes</a></li>
 <li><a href="#part_d">functions of vectors&nbsp;/&nbsp;matrices&nbsp;/&nbsp;cubes</a></li>
-<li><a href="#part_e">decompositions, factorisations, inverses and equation solvers</a></li>
 <br>
-<li><a href="#part_f">statistical modelling and clustering</a></li>
-<li><a href="#part_g">miscellaneous (constants, configuration)</a></li>
+<li><a href="#part_e">decompositions, factorisations, inverses and equation solvers (dense matrices)</a></li>
+<li><a href="#part_f">decompositions, factorisations, and equation solvers (sparse matrices)</a></li>
+<br>
+<li><a href="#part_g">signal &amp; image processing</a></li>
+<li><a href="#part_h">statistics and clustering</a></li>
+<li><a href="#part_i">miscellaneous (constants, configuration)</a></li>
 </ul>
 <br>
 
@@ -352,11 +355,7 @@ Technical Report, NICTA, 2010.
 <tr><td><a href="#clamp">clamp</a></td><td>&nbsp;</td><td>obtain clamped elements according to given limits</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#cond">cond</a></td><td>&nbsp;</td><td>condition number of matrix</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#conj">conj</a></td><td>&nbsp;</td><td>obtain complex conjugate of each element</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#conv">conv</a></td><td>&nbsp;</td><td>1D convolution</td></tr>
-<tr><td><a href="#conv2">conv2</a></td><td>&nbsp;</td><td>2D convolution</td></tr>
 <tr><td><a href="#conv_to">conv_to</a></td><td>&nbsp;</td><td>convert between matrix types</td></tr>
-<tr><td><a href="#cor">cor</a></td><td>&nbsp;</td><td>correlation</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#cov">cov</a></td><td>&nbsp;</td><td>covariance</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#cross">cross</a></td><td>&nbsp;</td><td>cross product</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#cumsum">cumsum</a></td><td>&nbsp;</td><td>cumulative sum</td></tr>
 <tr><td><a href="#cumprod">cumprod</a></td><td>&nbsp;</td><td>cumulative product</td></tr>
@@ -372,12 +371,9 @@ Technical Report, NICTA, 2010.
 <tr style="background-color: #F5F5F5;"><td><a href="#find_nonfinite">find_nonfinite</a></td><td>&nbsp;</td><td>find indices of non-finite elements</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#find_unique">find_unique</a></td><td>&nbsp;</td><td>find indices of unique elements</td></tr>
 <tr><td><a href="#flip">fliplr&nbsp;/&nbsp;flipud</a></td><td>&nbsp;</td><td>reverse order of columns or rows</td></tr>
-<tr><td><a href="#hist">hist</a></td><td>&nbsp;</td><td>histogram of counts</td></tr>
-<tr><td><a href="#histc">histc</a></td><td>&nbsp;</td><td>histogram of counts with user specified edges</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#imag_real">imag / real</a></td><td>&nbsp;</td><td>extract imaginary/real part</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#ind2sub">ind2sub</a></td><td>&nbsp;</td><td>convert linear index to subscripts</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#inplace_trans">inplace_trans</a></td><td>&nbsp;</td><td>in-place transpose</td></tr>
-<tr><td><a href="#interp1">interp1</a></td><td>&nbsp;</td><td>1D interpolation</td></tr>
 <tr><td><a href="#is_finite">is_finite</a></td><td>&nbsp;</td><td>check whether all elements are finite</td></tr>
 <tr><td><a href="#join">join_rows / join_cols</a></td><td>&nbsp;</td><td>concatenation of matrices</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#join_slices">join_slices</a></td><td>&nbsp;</td><td>concatenation of cubes</td></tr>
@@ -406,14 +402,13 @@ Technical Report, NICTA, 2010.
 <tr><td><a href="#vectorise">vectorise</a></td><td>&nbsp;</td><td>convert matrix to vector</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#misc_fns">misc&nbsp;functions</a></td><td>&nbsp;</td><td>miscellaneous element-wise functions:&nbsp;exp,&nbsp;log,&nbsp;pow,&nbsp;sqrt,&nbsp;round,&nbsp;sign,&nbsp;...</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#trig_fns">trig&nbsp;functions</a></td><td>&nbsp;</td><td>trigonometric element-wise functions:&nbsp;cos,&nbsp;sin,&nbsp;...</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#stats_fns">stats&nbsp;functions</a></td><td>&nbsp;</td><td>statistics functions: mean, median, standard deviation, variance</td></tr>
 </tbody>
 </table>
 </ul>
 <br>
 
 <a name="part_e"></a>
-<b>Decompositions, Factorisations, Inverses and Equation Solvers</b>
+<b>Decompositions, Factorisations, Inverses and Equation Solvers (Dense Matrices)</b>
 <ul>
 <table>
 <tbody>
@@ -421,10 +416,6 @@ Technical Report, NICTA, 2010.
 <tr style="background-color: #F5F5F5;"><td><a href="#eig_sym">eig_sym</a></td><td>&nbsp;</td><td>eigen decomposition of dense symmetric/hermitian matrix</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#eig_gen">eig_gen</a></td><td>&nbsp;</td><td>eigen decomposition of dense general square matrix</td></tr>
 <tr><td><a href="#eig_pair">eig_pair</a></td><td>&nbsp;</td><td>eigen decomposition for pair of general dense square matrices</td></tr>
-<tr><td><a href="#eigs_sym">eigs_sym</a></td><td>&nbsp;</td><td>limited number of eigenvalues &amp; eigenvectors of sparse symmetric real matrix</td></tr>
-<tr><td><a href="#eigs_gen">eigs_gen</a></td><td>&nbsp;</td><td>limited number of eigenvalues &amp; eigenvectors of sparse general square matrix</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#fft">fft&nbsp;/&nbsp;ifft</a></td><td>&nbsp;</td><td>1D fast Fourier transform and its inverse</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#fft2">fft2&nbsp;/&nbsp;ifft2</a></td><td>&nbsp;</td><td>2D fast Fourier transform and its inverse</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#inv">inv</a></td><td>&nbsp;</td><td>inverse of general square matrix</td></tr>
 <tr><td><a href="#inv_sympd">inv_sympd</a></td><td>&nbsp;</td><td>inverse of symmetric positive definite matrix</td></tr>
 <tr><td><a href="#lu">lu&nbsp;&nbsp;</a></td><td>&nbsp;</td><td>lower-upper decomposition</td></tr>
@@ -437,10 +428,8 @@ Technical Report, NICTA, 2010.
 <tr><td><a href="#qz">qz&nbsp;&nbsp;</a></td><td>&nbsp;</td><td>generalised Schur decomposition</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#schur">schur</a></td><td>&nbsp;</td><td>Schur decomposition</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#solve">solve</a></td><td>&nbsp;</td><td>solve systems of linear equations</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#spsolve">spsolve</a></td><td>&nbsp;</td><td>solve sparse systems of linear equations</td></tr>
 <tr><td><a href="#svd">svd</a></td><td>&nbsp;</td><td>singular value decomposition</td></tr>
 <tr><td><a href="#svd_econ">svd_econ</a></td><td>&nbsp;</td><td>economical singular value decomposition</td></tr>
-<tr><td><a href="#svds">svds</a></td><td>&nbsp;</td><td>limited number of singular values &amp; singular vectors of sparse matrix</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#syl">syl</a></td><td>&nbsp;</td><td>Sylvester equation solver</td></tr>
 </tbody>
 </table>
@@ -448,20 +437,54 @@ Technical Report, NICTA, 2010.
 <br>
 
 <a name="part_f"></a>
-<b>Statistical Modelling &amp; Clustering</b>
+<b>Decompositions, Factorisations and Equation Solvers (Sparse Matrices)</b>
 <ul>
 <table>
 <tbody>
-<tr><td><a href="#kmeans">kmeans</a></td><td>&nbsp;</td><td>cluster data using k-means algorithm</td></tr>
-<tr><td><a href="#gmm_diag">gmm_diag</a></td><td>&nbsp;</td><td>model data as a Gaussian Mixture Model (GMM)</td></tr>
-<tr><td><a href="#running_stat">running_stat</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled one dimensional process/signal</td></tr>
-<tr><td><a href="#running_stat_vec">running_stat_vec</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled multi-dimensional process/signal</td></tr>
+<tr><td><a href="#eigs_sym">eigs_sym</a></td><td>&nbsp;</td><td>limited number of eigenvalues &amp; eigenvectors of sparse symmetric real matrix</td></tr>
+<tr><td><a href="#eigs_gen">eigs_gen</a></td><td>&nbsp;</td><td>limited number of eigenvalues &amp; eigenvectors of sparse general square matrix</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#spsolve">spsolve</a></td><td>&nbsp;</td><td>solve sparse systems of linear equations</td></tr>
+<tr><td><a href="#svds">svds</a></td><td>&nbsp;</td><td>limited number of singular values &amp; singular vectors of sparse matrix</td></tr>
 </tbody>
 </table>
 </ul>
 <br>
 
 <a name="part_g"></a>
+<b>Signal &amp; Image Processing</b>
+<ul>
+<table>
+<tbody>
+<tr style="background-color: #F5F5F5;"><td><a href="#conv">conv</a></td><td>&nbsp;</td><td>1D convolution</td></tr>
+<tr><td><a href="#conv2">conv2</a></td><td>&nbsp;</td><td>2D convolution</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#fft">fft&nbsp;/&nbsp;ifft</a></td><td>&nbsp;</td><td>1D fast Fourier transform and its inverse</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#fft2">fft2&nbsp;/&nbsp;ifft2</a></td><td>&nbsp;</td><td>2D fast Fourier transform and its inverse</td></tr>
+<tr><td><a href="#interp1">interp1</a></td><td>&nbsp;</td><td>1D interpolation</td></tr>
+</tbody>
+</table>
+</ul>
+<br>
+
+<a name="part_h"></a>
+<b>Statistics &amp; Clustering</b>
+<ul>
+<table>
+<tbody>
+<tr><td><a href="#stats_fns">stats&nbsp;functions</a></td><td>&nbsp;</td><td>mean, median, standard deviation, variance</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#cov">cov</a></td><td>&nbsp;</td><td>covariance</td></tr>
+<tr><td><a href="#cor">cor</a></td><td>&nbsp;</td><td>correlation</td></tr>
+<tr><td><a href="#hist">hist</a></td><td>&nbsp;</td><td>histogram of counts</td></tr>
+<tr><td><a href="#histc">histc</a></td><td>&nbsp;</td><td>histogram of counts with user specified edges</td></tr>
+<tr><td><a href="#running_stat">running_stat</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled one dimensional process/signal</td></tr>
+<tr><td><a href="#running_stat_vec">running_stat_vec</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled multi-dimensional process/signal</td></tr>
+<tr><td><a href="#kmeans">kmeans</a></td><td>&nbsp;</td><td>cluster data using k-means algorithm</td></tr>
+<tr><td><a href="#gmm_diag">gmm_diag</a></td><td>&nbsp;</td><td>model data as a Gaussian Mixture Model (GMM)</td></tr>
+</tbody>
+</table>
+</ul>
+<br>
+
+<a name="part_i"></a>
 <b>Miscellaneous</b>
 <ul>
 <table>
@@ -6988,118 +7011,6 @@ cx_mat Y = conj(X);
 </ul>
 <hr class="greyline"><br>
 
-<a name="conv"></a>
-<b>conv( A, B )</b>
-<br><b>conv( A, B, shape )</b>
-<ul>
-<li>
-1D convolution of vectors <i>A</i> and <i>B</i>
-</li>
-<br>
-<li>
-The orientation of the result vector is the same as the orientation of <i>A</i> (ie. either column or row vector)
-</li>
-<br>
-<li>
-The <i>shape</i> argument is optional; it is one of:
-<ul>
-<ul>
-<table>
-<tbody>
-<tr><td style="text-align: right;"><code>"full"</code></td><td>&nbsp;=&nbsp;</td><td>return the full convolution (<b>default setting</b>), with the size equal to <i>A.n_elem&nbsp;+&nbsp;B.n_elem&nbsp;-&nbsp;1</i></td></tr>
-<tr><td style="text-align: right;"><code>"same"</code></td><td>&nbsp;=&nbsp;</td><td>return the central part of the convolution, with the same size as vector <i>A</i></td></tr>
-</tbody>
-</table>
-</ul>
-</ul>
-</li>
-<br>
-<li>
-The convolution operation is also equivalent to FIR filtering
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-vec A(256, fill::randu);
-
-vec B(16, fill::randu);
-
-vec C = conv(A, B);
-
-vec D = conv(A, B, "same");
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#conv2">conv2()</a></li>
-<li><a href="#fft">fft()</a></li>
-<li><a href="#cor">cor()</a></li>
-<li><a href="#interp1">interp1()</a></li>
-<li><a href="http://mathworld.wolfram.com/Convolution.html">Convolution in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Convolution">Convolution in Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Finite_impulse_response">FIR filter in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="conv2"></a>
-<b>conv2( A, B )</b>
-<br><b>conv2( A, B, shape )</b>
-<ul>
-<li>
-2D convolution of matrices <i>A</i> and <i>B</i>
-</li>
-<br>
-<li>
-The <i>shape</i> argument is optional; it is one of:
-<ul>
-<ul>
-<table>
-<tbody>
-<tr><td style="text-align: right;"><code>"full"</code></td><td>&nbsp;=&nbsp;</td><td>return the full convolution (<b>default setting</b>), with the size equal to <i>size(A)&nbsp;+&nbsp;size(B)&nbsp;-&nbsp;1</i></td></tr>
-<tr><td style="text-align: right;"><code>"same"</code></td><td>&nbsp;=&nbsp;</td><td>return the central part of the convolution, with the same size as matrix <i>A</i></td></tr>
-</tbody>
-</table>
-</ul>
-</ul>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A(256, 256, fill::randu);
-
-mat B(16, 16, fill::randu);
-
-mat C = conv2(A, B);
-
-mat D = conv2(A, B, "same");
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#conv">conv()</a></li>
-<li><a href="#fft2">fft2()</a></li>
-<li><a href="http://mathworld.wolfram.com/Convolution.html">Convolution in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Convolution">Convolution in Wikipedia</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29">Kernel (image processing) in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
 <a name="conv_to"></a>
 <b>
 conv_to&lt; <i>type</i> &gt;::from( X )
@@ -7143,129 +7054,6 @@ See also:
 <li><a href="#imag_real">imag() / real()</a></li>
 <li><a href="#adv_constructors_mat">advanced constructors (matrices)</a></li>
 <li><a href="#adv_constructors_cube">advanced constructors (cubes)</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="cor"></a>
-<b>cor( X, Y )</b>
-<br><b>cor( X, Y, norm_type )</b>
-<br>
-<br><b>cor( X )</b>
-<br><b>cor( X, norm_type )</b>
-<ul>
-<li>
-For two matrix arguments <i>X</i> and <i>Y</i>,
-if each row of <i>X</i> and <i>Y</i>  is an observation and each column is a variable,
-the <i>(i,j)</i>-th entry of <i>cor(X,Y)</i> is the correlation coefficient between the <i>i</i>-th variable in <i>X</i> and the <i>j</i>-th variable in <i>Y</i>
-</li>
-<br>
-<li>
-For vector arguments, the type of vector is ignored and each element in the vector is treated as an observation 
-</li>
-<br>
-<li>
-For matrices, <i>X</i> and <i>Y</i> must have the same dimensions
-</li>
-<br>
-<li>
-For vectors, <i>X</i> and <i>Y</i> must have the same number of elements
-</li>
-<br>
-<li>
-<i>cor(X)</i> is equivalent to <i>cor(X, X)</i>
-</li>
-<br>
-<li>
-The default <i>norm_type=0</i> performs normalisation of the correlation matrix using <i>N-1</i> (where <i>N</i> is the number of observations).
-Using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat X = randu&lt;mat&gt;(4,5);
-mat Y = randu&lt;mat&gt;(4,5);
-
-mat R = cor(X,Y);
-mat S = cor(X,Y, 1);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also: 
-<ul>
-<li><a href="#cov">cov()</a></li>
-<li><a href="#conv">conv()</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#running_stat_vec">running_stat_vec</a></li>
-<li><a href="http://mathworld.wolfram.com/Correlation.html">Correlation in MathWorld</a></li>
-<li><a href="http://mathworld.wolfram.com/Autocorrelation.html">Autocorrelation in MathWorld</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="cov"></a>
-<b>cov( X, Y )</b>
-<br><b>cov( X, Y, norm_type )</b>
-<br>
-<br><b>cov( X )</b>
-<br><b>cov( X, norm_type )</b>
-<ul>
-<li>
-For two matrix arguments <i>X</i> and <i>Y</i>,
-if each row of <i>X</i> and <i>Y</i>  is an observation and each column is a variable,
-the <i>(i,j)</i>-th entry of <i>cov(X,Y)</i> is the covariance between the <i>i</i>-th variable in <i>X</i> and the <i>j</i>-th variable in <i>Y</i>
-</li>
-<br>
-<li>
-For vector arguments, the type of vector is ignored and each element in the vector is treated as an observation
-</li>
-<br>
-<li>
-For matrices, <i>X</i> and <i>Y</i> must have the same dimensions
-</li>
-<br>
-<li>
-For vectors, <i>X</i> and <i>Y</i> must have the same number of elements
-</li>
-<br>
-<li>
-<i>cov(X)</i> is equivalent to <i>cov(X, X)</i>
-</li>
-<br>
-<li>
-The default <i>norm_type=0</i> performs normalisation using <i>N-1</i> (where <i>N</i> is the number of observations),
-providing the best unbiased estimation of the covariance matrix (if the observations are from a normal distribution).
-Using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment matrix of the observations about their mean
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat X = randu&lt;mat&gt;(4,5);
-mat Y = randu&lt;mat&gt;(4,5);
-
-mat C = cov(X,Y);
-mat D = cov(X,Y, 1);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#cor">cor()</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#running_stat_vec">running_stat_vec</a></li>
-<li><a href="http://mathworld.wolfram.com/Covariance.html">Covariance in MathWorld</a></li>
 </ul>
 </li>
 <br>
@@ -7928,106 +7716,6 @@ See also:
 </ul>
 <hr class="greyline"><br>
 
-<a name="hist"></a>
-<b>hist( V )</b>
-<br><b>hist( V, n_bins )</b>
-<br><b>hist( V, centers )</b>
-<br>
-<br><b>hist( X, centers )</b>
-<br><b>hist( X, centers, dim )</b>
-<ul>
-<li>
-For vector <i>V</i>,
-produce an unsigned vector of the same orientation as <i>V</i> (ie. either <a href="#Col">uvec</a> or <a href="#Row">urowvec</a>)
-that represents a histogram of counts
-</li>
-<br>
-<li>
-For matrix <i>X</i>,
-produce a <a href="#Mat">umat</a> matrix containing either
-column histogram counts (for <i>dim=0</i>, default),
-or
-row histogram counts (for <i>dim=1</i>)
-</li>
-<br>
-<li>
-The bin centers can be automatically determined from the data, with the number of bins specified via <i>n_bins</i> (default is 10);
-the range of the bins is determined by the range of the data
-</li>
-<br>
-<li>
-The bin centers can also be explicitly specified via the <i>centers</i> vector;
-the vector must contain monotonically increasing values (eg. 0.1, 0.2, 0.3, ...)
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-vec  v  = randn&lt;vec&gt;(1000); // Gaussian distribution
-
-uvec h1 = hist(v, 11);
-uvec h2 = hist(v, linspace&lt;vec&gt;(-2,2,11));
-</pre>
-</ul>
-</li>
-<br>
-<li>See also:
-<ul>
-<li><a href="#histc">histc()</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#conv_to">conv_to()</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="histc"></a>
-<b>histc( V, edges )</b>
-<br><b>histc( X, edges )</b>
-<br><b>histc( X, edges, dim )</b>
-<ul>
-<li>
-For vector <i>V</i>,
-produce an unsigned vector of the same orientation as <i>V</i> (ie. either <a href="#Col">uvec</a> or <a href="#Row">urowvec</a>)
-that contains the counts of the number of values that fall between the elements in the <i>edges</i> vector
-</li>
-<br>
-<li>
-For matrix <i>X</i>,
-produce a <i>umat</i> matrix containing either
-column histogram counts (for <i>dim=0</i>, default),
-or
-row histogram counts (for <i>dim=1</i>)
-</li>
-<br>
-<li>
-The <i>edges</i> vector must contain monotonically increasing values (eg. 0.1, 0.2, 0.3, ...)
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-vec  v = randn&lt;vec&gt;(1000);  // Gaussian distribution
-
-uvec h = histc(v, linspace&lt;vec&gt;(-2,2,11));
-</pre>
-</ul>
-</li>
-<br>
-<li>See also:
-<ul>
-<li><a href="#hist">hist()</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#conv_to">conv_to()</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
 <a name="imag_real"></a>
 <b>imag( X )</b>
 <br><b>real( X )</b>
@@ -8166,75 +7854,6 @@ inplace_trans(Y, "lowmem");  // use low-memory (and slow) algorithm
 <li><a href="#t_st_members">.t()</a></li>
 <li><a href="#trans">trans()</a></li>
 <li><a href="https://en.wikipedia.org/wiki/In-place_matrix_transposition">inplace matrix transpose in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="interp1"></a>
-<b>interp1( X, Y, XI, YI )</b>
-<br><b>interp1( X, Y, XI, YI, method )</b>
-<br><b>interp1( X, Y, XI, YI, method, extrapolation_value )</b>
-<ul>
-<li>
-1D data interpolation
-</li>
-<br>
-<li>
-Given a 1D function specified in vectors <i>X</i> and <i>Y</i>
-(where <i>X</i> specifies locations and <i>Y</i> specifies the corresponding values),
-<br>
-generate vector <i>YI</i> which contains interpolated values at locations <i>XI</i>
-</li>
-<br>
-<li>
-The <i>method</i> argument is optional; it is one of:
-<ul>
-<table>
-<tbody>
-<tr><td style="text-align: right;"><code>"nearest"</code></td><td>&nbsp;=&nbsp;</td><td>interpolate using single nearest neighbour</td></tr>
-<tr><td style="text-align: right;"><code>"*nearest"</code></td><td>&nbsp;=&nbsp;</td><td>as per <code>"nearest"</code>, but faster by assuming that <i>X</i> and <i>XI</i> are monotonically increasing</td></tr>
-<tr><td style="text-align: right;"><code>"linear"</code></td><td>&nbsp;=&nbsp;</td><td>linear interpolation between two nearest neighbours (<b>default setting</b>)</td></tr>
-<tr><td style="text-align: right;"><code>"*linear"</code></td><td>&nbsp;=&nbsp;</td><td>as per <code>"linear"</code>, but faster by assuming that <i>X</i> and <i>XI</i> are monotonically increasing</td></tr>
-</tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-If a location in <i>XI</i> is outside the domain of <i>X</i>, the corresponding value in <i>YI</i> is set to <i>extrapolation_value</i>
-</li>
-<br>
-<li>
-The <i>extrapolation_value</i> argument is optional; by default it is <a href="#constants">datum::nan</a> (not-a-number)
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-vec x = linspace&lt;vec&gt;(0, 3, 20);
-vec y = square(x);
-
-vec xx = linspace&lt;vec&gt;(0, 3, 100);
-
-vec yy;
-
-interp1(x, y, xx, yy);  // use linear interpolation by default
-
-interp1(x, y, xx, yy, "*linear");  // faster than "linear"
-
-interp1(x, y, xx, yy, "nearest");
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#linspace">linspace()</a></li>
-<li><a href="#conv">conv()</a></li>
 </ul>
 </li>
 <br>
@@ -9779,140 +9398,11 @@ See also:
 <br>
 </ul>
 <hr class="greyline">
-<br>
-
-<a name="stats_fns"></a>
-<b>statistics functions: mean, median, stddev, var</b>
-<ul>
-<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
-<tbody>
-  <tr>
-    <td style="vertical-align: top;">
-       <b>mean( V )</b>
-       <br><b>mean( X )</b>
-       <br><b>mean( X, dim )</b>
-       <br>
-       <br>
-    </td>
-    <td style="vertical-align: top;">
-      &nbsp;&nbsp;&nbsp;
-    </td>
-    <td style="vertical-align: top;">
-      mean (average value)
-    </td>
-  </tr>
-  <tr>
-    <td style="vertical-align: top;">
-       <b>median( V )</b>
-       <br><b>median( X )</b>
-       <br><b>median( X, dim )</b>
-       <br>
-       <br>
-    </td>
-    <td style="vertical-align: top;">
-      &nbsp;&nbsp;&nbsp;
-    </td>
-    <td style="vertical-align: top;">
-      median
-    </td>
-  </tr>
-  <tr>
-    <td style="vertical-align: top;">
-       <b>stddev( V )</b>
-       <br><b>stddev( V, norm_type )</b>
-       <br><b>stddev( X )</b>
-       <br><b>stddev( X, norm_type )</b>
-       <br><b>stddev( X, norm_type, dim )</b>
-       <br>
-       <br>
-    </td>
-    <td style="vertical-align: top;">
-      &nbsp;&nbsp;&nbsp;
-    </td>
-    <td style="vertical-align: top;">
-      standard deviation
-    </td>
-  </tr>
-  <tr>
-    <td style="vertical-align: top;">
-       <b>var( V )</b>
-       <br><b>var( V, norm_type )</b>
-       <br><b>var( X )</b>
-       <br><b>var( X, norm_type )</b>
-       <br><b>var( X, norm_type, dim )</b>
-       <br>
-       <br>
-    </td>
-    <td style="vertical-align: top;">
-      &nbsp;&nbsp;&nbsp;
-    </td>
-    <td style="vertical-align: top;">
-      variance
-    </td>
-  </tr>
-</tbody>
-</table>
-<li>
-For vector <i>V</i>, return a particular statistic calculated using all the elements of the vector
-</li>
-<br>
-<li>
-For matrix <i>X</i>, find a particular statistic for each column (<i>dim=0</i>), or each row (<i>dim=1</i>)
-</li>
-<br>
-<li>
-The <i>dim</i> argument is optional; by default <i>dim=0</i> is used
-</li>
-<br>
-<li>
-The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
-</li>
-<br>
-<li>
-For the <i>var()</i> and <i>stddev()</i> functions:
-<ul>
-<li>the default <i>norm_type=0</i> performs normalisation using <i>N-1</i> (where <i>N</i> is the number of samples), providing the best unbiased estimator</li>
-<li>using <i>norm_type=1</i> performs normalisation using <i>N</i>, which provides the second moment around the mean</li>
-</ul>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A    = randu&lt;mat&gt;(5,5);
-mat B    = mean(A);
-mat C    = var(A);
-double m = mean(mean(A));
-
-vec    q = randu&lt;vec&gt;(5);
-double v = var(q);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#cov">cov()</a></li>
-<li><a href="#cor">cor()</a></li>
-<li><a href="#diff">diff()</a></li>
-<li><a href="#hist">hist()</a></li>
-<li><a href="#histc">histc()</a></li>
-<li><a href="#running_stat">running_stat</a>: class for running statistics of scalars</li>
-<li><a href="#running_stat_vec">running_stat_vec</a>: class for running statistics of vectors</li>
-<li><a href="#gmm_diag">gmm_diag</a>: class for modelling data as a Gaussian mixture model</li>
-<li><a href="#kmeans">kmeans()</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline">
 
 <hr class="greyline">
 <br>
 <br>
-<font size=+1><b>Decompositions, Factorisations, Inverses and Equation Solvers</b></font>
+<font size=+1><b>Decompositions, Factorisations, Inverses and Equation Solvers (Dense Matrices)</b></font>
 <br>
 <br>
 <hr class="greyline">
@@ -10160,269 +9650,6 @@ See also:
 <li><a href="#qz">qz()</a></li>
 <li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="eigs_sym"></a>
-<b>vec eigval = eigs_sym( X, k )</b>
-<br><b>vec eigval = eigs_sym( X, k, form )</b>
-<br><b>vec eigval = eigs_sym( X, k, form, tol )</b>
-<br>
-<br><b>eigs_sym( eigval, X, k )</b>
-<br><b>eigs_sym( eigval, X, k, form )</b>
-<br><b>eigs_sym( eigval, X, k, form, tol )</b>
-<br>
-<br><b>eigs_sym( eigval, eigvec, X, k )</b>
-<br><b>eigs_sym( eigval, eigvec, X, k, form )</b>
-<br><b>eigs_sym( eigval, eigvec, X, k, form, tol )</b>
-<ul>
-<li>Obtain a limited number of eigenvalues and eigenvectors of <b>sparse</b> symmetric real matrix <i>X</i></li>
-<br>
-<li>
-<i>k</i> specifies the number of eigenvalues and eigenvectors
-</li>
-<br>
-<li>The argument <i>form</i> is optional; <i>form</i> is one of:
-<ul>
-<table>
-<tbody>
-<tr><td><code>"lm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest magnitude (default operation)</td></tr>
-<tr><td><code>"sm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest magnitude</td></tr>
-<tr><td><code>"la"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest algebraic value</td></tr>
-<tr><td><code>"sa"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest algebraic value</td></tr>
-</tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-The argument <i>tol</i> is optional; it specifies the tolerance for convergence
-</li>
-<br>
-<li>The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively</li>
-<br>
-<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
-<br>
-<li>If the decomposition fails:
-<ul>
-<li><i>eigval = eigs_sym(X,k)</i> resets <i>eigval</i> and throws a <i>std::runtime_error</i> exception</li>
-<li><i>eigs_sym(eigval,X,k)</i> resets <i>eigval</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
-<li><i>eigs_sym(eigval,eigvec,X,k)</i> resets <i>eigval</i> &amp; <i>eigvec</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
-</ul>
-</li>
-<br>
-<li>There is currently no check whether <i>X</i> is symmetric</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-// generate sparse matrix
-sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);
-sp_mat B = A.t()*A;
-
-vec eigval;
-mat eigvec;
-
-eigs_sym(eigval, eigvec, B, 5);  // find 5 eigenvalues/eigenvectors
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#eigs_gen">eigs_gen()</a></li>
-<li><a href="#eig_sym">eig_sym()</a></li>
-<li><a href="#svds">svds()</a></li>
-<li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="eigs_gen"></a>
-<b>cx_vec eigval = eigs_gen( X, k )</b>
-<br><b>cx_vec eigval = eigs_gen( X, k, form )</b>
-<br><b>cx_vec eigval = eigs_gen( X, k, form, tol )</b>
-<br>
-<br><b>eigs_gen( eigval, X, k )</b>
-<br><b>eigs_gen( eigval, X, k, form )</b>
-<br><b>eigs_gen( eigval, X, k, form, tol )</b>
-<br>
-<br><b>eigs_gen( eigval, eigvec, X, k )</b>
-<br><b>eigs_gen( eigval, eigvec, X, k, form )</b>
-<br><b>eigs_gen( eigval, eigvec, X, k, form, tol )</b>
-<ul>
-<li>
-Obtain a limited number of eigenvalues and eigenvectors of <b>sparse</b> general (non-symmetric/non-hermitian) square matrix <i>X</i>
-</li>
-<br>
-<li>
-<i>k</i> specifies the number of eigenvalues and eigenvectors
-</li>
-<br>
-<li>The argument <i>form</i> is optional; <i>form</i> is one of:
-<ul>
-<table>
-<tbody>
-<tr><td><code>"lm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest magnitude (default operation)</td></tr>
-<tr><td><code>"sm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest magnitude</td></tr>
-<tr><td><code>"lr"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest real part</td></tr>
-<tr><td><code>"sr"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest real part</td></tr>
-<tr><td><code>"li"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest imaginary part</td></tr>
-<tr><td><code>"si"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest imaginary part</td></tr>
-</tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-The argument <i>tol</i> is optional; it specifies the tolerance for convergence
-</li>
-<br>
-<li>
-The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively
-</li>
-<br>
-<li>
-If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown
-</li>
-<br>
-<li>If the decomposition fails:
-<ul>
-<li><i>eigval = eigs_gen(X,k)</i> resets <i>eigval</i> and throws a <i>std::runtime_error</i> exception</li>
-<li><i>eigs_gen(eigval,X,k)</i> resets <i>eigval</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
-<li><i>eigs_gen(eigval,eigvec,X,k)</i> resets <i>eigval</i> &amp; <i>eigvec</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
-</ul>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-// generate sparse matrix
-sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);  
-
-cx_vec eigval;
-cx_mat eigvec;
-
-eigs_gen(eigval, eigvec, A, 5);  // find 5 eigenvalues/eigenvectors
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#eigs_sym">eigs_sym()</a></li>
-<li><a href="#eig_gen">eig_gen()</a></li>
-<li><a href="#svds">svds()</a></li>
-<li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="fft"></a>
-<b>cx_mat Y = &nbsp;fft( X )</b><br>
-<b>cx_mat Y = &nbsp;fft( X, n )</b><br>
-<br>
-<b>cx_mat Z = ifft( cx_mat Y )</b><br>
-<b>cx_mat Z = ifft( cx_mat Y, n )</b><br>
-<ul>
-<li><i>fft():</i> fast Fourier transform of a vector or matrix (real or complex)</li>
-<br>
-<li><i>ifft():</i> inverse fast Fourier transform of a vector or matrix (complex only)</li>
-<br>
-<li>If given a matrix, the transform is done on each column vector of the matrix</li>
-<br>
-<li>
-The optional <i>n</i> argument specifies the transform length:
-<ul>
-<li>if <i>n</i> is larger than the length of the input vector, a zero-padded version of the vector is used</li>
-<li>if <i>n</i> is smaller than the length of the input vector, only the first <i>n</i> elements of the vector are used</li>
-</ul>
-</li>
-<br>
-<li>
-If <i>n</i> is not specified, the transform length is the same as the length of the input vector
-</li>
-<br>
-<li><b>Caveat:</b> the transform is fastest when the transform length is a power of 2, eg. 64, 128, 256, 512, 1024, ...</li>
-<br>
-<li>The implementation of the transform in this version is preliminary; it is not yet fully optimised</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-   vec X = randu&lt;vec&gt;(100);
-cx_vec Y = fft(X, 128);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#fft2">fft2()</a></li>
-<li><a href="#conv">conv()</a></li>
-<li><a href="#imag_real">real()</a></li>
-<li><a href="http://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Fast_Fourier_transform">fast Fourier transform in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="fft2"></a>
-<b>cx_mat Y = &nbsp;fft2( X )</b><br>
-<b>cx_mat Y = &nbsp;fft2( X, n_rows, n_cols )</b><br>
-<br>
-<b>cx_mat Z = ifft2( cx_mat Y )</b><br>
-<b>cx_mat Z = ifft2( cx_mat Y, n_rows, n_cols )</b><br>
-<ul>
-<li><i>fft2():</i> 2D fast Fourier transform of a matrix (real or complex)</li>
-<br>
-<li><i>ifft2():</i> 2D inverse fast Fourier transform of a matrix (complex only)</li>
-<br>
-<li>
-The optional arguments <i>n_rows</i> and <i>n_cols</i> specify the size of the transform;
-a truncated and/or zero-padded version of the input matrix is used
-</li>
-<br>
-<li><b>Caveat:</b> the transform is fastest when both <i>n_rows</i> and <i>n_cols</i> are a power of 2, eg. 64, 128, 256, 512, 1024, ...</li>
-<br>
-<li>The implementation of the transform in this version is preliminary; it is not yet fully optimised</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-   mat A = randu&lt;mat&gt;(100,100);
-cx_mat B = fft2(A);
-cx_mat C = fft2(A, 128, 128);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#fft">fft()</a></li>
-<li><a href="#conv2">conv2()</a></li>
-<li><a href="#imag_real">real()</a></li>
-<li><a href="http://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Fast_Fourier_transform">fast Fourier transform in Wikipedia</a></li>
 </ul>
 </li>
 <br>
@@ -11148,141 +10375,6 @@ See also:
 </ul>
 <hr class="greyline"><br>
 
-<a name="spsolve"></a>
-<b>X = spsolve( A, B )</b>
-<br><b>X = spsolve( A, B, solver )</b>
-<br><b>X = spsolve( A, B, solver, settings )</b>
-<br>
-<br><b>spsolve( X, A, B )</b>
-<br><b>spsolve( X, A, B, solver )</b>
-<br><b>spsolve( X, A, B, solver, settings )</b>
-<br>
-<ul>
-<li>
-Solve a <b>sparse</b> system of linear equations, <i>A*X = B</i>, where <i>A</i> is a sparse matrix, <i>B</i> is a dense matrix or vector, and <i>X</i> is unknown
-</li>
-<br>
-<li>
-The number of rows in <i>A</i> and <i>B</i> must be the same
-</li>
-<br>
-<li>
-If no solution is found:
-<ul>
-<li><i>X = spsolve(A, B)</i> resets <i>X</i> and throws a <i>std::runtime_error</i> exception</li>
-<li><i>spsolve(X, A, B)</i> resets <i>X</i> and returns a bool set to <i>false</i> (no exception is thrown)</li>
-</ul>
-</li>
-<br>
-<li>
-The <i>solver</i> argument is optional; <i>solver</i> is either <code>"superlu"</code> or <code>"lapack"</code>; by default <code>"superlu"</code> is used
-<ul>
-<li>
-For <code>"superlu"</code>, <i>ARMA_USE_SUPERLU</i> must be enabled in <a href="#config_hpp">config.hpp</a>
-</li>
-<li>
-For <code>"lapack"</code>, sparse matrix <i>A</i> is converted to a dense matrix before using the LAPACK solver; this considerably increases memory usage
-</li>
-</ul>
-</li>
-<br>
-<li>
-The <i>settings</i> argument is optional 
-<br>
-<br>
-<ul>
-<li>
-when <i>solver</i> is "superlu", <i>settings</i> is an instance of the <i>superlu_opts</i> structure:
-<pre>
-struct superlu_opts
-  {
-  bool             equilibrate;  // default: false
-  bool             symmetric;    // default: false
-  double           pivot_thresh; // default: 1.0
-  permutation_type permutation;  // default: superlu_opts::COLAMD
-  refine_type      refine;       // default: superlu_opts::REF_DOUBLE
-  };
-</pre>
-</li>
-<li>
-<i>equilibrate</i> is either <i>true</i> or <i>false</i>; it indicates whether to equilibrate the system (scale the rows and columns of <i>A</i> to have unit norm)
-</li>
-<br>
-<li>
-<i>symmetric</i> is either <i>true</i> or <i>false</i>; it indicates whether to use SuperLU symmetric mode, which gives preference to diagonal pivots
-</li>
-<br>
-<li>
-<i>pivot_threshold</i> is in the range [0.0,&nbsp;1.0], used for determining whether a diagonal entry is an acceptable pivot (details in SuperLU documentation)
-</li>
-<br>
-<li>
-<i>permutation</i> specifies the type of column permutation; it is one of:
-<br>
-<br>
-<table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
-<tr><td><code>superlu_opts::NATURAL</code></td><td>&nbsp;&nbsp;</td><td>natural ordering</td></tr>
-<tr><td><code>superlu_opts::MMD_ATA</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;*&nbsp;A</code></td></tr>
-<tr><td><code>superlu_opts::MMD_AT_PLUS_A</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;+&nbsp;A</code></td></tr>
-<tr><td><code>superlu_opts::COLAMD</code></td><td>&nbsp;&nbsp;</td><td>approximate minimum degree column ordering</td></tr>
-</table>
-</li>
-<br>
-<li>  
-<i>refine</i> specifies the type of iterative refinement; it is one of:
-<br>
-<br>
-<table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
-<tr><td><code>superlu_opts::REF_NONE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>no refinement</td></tr>
-<tr><td><code>superlu_opts::REF_SINGLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in single precision</td></tr>
-<tr><td><code>superlu_opts::REF_DOUBLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in double precision</td></tr>
-<tr><td><code>superlu_opts::REF_EXTRA</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in extra precision</td></tr>
-</table>
-</li>
-</ul>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);
-
-vec b = randu&lt;vec&gt;(1000);
-mat B = randu&lt;mat&gt;(1000, 5);
-
-vec x = spsolve(A, b);  // solve one system
-mat X = spsolve(A, B);  // solve several systems
-
-bool status = spsolve(x, A, b);  // use default solver
-if(status == false)  { cout &lt;&lt; "no solution" &lt;&lt; endl; }
-
-spsolve(x, A, b, "lapack");   // use LAPACK  solver
-spsolve(x, A, b, "superlu");  // use SuperLU solver
-
-superlu_opts settings;
-
-settings.permutation = superlu_opts::NATURAL;
-settings.refine      = superlu_opts::REF_NONE;
-
-spsolve(x, A, b, "superlu", settings);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="#solve">solve()</a></li>
-<li><a href="http://crd-legacy.lbl.gov/~xiaoye/SuperLU/">SuperLU home page</a>
-<li><a href="http://mathworld.wolfram.com/LinearSystemofEquations.html">linear system of equations in MathWorld</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Linear_system_of_equations">system of linear equations in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-
 <a name="svd"></a>
 <b>vec s = svd( X )</b>
 <br>
@@ -11438,6 +10530,358 @@ See also:
 </ul>
 <hr class="greyline"><br>
 
+<a name="syl"></a>
+<b>X = syl( A, B, C )</b>
+<br><b>syl( X, A, B, C )</b>
+<ul>
+<li>Solve the Sylvester equation, ie. <i>AX + XB + C = 0</i>, where <i>X</i> is unknown</li>
+<br>
+<li>Matrices <i>A</i>, <i>B</i> and <i>C</i> must be square sized</li>
+<br>
+<li>
+If no solution is found:
+<ul>
+<li><i>syl(A,B,C)</i> resets <i>X</i> and throws a <i>std::runtime_error</i> exception</li>
+<li><i>syl(X,A,B,C)</i> resets <i>X</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+</ul>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,5);
+mat B = randu&lt;mat&gt;(5,5);
+mat C = randu&lt;mat&gt;(5,5);
+
+mat X1 = syl(A, B, C);
+
+mat X2;
+syl(X2, A, B, C);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#solve">solve()</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Sylvester_equation">Sylvester equation in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline">
+
+
+<hr class="greyline">
+<br>
+<br>
+<font size=+1><b>Decompositions, Factorisations and Equation Solvers (Sparse Matrices)</b></font>
+<br>
+<br>
+<hr class="greyline">
+<br>
+
+<a name="eigs_sym"></a>
+<b>vec eigval = eigs_sym( X, k )</b>
+<br><b>vec eigval = eigs_sym( X, k, form )</b>
+<br><b>vec eigval = eigs_sym( X, k, form, tol )</b>
+<br>
+<br><b>eigs_sym( eigval, X, k )</b>
+<br><b>eigs_sym( eigval, X, k, form )</b>
+<br><b>eigs_sym( eigval, X, k, form, tol )</b>
+<br>
+<br><b>eigs_sym( eigval, eigvec, X, k )</b>
+<br><b>eigs_sym( eigval, eigvec, X, k, form )</b>
+<br><b>eigs_sym( eigval, eigvec, X, k, form, tol )</b>
+<ul>
+<li>Obtain a limited number of eigenvalues and eigenvectors of <b>sparse</b> symmetric real matrix <i>X</i></li>
+<br>
+<li>
+<i>k</i> specifies the number of eigenvalues and eigenvectors
+</li>
+<br>
+<li>The argument <i>form</i> is optional; <i>form</i> is one of:
+<ul>
+<table>
+<tbody>
+<tr><td><code>"lm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest magnitude (default operation)</td></tr>
+<tr><td><code>"sm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest magnitude</td></tr>
+<tr><td><code>"la"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest algebraic value</td></tr>
+<tr><td><code>"sa"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest algebraic value</td></tr>
+</tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+The argument <i>tol</i> is optional; it specifies the tolerance for convergence
+</li>
+<br>
+<li>The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively</li>
+<br>
+<li>If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown</li>
+<br>
+<li>If the decomposition fails:
+<ul>
+<li><i>eigval = eigs_sym(X,k)</i> resets <i>eigval</i> and throws a <i>std::runtime_error</i> exception</li>
+<li><i>eigs_sym(eigval,X,k)</i> resets <i>eigval</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+<li><i>eigs_sym(eigval,eigvec,X,k)</i> resets <i>eigval</i> &amp; <i>eigvec</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+</ul>
+</li>
+<br>
+<li>There is currently no check whether <i>X</i> is symmetric</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+// generate sparse matrix
+sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);
+sp_mat B = A.t()*A;
+
+vec eigval;
+mat eigvec;
+
+eigs_sym(eigval, eigvec, B, 5);  // find 5 eigenvalues/eigenvectors
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#eigs_gen">eigs_gen()</a></li>
+<li><a href="#eig_sym">eig_sym()</a></li>
+<li><a href="#svds">svds()</a></li>
+<li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="eigs_gen"></a>
+<b>cx_vec eigval = eigs_gen( X, k )</b>
+<br><b>cx_vec eigval = eigs_gen( X, k, form )</b>
+<br><b>cx_vec eigval = eigs_gen( X, k, form, tol )</b>
+<br>
+<br><b>eigs_gen( eigval, X, k )</b>
+<br><b>eigs_gen( eigval, X, k, form )</b>
+<br><b>eigs_gen( eigval, X, k, form, tol )</b>
+<br>
+<br><b>eigs_gen( eigval, eigvec, X, k )</b>
+<br><b>eigs_gen( eigval, eigvec, X, k, form )</b>
+<br><b>eigs_gen( eigval, eigvec, X, k, form, tol )</b>
+<ul>
+<li>
+Obtain a limited number of eigenvalues and eigenvectors of <b>sparse</b> general (non-symmetric/non-hermitian) square matrix <i>X</i>
+</li>
+<br>
+<li>
+<i>k</i> specifies the number of eigenvalues and eigenvectors
+</li>
+<br>
+<li>The argument <i>form</i> is optional; <i>form</i> is one of:
+<ul>
+<table>
+<tbody>
+<tr><td><code>"lm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest magnitude (default operation)</td></tr>
+<tr><td><code>"sm"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest magnitude</td></tr>
+<tr><td><code>"lr"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest real part</td></tr>
+<tr><td><code>"sr"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest real part</td></tr>
+<tr><td><code>"li"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with largest imaginary part</td></tr>
+<tr><td><code>"si"</code></td><td>&nbsp;=&nbsp;</td><td>obtain eigenvalues with smallest imaginary part</td></tr>
+</tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+The argument <i>tol</i> is optional; it specifies the tolerance for convergence
+</li>
+<br>
+<li>
+The eigenvalues and corresponding eigenvectors are stored in <i>eigval</i> and <i>eigvec</i>, respectively
+</li>
+<br>
+<li>
+If <i>X</i> is not square sized, a <i>std::logic_error</i> exception is thrown
+</li>
+<br>
+<li>If the decomposition fails:
+<ul>
+<li><i>eigval = eigs_gen(X,k)</i> resets <i>eigval</i> and throws a <i>std::runtime_error</i> exception</li>
+<li><i>eigs_gen(eigval,X,k)</i> resets <i>eigval</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+<li><i>eigs_gen(eigval,eigvec,X,k)</i> resets <i>eigval</i> &amp; <i>eigvec</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+</ul>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+// generate sparse matrix
+sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);  
+
+cx_vec eigval;
+cx_mat eigvec;
+
+eigs_gen(eigval, eigvec, A, 5);  // find 5 eigenvalues/eigenvectors
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#eigs_sym">eigs_sym()</a></li>
+<li><a href="#eig_gen">eig_gen()</a></li>
+<li><a href="#svds">svds()</a></li>
+<li><a href="http://mathworld.wolfram.com/EigenDecomposition.html">eigen decomposition in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors">eigenvalues &amp; eigenvectors in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="spsolve"></a>
+<b>X = spsolve( A, B )</b>
+<br><b>X = spsolve( A, B, solver )</b>
+<br><b>X = spsolve( A, B, solver, settings )</b>
+<br>
+<br><b>spsolve( X, A, B )</b>
+<br><b>spsolve( X, A, B, solver )</b>
+<br><b>spsolve( X, A, B, solver, settings )</b>
+<br>
+<ul>
+<li>
+Solve a <b>sparse</b> system of linear equations, <i>A*X = B</i>, where <i>A</i> is a sparse matrix, <i>B</i> is a dense matrix or vector, and <i>X</i> is unknown
+</li>
+<br>
+<li>
+The number of rows in <i>A</i> and <i>B</i> must be the same
+</li>
+<br>
+<li>
+If no solution is found:
+<ul>
+<li><i>X = spsolve(A, B)</i> resets <i>X</i> and throws a <i>std::runtime_error</i> exception</li>
+<li><i>spsolve(X, A, B)</i> resets <i>X</i> and returns a bool set to <i>false</i> (no exception is thrown)</li>
+</ul>
+</li>
+<br>
+<li>
+The <i>solver</i> argument is optional; <i>solver</i> is either <code>"superlu"</code> or <code>"lapack"</code>; by default <code>"superlu"</code> is used
+<ul>
+<li>
+For <code>"superlu"</code>, <i>ARMA_USE_SUPERLU</i> must be enabled in <a href="#config_hpp">config.hpp</a>
+</li>
+<li>
+For <code>"lapack"</code>, sparse matrix <i>A</i> is converted to a dense matrix before using the LAPACK solver; this considerably increases memory usage
+</li>
+</ul>
+</li>
+<br>
+<li>
+The <i>settings</i> argument is optional 
+<br>
+<br>
+<ul>
+<li>
+when <i>solver</i> is "superlu", <i>settings</i> is an instance of the <i>superlu_opts</i> structure:
+<pre>
+struct superlu_opts
+  {
+  bool             equilibrate;  // default: false
+  bool             symmetric;    // default: false
+  double           pivot_thresh; // default: 1.0
+  permutation_type permutation;  // default: superlu_opts::COLAMD
+  refine_type      refine;       // default: superlu_opts::REF_DOUBLE
+  };
+</pre>
+</li>
+<li>
+<i>equilibrate</i> is either <i>true</i> or <i>false</i>; it indicates whether to equilibrate the system (scale the rows and columns of <i>A</i> to have unit norm)
+</li>
+<br>
+<li>
+<i>symmetric</i> is either <i>true</i> or <i>false</i>; it indicates whether to use SuperLU symmetric mode, which gives preference to diagonal pivots
+</li>
+<br>
+<li>
+<i>pivot_threshold</i> is in the range [0.0,&nbsp;1.0], used for determining whether a diagonal entry is an acceptable pivot (details in SuperLU documentation)
+</li>
+<br>
+<li>
+<i>permutation</i> specifies the type of column permutation; it is one of:
+<br>
+<br>
+<table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
+<tr><td><code>superlu_opts::NATURAL</code></td><td>&nbsp;&nbsp;</td><td>natural ordering</td></tr>
+<tr><td><code>superlu_opts::MMD_ATA</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;*&nbsp;A</code></td></tr>
+<tr><td><code>superlu_opts::MMD_AT_PLUS_A</code></td><td>&nbsp;&nbsp;</td><td>minimum degree ordering on structure of <code>A.t()&nbsp;+&nbsp;A</code></td></tr>
+<tr><td><code>superlu_opts::COLAMD</code></td><td>&nbsp;&nbsp;</td><td>approximate minimum degree column ordering</td></tr>
+</table>
+</li>
+<br>
+<li>  
+<i>refine</i> specifies the type of iterative refinement; it is one of:
+<br>
+<br>
+<table style="text-align: left;" border="0" cellpadding="0" cellspacing="0">
+<tr><td><code>superlu_opts::REF_NONE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>no refinement</td></tr>
+<tr><td><code>superlu_opts::REF_SINGLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in single precision</td></tr>
+<tr><td><code>superlu_opts::REF_DOUBLE</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in double precision</td></tr>
+<tr><td><code>superlu_opts::REF_EXTRA</code></td><td>&nbsp;&nbsp;&nbsp;</td><td>iterative refinement in extra precision</td></tr>
+</table>
+</li>
+</ul>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+sp_mat A = sprandu&lt;sp_mat&gt;(1000, 1000, 0.1);
+
+vec b = randu&lt;vec&gt;(1000);
+mat B = randu&lt;mat&gt;(1000, 5);
+
+vec x = spsolve(A, b);  // solve one system
+mat X = spsolve(A, B);  // solve several systems
+
+bool status = spsolve(x, A, b);  // use default solver
+if(status == false)  { cout &lt;&lt; "no solution" &lt;&lt; endl; }
+
+spsolve(x, A, b, "lapack");   // use LAPACK  solver
+spsolve(x, A, b, "superlu");  // use SuperLU solver
+
+superlu_opts settings;
+
+settings.permutation = superlu_opts::NATURAL;
+settings.refine      = superlu_opts::REF_NONE;
+
+spsolve(x, A, b, "superlu", settings);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#solve">solve()</a></li>
+<li><a href="http://crd-legacy.lbl.gov/~xiaoye/SuperLU/">SuperLU home page</a>
+<li><a href="http://mathworld.wolfram.com/LinearSystemofEquations.html">linear system of equations in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Linear_system_of_equations">system of linear equations in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
 <a name="svds"></a>
 <b>vec s = svds( X, k )</b>
 <br><b>vec s = svds( X, k, tol )</b>
@@ -11520,36 +10964,58 @@ See also:
 </li>
 <br>
 </ul>
-<hr class="greyline"><br>
+<hr class="greyline">
 
-<a name="syl"></a>
-<b>X = syl( A, B, C )</b>
-<br><b>syl( X, A, B, C )</b>
-<ul>
-<li>Solve the Sylvester equation, ie. <i>AX + XB + C = 0</i>, where <i>X</i> is unknown</li>
+<hr class="greyline">
 <br>
-<li>Matrices <i>A</i>, <i>B</i> and <i>C</i> must be square sized</li>
+<br>
+<font size=+1><b>Signal &amp; Image Processing</b></font>
+<br>
+<br>
+<hr class="greyline">
+<br>
+
+<a name="conv"></a>
+<b>conv( A, B )</b>
+<br><b>conv( A, B, shape )</b>
+<ul>
+<li>
+1D convolution of vectors <i>A</i> and <i>B</i>
+</li>
 <br>
 <li>
-If no solution is found:
+The orientation of the result vector is the same as the orientation of <i>A</i> (ie. either column or row vector)
+</li>
+<br>
+<li>
+The <i>shape</i> argument is optional; it is one of:
 <ul>
-<li><i>syl(A,B,C)</i> resets <i>X</i> and throws a <i>std::runtime_error</i> exception</li>
-<li><i>syl(X,A,B,C)</i> resets <i>X</i> and returns a bool set to <i>false</i> (exception is not thrown)</li>
+<ul>
+<table>
+<tbody>
+<tr><td style="text-align: right;"><code>"full"</code></td><td>&nbsp;=&nbsp;</td><td>return the full convolution (<b>default setting</b>), with the size equal to <i>A.n_elem&nbsp;+&nbsp;B.n_elem&nbsp;-&nbsp;1</i></td></tr>
+<tr><td style="text-align: right;"><code>"same"</code></td><td>&nbsp;=&nbsp;</td><td>return the central part of the convolution, with the same size as vector <i>A</i></td></tr>
+</tbody>
+</table>
 </ul>
+</ul>
+</li>
+<br>
+<li>
+The convolution operation is also equivalent to FIR filtering
 </li>
 <br>
 <li>
 Examples:
 <ul>
 <pre>
-mat A = randu&lt;mat&gt;(5,5);
-mat B = randu&lt;mat&gt;(5,5);
-mat C = randu&lt;mat&gt;(5,5);
+vec A(256, fill::randu);
 
-mat X1 = syl(A, B, C);
+vec B(16, fill::randu);
 
-mat X2;
-syl(X2, A, B, C);
+vec C = conv(A, B);
+
+vec D = conv(A, B, "same");
 </pre>
 </ul>
 </li>
@@ -11557,23 +11023,948 @@ syl(X2, A, B, C);
 <li>
 See also:
 <ul>
-<li><a href="#solve">solve()</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Sylvester_equation">Sylvester equation in Wikipedia</a></li>
+<li><a href="#conv2">conv2()</a></li>
+<li><a href="#fft">fft()</a></li>
+<li><a href="#cor">cor()</a></li>
+<li><a href="#interp1">interp1()</a></li>
+<li><a href="http://mathworld.wolfram.com/Convolution.html">Convolution in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Convolution">Convolution in Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Finite_impulse_response">FIR filter in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="conv2"></a>
+<b>conv2( A, B )</b>
+<br><b>conv2( A, B, shape )</b>
+<ul>
+<li>
+2D convolution of matrices <i>A</i> and <i>B</i>
+</li>
+<br>
+<li>
+The <i>shape</i> argument is optional; it is one of:
+<ul>
+<ul>
+<table>
+<tbody>
+<tr><td style="text-align: right;"><code>"full"</code></td><td>&nbsp;=&nbsp;</td><td>return the full convolution (<b>default setting</b>), with the size equal to <i>size(A)&nbsp;+&nbsp;size(B)&nbsp;-&nbsp;1</i></td></tr>
+<tr><td style="text-align: right;"><code>"same"</code></td><td>&nbsp;=&nbsp;</td><td>return the central part of the convolution, with the same size as matrix <i>A</i></td></tr>
+</tbody>
+</table>
+</ul>
+</ul>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A(256, 256, fill::randu);
+
+mat B(16, 16, fill::randu);
+
+mat C = conv2(A, B);
+
+mat D = conv2(A, B, "same");
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#conv">conv()</a></li>
+<li><a href="#fft2">fft2()</a></li>
+<li><a href="http://mathworld.wolfram.com/Convolution.html">Convolution in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Convolution">Convolution in Wikipedia</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Kernel_%28image_processing%29">Kernel (image processing) in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="fft"></a>
+<b>cx_mat Y = &nbsp;fft( X )</b><br>
+<b>cx_mat Y = &nbsp;fft( X, n )</b><br>
+<br>
+<b>cx_mat Z = ifft( cx_mat Y )</b><br>
+<b>cx_mat Z = ifft( cx_mat Y, n )</b><br>
+<ul>
+<li><i>fft():</i> fast Fourier transform of a vector or matrix (real or complex)</li>
+<br>
+<li><i>ifft():</i> inverse fast Fourier transform of a vector or matrix (complex only)</li>
+<br>
+<li>If given a matrix, the transform is done on each column vector of the matrix</li>
+<br>
+<li>
+The optional <i>n</i> argument specifies the transform length:
+<ul>
+<li>if <i>n</i> is larger than the length of the input vector, a zero-padded version of the vector is used</li>
+<li>if <i>n</i> is smaller than the length of the input vector, only the first <i>n</i> elements of the vector are used</li>
+</ul>
+</li>
+<br>
+<li>
+If <i>n</i> is not specified, the transform length is the same as the length of the input vector
+</li>
+<br>
+<li><b>Caveat:</b> the transform is fastest when the transform length is a power of 2, eg. 64, 128, 256, 512, 1024, ...</li>
+<br>
+<li>The implementation of the transform in this version is preliminary; it is not yet fully optimised</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+   vec X = randu&lt;vec&gt;(100);
+cx_vec Y = fft(X, 128);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#fft2">fft2()</a></li>
+<li><a href="#conv">conv()</a></li>
+<li><a href="#imag_real">real()</a></li>
+<li><a href="http://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Fast_Fourier_transform">fast Fourier transform in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="fft2"></a>
+<b>cx_mat Y = &nbsp;fft2( X )</b><br>
+<b>cx_mat Y = &nbsp;fft2( X, n_rows, n_cols )</b><br>
+<br>
+<b>cx_mat Z = ifft2( cx_mat Y )</b><br>
+<b>cx_mat Z = ifft2( cx_mat Y, n_rows, n_cols )</b><br>
+<ul>
+<li><i>fft2():</i> 2D fast Fourier transform of a matrix (real or complex)</li>
+<br>
+<li><i>ifft2():</i> 2D inverse fast Fourier transform of a matrix (complex only)</li>
+<br>
+<li>
+The optional arguments <i>n_rows</i> and <i>n_cols</i> specify the size of the transform;
+a truncated and/or zero-padded version of the input matrix is used
+</li>
+<br>
+<li><b>Caveat:</b> the transform is fastest when both <i>n_rows</i> and <i>n_cols</i> are a power of 2, eg. 64, 128, 256, 512, 1024, ...</li>
+<br>
+<li>The implementation of the transform in this version is preliminary; it is not yet fully optimised</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+   mat A = randu&lt;mat&gt;(100,100);
+cx_mat B = fft2(A);
+cx_mat C = fft2(A, 128, 128);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#fft">fft()</a></li>
+<li><a href="#conv2">conv2()</a></li>
+<li><a href="#imag_real">real()</a></li>
+<li><a href="http://mathworld.wolfram.com/FastFourierTransform.html">fast Fourier transform in MathWorld</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Fast_Fourier_transform">fast Fourier transform in Wikipedia</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="interp1"></a>
+<b>interp1( X, Y, XI, YI )</b>
+<br><b>interp1( X, Y, XI, YI, method )</b>
+<br><b>interp1( X, Y, XI, YI, method, extrapolation_value )</b>
+<ul>
+<li>
+1D data interpolation
+</li>
+<br>
+<li>
+Given a 1D function specified in vectors <i>X</i> and <i>Y</i>
+(where <i>X</i> specifies locations and <i>Y</i> specifies the corresponding values),
+<br>
+generate vector <i>YI</i> which contains interpolated values at locations <i>XI</i>
+</li>
+<br>
+<li>
+The <i>method</i> argument is optional; it is one of:
+<ul>
+<table>
+<tbody>
+<tr><td style="text-align: right;"><code>"nearest"</code></td><td>&nbsp;=&nbsp;</td><td>interpolate using single nearest neighbour</td></tr>
+<tr><td style="text-align: right;"><code>"*nearest"</code></td><td>&nbsp;=&nbsp;</td><td>as per <code>"nearest"</code>, but faster by assuming that <i>X</i> and <i>XI</i> are monotonically increasing</td></tr>
+<tr><td style="text-align: right;"><code>"linear"</code></td><td>&nbsp;=&nbsp;</td><td>linear interpolation between two nearest neighbours (<b>default setting</b>)</td></tr>
+<tr><td style="text-align: right;"><code>"*linear"</code></td><td>&nbsp;=&nbsp;</td><td>as per <code>"linear"</code>, but faster by assuming that <i>X</i> and <i>XI</i> are monotonically increasing</td></tr>
+</tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+If a location in <i>XI</i> is outside the domain of <i>X</i>, the corresponding value in <i>YI</i> is set to <i>extrapolation_value</i>
+</li>
+<br>
+<li>
+The <i>extrapolation_value</i> argument is optional; by default it is <a href="#constants">datum::nan</a> (not-a-number)
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+vec x = linspace&lt;vec&gt;(0, 3, 20);
+vec y = square(x);
+
+vec xx = linspace&lt;vec&gt;(0, 3, 100);
+
+vec yy;
+
+interp1(x, y, xx, yy);  // use linear interpolation by default
+
+interp1(x, y, xx, yy, "*linear");  // faster than "linear"
+
+interp1(x, y, xx, yy, "nearest");
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#linspace">linspace()</a></li>
+<li><a href="#conv">conv()</a></li>
 </ul>
 </li>
 <br>
 </ul>
 <hr class="greyline">
 
+<hr class="greyline">
+<br>
+<br>
+<font size=+1><b>Statistics &amp; Clustering</b></font>
+<br>
+<br>
+<hr class="greyline">
+<br>
 
-<hr class="greyline">
+<a name="stats_fns"></a>
+<b>mean, median, stddev, var</b>
+<ul>
+<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
+<tbody>
+  <tr>
+    <td style="vertical-align: top;">
+       <b>mean( V )</b>
+       <br><b>mean( X )</b>
+       <br><b>mean( X, dim )</b>
+       <br>
+       <br>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;&nbsp;&nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      mean (average value)
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+       <b>median( V )</b>
+       <br><b>median( X )</b>
+       <br><b>median( X, dim )</b>
+       <br>
+       <br>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;&nbsp;&nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      median
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+       <b>stddev( V )</b>
+       <br><b>stddev( V, norm_type )</b>
+       <br><b>stddev( X )</b>
+       <br><b>stddev( X, norm_type )</b>
+       <br><b>stddev( X, norm_type, dim )</b>
+       <br>
+       <br>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;&nbsp;&nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      standard deviation
+    </td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">
+       <b>var( V )</b>
+       <br><b>var( V, norm_type )</b>
+       <br><b>var( X )</b>
+       <br><b>var( X, norm_type )</b>
+       <br><b>var( X, norm_type, dim )</b>
+       <br>
+       <br>
+    </td>
+    <td style="vertical-align: top;">
+      &nbsp;&nbsp;&nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      variance
+    </td>
+  </tr>
+</tbody>
+</table>
+<li>
+For vector <i>V</i>, return a particular statistic calculated using all the elements of the vector
+</li>
+<br>
+<li>
+For matrix <i>X</i>, find a particular statistic for each column (<i>dim=0</i>), or each row (<i>dim=1</i>)
+</li>
+<br>
+<li>
+The <i>dim</i> argument is optional; by default <i>dim=0</i> is used
+</li>
+<br>
+<li>
+The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
+</li>
+<br>
+<li>
+For the <i>var()</i> and <i>stddev()</i> functions:
+<ul>
+<li>the default <i>norm_type=0</i> performs normalisation using <i>N-1</i> (where <i>N</i> is the number of samples), providing the best unbiased estimator</li>
+<li>using <i>norm_type=1</i> performs normalisation using <i>N</i>, which provides the second moment around the mean</li>
+</ul>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A    = randu&lt;mat&gt;(5,5);
+mat B    = mean(A);
+mat C    = var(A);
+double m = mean(mean(A));
+
+vec    q = randu&lt;vec&gt;(5);
+double v = var(q);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#cov">cov()</a></li>
+<li><a href="#cor">cor()</a></li>
+<li><a href="#diff">diff()</a></li>
+<li><a href="#hist">hist()</a></li>
+<li><a href="#histc">histc()</a></li>
+<li><a href="#running_stat">running_stat</a>: class for running statistics of scalars</li>
+<li><a href="#running_stat_vec">running_stat_vec</a>: class for running statistics of vectors</li>
+<li><a href="#gmm_diag">gmm_diag</a>: class for modelling data as a Gaussian mixture model</li>
+<li><a href="#kmeans">kmeans()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="cov"></a>
+<b>cov( X, Y )</b>
+<br><b>cov( X, Y, norm_type )</b>
+<br>
+<br><b>cov( X )</b>
+<br><b>cov( X, norm_type )</b>
+<ul>
+<li>
+For two matrix arguments <i>X</i> and <i>Y</i>,
+if each row of <i>X</i> and <i>Y</i>  is an observation and each column is a variable,
+the <i>(i,j)</i>-th entry of <i>cov(X,Y)</i> is the covariance between the <i>i</i>-th variable in <i>X</i> and the <i>j</i>-th variable in <i>Y</i>
+</li>
+<br>
+<li>
+For vector arguments, the type of vector is ignored and each element in the vector is treated as an observation
+</li>
+<br>
+<li>
+For matrices, <i>X</i> and <i>Y</i> must have the same dimensions
+</li>
+<br>
+<li>
+For vectors, <i>X</i> and <i>Y</i> must have the same number of elements
+</li>
+<br>
+<li>
+<i>cov(X)</i> is equivalent to <i>cov(X, X)</i>
+</li>
+<br>
+<li>
+The default <i>norm_type=0</i> performs normalisation using <i>N-1</i> (where <i>N</i> is the number of observations),
+providing the best unbiased estimation of the covariance matrix (if the observations are from a normal distribution).
+Using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment matrix of the observations about their mean
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat X = randu&lt;mat&gt;(4,5);
+mat Y = randu&lt;mat&gt;(4,5);
+
+mat C = cov(X,Y);
+mat D = cov(X,Y, 1);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="#cor">cor()</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#running_stat_vec">running_stat_vec</a></li>
+<li><a href="http://mathworld.wolfram.com/Covariance.html">Covariance in MathWorld</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="cor"></a>
+<b>cor( X, Y )</b>
+<br><b>cor( X, Y, norm_type )</b>
+<br>
+<br><b>cor( X )</b>
+<br><b>cor( X, norm_type )</b>
+<ul>
+<li>
+For two matrix arguments <i>X</i> and <i>Y</i>,
+if each row of <i>X</i> and <i>Y</i>  is an observation and each column is a variable,
+the <i>(i,j)</i>-th entry of <i>cor(X,Y)</i> is the correlation coefficient between the <i>i</i>-th variable in <i>X</i> and the <i>j</i>-th variable in <i>Y</i>
+</li>
+<br>
+<li>
+For vector arguments, the type of vector is ignored and each element in the vector is treated as an observation 
+</li>
+<br>
+<li>
+For matrices, <i>X</i> and <i>Y</i> must have the same dimensions
+</li>
+<br>
+<li>
+For vectors, <i>X</i> and <i>Y</i> must have the same number of elements
+</li>
+<br>
+<li>
+<i>cor(X)</i> is equivalent to <i>cor(X, X)</i>
+</li>
+<br>
+<li>
+The default <i>norm_type=0</i> performs normalisation of the correlation matrix using <i>N-1</i> (where <i>N</i> is the number of observations).
+Using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat X = randu&lt;mat&gt;(4,5);
+mat Y = randu&lt;mat&gt;(4,5);
+
+mat R = cor(X,Y);
+mat S = cor(X,Y, 1);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also: 
+<ul>
+<li><a href="#cov">cov()</a></li>
+<li><a href="#conv">conv()</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#running_stat_vec">running_stat_vec</a></li>
+<li><a href="http://mathworld.wolfram.com/Correlation.html">Correlation in MathWorld</a></li>
+<li><a href="http://mathworld.wolfram.com/Autocorrelation.html">Autocorrelation in MathWorld</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="hist"></a>
+<b>hist( V )</b>
+<br><b>hist( V, n_bins )</b>
+<br><b>hist( V, centers )</b>
+<br>
+<br><b>hist( X, centers )</b>
+<br><b>hist( X, centers, dim )</b>
+<ul>
+<li>
+For vector <i>V</i>,
+produce an unsigned vector of the same orientation as <i>V</i> (ie. either <a href="#Col">uvec</a> or <a href="#Row">urowvec</a>)
+that represents a histogram of counts
+</li>
+<br>
+<li>
+For matrix <i>X</i>,
+produce a <a href="#Mat">umat</a> matrix containing either
+column histogram counts (for <i>dim=0</i>, default),
+or
+row histogram counts (for <i>dim=1</i>)
+</li>
+<br>
+<li>
+The bin centers can be automatically determined from the data, with the number of bins specified via <i>n_bins</i> (default is 10);
+the range of the bins is determined by the range of the data
+</li>
+<br>
+<li>
+The bin centers can also be explicitly specified via the <i>centers</i> vector;
+the vector must contain monotonically increasing values (eg. 0.1, 0.2, 0.3, ...)
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+vec  v  = randn&lt;vec&gt;(1000); // Gaussian distribution
+
+uvec h1 = hist(v, 11);
+uvec h2 = hist(v, linspace&lt;vec&gt;(-2,2,11));
+</pre>
+</ul>
+</li>
+<br>
+<li>See also:
+<ul>
+<li><a href="#histc">histc()</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#conv_to">conv_to()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="histc"></a>
+<b>histc( V, edges )</b>
+<br><b>histc( X, edges )</b>
+<br><b>histc( X, edges, dim )</b>
+<ul>
+<li>
+For vector <i>V</i>,
+produce an unsigned vector of the same orientation as <i>V</i> (ie. either <a href="#Col">uvec</a> or <a href="#Row">urowvec</a>)
+that contains the counts of the number of values that fall between the elements in the <i>edges</i> vector
+</li>
+<br>
+<li>
+For matrix <i>X</i>,
+produce a <i>umat</i> matrix containing either
+column histogram counts (for <i>dim=0</i>, default),
+or
+row histogram counts (for <i>dim=1</i>)
+</li>
+<br>
+<li>
+The <i>edges</i> vector must contain monotonically increasing values (eg. 0.1, 0.2, 0.3, ...)
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+vec  v = randn&lt;vec&gt;(1000);  // Gaussian distribution
+
+uvec h = histc(v, linspace&lt;vec&gt;(-2,2,11));
+</pre>
+</ul>
+</li>
+<br>
+<li>See also:
+<ul>
+<li><a href="#hist">hist()</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#conv_to">conv_to()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="running_stat"></a>
+<b>running_stat&lt;</b><i>type</i><b>&gt;</b>
+<ul>
+<li>
+Class for keeping the running statistics of a continuously sampled one dimensional process/signal
+</li>
+<br>
+<li>
+Useful if the storage of individual samples (scalars) is not required, or the number of samples is not known beforehand
+</li>
+<br>
+<li>
+<i>type</i> is one of: <i>float</i>, <i>double</i>, <i><a href="#cx_double">cx_float</a></i>, <i><a href="#cx_double">cx_double</a></i>
+</li>
+<br>
+<li>
+For an instance of <i>running_stat</i> named as <i>X</i>, the member functions are:
 <br>
 <br>
-<font size=+1><b>Statistical Modelling &amp; Clustering</b></font>
+<ul>
+<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X(</b>scalar<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      update the statistics so far using the given scalar
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.min()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the minimum value so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.max()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the maximum value so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.mean()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the mean or average value so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.var()</b> &nbsp;and&nbsp; <b>X.var(</b>norm_type<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the variance so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.stddev()</b> &nbsp;and&nbsp; <b>X.stddev(</b>norm_type<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the standard deviation so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.reset()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      reset all statistics and set the number of samples to zero
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.count()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the number of samples so far
+      </td>
+    </tr>
+  </tbody>
+</table>
+</ul>
+</li>
+<br>
+<li>
+The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
+</li>
+<br>
+<li>
+For the <i>.var()</i> and <i>.stddev()</i> functions, the default <i>norm_type=0</i> performs normalisation using <i>N-1</i>
+(where <i>N</i> is the number of samples so far),
+providing the best unbiased estimator;
+using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment around the mean
+</li>
+<br>
+<li>
+The return type of <i>.count()</i> depends on the underlying form of <i>type</i>: it is either <i>float</i> or <i>double</i>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+running_stat&lt;double&gt; stats;
+
+for(uword i=0; i&lt;10000; ++i)
+  {
+  double sample = randn();
+  stats(sample);
+  }
+
+cout &lt;&lt; "mean = " &lt;&lt; stats.mean() &lt;&lt; endl;
+cout &lt;&lt; "var  = " &lt;&lt; stats.var()  &lt;&lt; endl;
+cout &lt;&lt; "min  = " &lt;&lt; stats.min()  &lt;&lt; endl;
+cout &lt;&lt; "max  = " &lt;&lt; stats.max()  &lt;&lt; endl;
+</pre>
+</ul>
+</li>
+<br>
+<li>See also:
+<ul>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#running_stat_vec">running_stat_vec</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
+
+<a name="running_stat_vec"></a>
+<b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;</b>
+<br><b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;(calc_cov)</b>
+<ul>
+<li>
+Class for keeping the running statistics of a continuously sampled multi-dimensional process/signal
+</li>
+<br>
+<li>
+Useful if the storage of individual samples (vectors) is not required, or if the number of samples is not known beforehand
+</li>
+<br>
+<li>
+This class is similar to <i>running_stat</i>, with the difference that vectors are processed instead of scalars
+</li>
+<br>
+<li>
+<i>vec_type</i> is the vector type of the samples; for example: <i><a href="#Col">vec</a></i>, <i><a href="#Col">cx_vec</a></i>, <i><a href="#Row">rowvec</a></i>, ...
+</li>
+<br>
+<li>
+For an instance of <i>running_stat_vec</i> named as <i>X</i>, the member functions are:
 <br>
 <br>
-<hr class="greyline">
+<ul>
+<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X(</b>vector<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      update the statistics so far using the given vector
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.min()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the vector of minimum values so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.max()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the vector of maximum values so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.mean()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the mean vector so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.var()</b> &nbsp;and&nbsp; <b>X.var(</b>norm_type<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the vector of variances so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.stddev()</b> &nbsp;and&nbsp; <b>X.stddev(</b>norm_type<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the vector of standard deviations so far
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.cov()</b> &nbsp;and&nbsp; <b>X.cov(</b>norm_type<b>)</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the covariance matrix so far;
+      valid if <i>calc_cov=true</i> during construction of <i>running_stat_vec</i>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.reset()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      reset all statistics and set the number of samples to zero
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;">
+      <b>X.count()</b>
+      </td>
+      <td style="vertical-align: top;">&nbsp;<br>
+      </td>
+      <td style="vertical-align: top;">
+      get the number of samples so far
+      </td>
+    </tr>
+  </tbody>
+</table>
+</ul>
+</li>
 <br>
+<li>
+The <i>calc_cov</i> argument is optional; by default <i>calc_cov=false</i>, indicating that the covariance matrix will not be calculated;
+to enable the covariance matrix, use <i>calc_cov=true</i> during construction; for example: <i>running_stat_vec&lt;vec&gt;&nbsp;X(true);</i>
+</li>
+<br>
+<li>
+The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
+</li>
+<br>
+<li>
+For the <i>.var()</i> and <i>.stddev()</i> functions, the default <i>norm_type=0</i> performs normalisation using <i>N-1</i>
+(where <i>N</i> is the number of samples so far),
+providing the best unbiased estimator;
+using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment around the mean
+</li>
+<br>
+<li>
+The return type of <i>.count()</i> depends on the underlying form of <i>vec_type</i>: it is either <i>float</i> or <i>double</i>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+running_stat_vec&lt;vec&gt; stats;
+
+vec sample;
+
+for(uword i=0; i&lt;10000; ++i)
+  {
+  sample = randu&lt;vec&gt;(5);
+  stats(sample);
+  }
+
+cout &lt;&lt; "mean = " &lt;&lt; endl &lt;&lt; stats.mean() &lt;&lt; endl;
+cout &lt;&lt; "var  = " &lt;&lt; endl &lt;&lt; stats.var()  &lt;&lt; endl;
+cout &lt;&lt; "max  = " &lt;&lt; endl &lt;&lt; stats.max()  &lt;&lt; endl;
+
+//
+//
+
+running_stat_vec&lt;rowvec&gt; more_stats(true);
+
+for(uword i=0; i&lt;20; ++i)
+  {
+  sample = randu&lt;rowvec&gt;(3);
+  
+  sample(1) -= sample(0);
+  sample(2) += sample(1);
+  
+  more_stats(sample);
+  }
+
+cout &lt;&lt; "covariance matrix = " &lt;&lt; endl;
+cout &lt;&lt; more_stats.cov() &lt;&lt; endl;
+
+rowvec sd = more_stats.stddev();
+
+cout &lt;&lt; "correlations = " &lt;&lt; endl;
+cout &lt;&lt; more_stats.cov() / (sd.t() * sd);
+</pre>
+</ul>
+</li>
+<br>
+<li>See also:
+<ul>
+<li><a href="#cov">cov()</a></li>
+<li><a href="#cor">cor()</a></li>
+<li><a href="#running_stat">running_stat</a></li>
+<li><a href="#stats_fns">statistics functions</a></li>
+<li><a href="#gmm_diag">gmm_diag</a></li>
+</ul>
+</li>
+<br>
+</ul>
+<hr class="greyline"><br>
 
 <a name="kmeans"></a>
 <b>kmeans(</b> means<b>,</b> data<b>,</b> k<b>,</b> seed_mode<b>,</b> n_iter<b>,</b> print_mode <b>)</b>
@@ -12295,358 +12686,6 @@ model.save("my_model.gmm");
 <li><a href="http://mathworld.wolfram.com/MaximumLikelihood.html">maximum likelihood in Wolfram</a></li>
 <li><a href="http://en.wikipedia.org/wiki/Vector_quantization">vector quantisation in Wikipedia</a></li>
 <li><a href="http://en.wikipedia.org/wiki/OpenMP">OpenMP in Wikipedia</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="running_stat"></a>
-<b>running_stat&lt;</b><i>type</i><b>&gt;</b>
-<ul>
-<li>
-Class for keeping the running statistics of a continuously sampled one dimensional process/signal
-</li>
-<br>
-<li>
-Useful if the storage of individual samples (scalars) is not required, or the number of samples is not known beforehand
-</li>
-<br>
-<li>
-<i>type</i> is one of: <i>float</i>, <i>double</i>, <i><a href="#cx_double">cx_float</a></i>, <i><a href="#cx_double">cx_double</a></i>
-</li>
-<br>
-<li>
-For an instance of <i>running_stat</i> named as <i>X</i>, the member functions are:
-<br>
-<br>
-<ul>
-<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X(</b>scalar<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      update the statistics so far using the given scalar
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.min()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the minimum value so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.max()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the maximum value so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.mean()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the mean or average value so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.var()</b> &nbsp;and&nbsp; <b>X.var(</b>norm_type<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the variance so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.stddev()</b> &nbsp;and&nbsp; <b>X.stddev(</b>norm_type<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the standard deviation so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.reset()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      reset all statistics and set the number of samples to zero
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.count()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the number of samples so far
-      </td>
-    </tr>
-  </tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
-</li>
-<br>
-<li>
-For the <i>.var()</i> and <i>.stddev()</i> functions, the default <i>norm_type=0</i> performs normalisation using <i>N-1</i>
-(where <i>N</i> is the number of samples so far),
-providing the best unbiased estimator;
-using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment around the mean
-</li>
-<br>
-<li>
-The return type of <i>.count()</i> depends on the underlying form of <i>type</i>: it is either <i>float</i> or <i>double</i>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-running_stat&lt;double&gt; stats;
-
-for(uword i=0; i&lt;10000; ++i)
-  {
-  double sample = randn();
-  stats(sample);
-  }
-
-cout &lt;&lt; "mean = " &lt;&lt; stats.mean() &lt;&lt; endl;
-cout &lt;&lt; "var  = " &lt;&lt; stats.var()  &lt;&lt; endl;
-cout &lt;&lt; "min  = " &lt;&lt; stats.min()  &lt;&lt; endl;
-cout &lt;&lt; "max  = " &lt;&lt; stats.max()  &lt;&lt; endl;
-</pre>
-</ul>
-</li>
-<br>
-<li>See also:
-<ul>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#running_stat_vec">running_stat_vec</a></li>
-</ul>
-</li>
-<br>
-</ul>
-<hr class="greyline"><br>
-
-<a name="running_stat_vec"></a>
-<b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;</b>
-<br><b>running_stat_vec&lt;</b><i>vec_type</i><b>&gt;(calc_cov)</b>
-<ul>
-<li>
-Class for keeping the running statistics of a continuously sampled multi-dimensional process/signal
-</li>
-<br>
-<li>
-Useful if the storage of individual samples (vectors) is not required, or if the number of samples is not known beforehand
-</li>
-<br>
-<li>
-This class is similar to <i>running_stat</i>, with the difference that vectors are processed instead of scalars
-</li>
-<br>
-<li>
-<i>vec_type</i> is the vector type of the samples; for example: <i><a href="#Col">vec</a></i>, <i><a href="#Col">cx_vec</a></i>, <i><a href="#Row">rowvec</a></i>, ...
-</li>
-<br>
-<li>
-For an instance of <i>running_stat_vec</i> named as <i>X</i>, the member functions are:
-<br>
-<br>
-<ul>
-<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
-  <tbody>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X(</b>vector<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      update the statistics so far using the given vector
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.min()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the vector of minimum values so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.max()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the vector of maximum values so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.mean()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the mean vector so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.var()</b> &nbsp;and&nbsp; <b>X.var(</b>norm_type<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the vector of variances so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.stddev()</b> &nbsp;and&nbsp; <b>X.stddev(</b>norm_type<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the vector of standard deviations so far
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.cov()</b> &nbsp;and&nbsp; <b>X.cov(</b>norm_type<b>)</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the covariance matrix so far;
-      valid if <i>calc_cov=true</i> during construction of <i>running_stat_vec</i>
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.reset()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      reset all statistics and set the number of samples to zero
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top;">
-      <b>X.count()</b>
-      </td>
-      <td style="vertical-align: top;">&nbsp;<br>
-      </td>
-      <td style="vertical-align: top;">
-      get the number of samples so far
-      </td>
-    </tr>
-  </tbody>
-</table>
-</ul>
-</li>
-<br>
-<li>
-The <i>calc_cov</i> argument is optional; by default <i>calc_cov=false</i>, indicating that the covariance matrix will not be calculated;
-to enable the covariance matrix, use <i>calc_cov=true</i> during construction; for example: <i>running_stat_vec&lt;vec&gt;&nbsp;X(true);</i>
-</li>
-<br>
-<li>
-The <i>norm_type</i> argument is optional; by default <i>norm_type=0</i> is used
-</li>
-<br>
-<li>
-For the <i>.var()</i> and <i>.stddev()</i> functions, the default <i>norm_type=0</i> performs normalisation using <i>N-1</i>
-(where <i>N</i> is the number of samples so far),
-providing the best unbiased estimator;
-using <i>norm_type=1</i> causes normalisation to be done using <i>N</i>, which provides the second moment around the mean
-</li>
-<br>
-<li>
-The return type of <i>.count()</i> depends on the underlying form of <i>vec_type</i>: it is either <i>float</i> or <i>double</i>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-running_stat_vec&lt;vec&gt; stats;
-
-vec sample;
-
-for(uword i=0; i&lt;10000; ++i)
-  {
-  sample = randu&lt;vec&gt;(5);
-  stats(sample);
-  }
-
-cout &lt;&lt; "mean = " &lt;&lt; endl &lt;&lt; stats.mean() &lt;&lt; endl;
-cout &lt;&lt; "var  = " &lt;&lt; endl &lt;&lt; stats.var()  &lt;&lt; endl;
-cout &lt;&lt; "max  = " &lt;&lt; endl &lt;&lt; stats.max()  &lt;&lt; endl;
-
-//
-//
-
-running_stat_vec&lt;rowvec&gt; more_stats(true);
-
-for(uword i=0; i&lt;20; ++i)
-  {
-  sample = randu&lt;rowvec&gt;(3);
-  
-  sample(1) -= sample(0);
-  sample(2) += sample(1);
-  
-  more_stats(sample);
-  }
-
-cout &lt;&lt; "covariance matrix = " &lt;&lt; endl;
-cout &lt;&lt; more_stats.cov() &lt;&lt; endl;
-
-rowvec sd = more_stats.stddev();
-
-cout &lt;&lt; "correlations = " &lt;&lt; endl;
-cout &lt;&lt; more_stats.cov() / (sd.t() * sd);
-</pre>
-</ul>
-</li>
-<br>
-<li>See also:
-<ul>
-<li><a href="#cov">cov()</a></li>
-<li><a href="#cor">cor()</a></li>
-<li><a href="#running_stat">running_stat</a></li>
-<li><a href="#stats_fns">statistics functions</a></li>
-<li><a href="#gmm_diag">gmm_diag</a></li>
 </ul>
 </li>
 <br>
