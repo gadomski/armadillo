@@ -398,7 +398,7 @@ class herk
         
         const blas_int lda = (do_trans_A) ? k : n;
         
-        arma_extra_debug_print( arma_format::format("blas::herk(): trans_A = %c") % trans_A );
+        arma_extra_debug_print( arma_str::format("blas::herk(): trans_A = %c") % trans_A );
         
         blas::herk<T>
           (

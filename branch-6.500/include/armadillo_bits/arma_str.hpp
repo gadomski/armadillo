@@ -8,11 +8,11 @@
 // Written by Conrad Sanderson - http://conradsanderson.id.au
 
 
-//! \addtogroup arma_format
+//! \addtogroup arma_str
 //! @{
 
 
-namespace arma_format
+namespace arma_str
   {
   
   #if ( defined(ARMA_USE_CXX11) || defined(ARMA_HAVE_SNPRINTF) )
