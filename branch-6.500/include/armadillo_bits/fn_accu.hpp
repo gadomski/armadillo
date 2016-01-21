@@ -133,8 +133,8 @@ accu_proxy_at(const Proxy<T1>& P)
 //! accumulate the elements of a matrix
 template<typename T1>
 arma_hot
-inline
 arma_warn_unused
+inline
 typename enable_if2< is_arma_type<T1>::value, typename T1::elem_type >::result
 accu(const T1& X)
   {
@@ -151,8 +151,8 @@ accu(const T1& X)
 
 //! explicit handling of multiply-and-accumulate
 template<typename T1, typename T2>
-inline
 arma_warn_unused
+inline
 typename T1::elem_type
 accu(const eGlue<T1,T2,eglue_schur>& expr)
   {
@@ -183,8 +183,8 @@ accu(const eGlue<T1,T2,eglue_schur>& expr)
 
 //! explicit handling of Hamming norm (also known as zero norm)
 template<typename T1>
-inline
 arma_warn_unused
+inline
 uword
 accu(const mtOp<uword,T1,op_rel_noteq>& X)
   {
@@ -238,8 +238,8 @@ accu(const mtOp<uword,T1,op_rel_noteq>& X)
 
 
 template<typename T1>
-inline
 arma_warn_unused
+inline
 uword
 accu(const mtOp<uword,T1,op_rel_eq>& X)
   {
@@ -295,7 +295,6 @@ accu(const mtOp<uword,T1,op_rel_eq>& X)
 //! accumulate the elements of a subview (submatrix)
 template<typename eT>
 arma_hot
-arma_pure
 arma_warn_unused
 inline
 eT
@@ -338,7 +337,6 @@ accu(const subview<eT>& X)
 
 template<typename eT>
 arma_hot
-arma_pure
 arma_warn_unused
 inline
 eT
@@ -442,8 +440,8 @@ accu(const BaseCube<typename T1::elem_type,T1>& X)
 
 //! explicit handling of multiply-and-accumulate (cube version)
 template<typename T1, typename T2>
-inline
 arma_warn_unused
+inline
 typename T1::elem_type
 accu(const eGlueCube<T1,T2,eglue_schur>& expr)
   {
@@ -470,8 +468,8 @@ accu(const eGlueCube<T1,T2,eglue_schur>& expr)
 
 
 template<typename T>
-arma_inline
 arma_warn_unused
+inline
 const typename arma_scalar_only<T>::result &
 accu(const T& x)
   {
@@ -483,8 +481,8 @@ accu(const T& x)
 //! accumulate values in a sparse object
 template<typename T1>
 arma_hot
-inline
 arma_warn_unused
+inline
 typename enable_if2<is_arma_sparse_type<T1>::value, typename T1::elem_type>::result
 accu(const T1& x)
   {
