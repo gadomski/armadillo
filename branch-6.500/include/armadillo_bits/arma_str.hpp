@@ -15,7 +15,7 @@
 namespace arma_format
   {
   
-  #if defined(ARMA_HAVE_SNPRINTF)
+  #if ( defined(ARMA_USE_CXX11) || defined(ARMA_HAVE_SNPRINTF) )
     
     #define arma_snprintf std::snprintf
     
