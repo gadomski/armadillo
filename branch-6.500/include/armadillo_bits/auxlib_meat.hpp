@@ -4057,11 +4057,12 @@ inline
 typename T1::pod_type
 auxlib::rcond(const Base<typename T1::pod_type,T1>& A_expr)
   {
-  typedef typename T1::pod_type   T;
-  typedef typename T1::elem_type eT;
+  typedef typename T1::pod_type T;
   
   #if defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::elem_type eT;
+    
     Mat<eT> A = A_expr.get_ref();
     
     arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
@@ -4111,11 +4112,12 @@ inline
 typename T1::pod_type
 auxlib::rcond(const Base<std::complex<typename T1::pod_type>,T1>& A_expr)
   {
-  typedef typename T1::pod_type   T;
-  typedef typename T1::elem_type eT;
+  typedef typename T1::pod_type T;
   
   #if defined(ARMA_USE_LAPACK)
     {
+    typedef typename T1::elem_type eT;
+    
     Mat<eT> A = A_expr.get_ref();
     
     arma_debug_check( (A.is_square() == false), "rcond(): matrix must be square sized" );
