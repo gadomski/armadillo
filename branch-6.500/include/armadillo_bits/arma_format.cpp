@@ -8,11 +8,11 @@
 // Written by Conrad Sanderson - http://conradsanderson.id.au
 
 
-//! \addtogroup arma_boost
+//! \addtogroup arma_format
 //! @{
 
 
-namespace arma_boost
+namespace arma_format
   {
   
   #if defined(ARMA_HAVE_SNPRINTF)
