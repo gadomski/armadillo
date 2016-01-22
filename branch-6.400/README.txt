@@ -51,9 +51,6 @@ combines several operations (at compile time) to increase efficiency.
 The library can be used for machine learning, pattern recognition,
 signal processing, bioinformatics, statistics, econometrics, etc.
 
-The library is open-source software, and is distributed under a license
-that is useful in both open-source and commercial/proprietary contexts.
-
 Armadillo is primarily developed at Data61 / NICTA (Australia),
 with contributions from around the world.  More information
 about Data61 can be obtained from http://data61.csiro.au
