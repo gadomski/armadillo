@@ -9097,16 +9097,17 @@ See also:
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="misc_fns"></a>
-<b>
-miscellaneous element-wise functions:
+<b>miscellaneous element-wise functions:</b>
 <ul>
-exp, exp2, exp10, trunc_exp
-<br>log, log2, log10, trunc_log
-<br>pow, square, sqrt
-<br>floor, ceil, round
-<br>sign
+<table border="0" cellpadding="0" cellspacing="0">
+<tr><td><b>exp  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>exp2  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>exp10 </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>trunc_exp</b></td></tr>
+<tr><td><b>log  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>log2  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>log10 </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>trunc_log</b></td></tr>
+<tr><td><b>pow  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>square</b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>sqrt  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>&nbsp;   </b></td></tr>
+<tr><td><b>floor</b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>ceil  </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>round </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>trunc    </b></td></tr>
+<tr><td><b>sign </b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>&nbsp;</b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>&nbsp;</b></td><td>&nbsp;&nbsp;&nbsp;</td><td><b>&nbsp;   </b></td></tr>
+</table>
 </ul>
-</b>
+<br>
 <ul>
 <li>
 Apply a function to each element
@@ -9128,10 +9129,10 @@ A and B must have the same <i>matrix_type/cube_type</i>
 fn(A) is one of:
 <ul>
 
-<table style="text-align: left; width: 100%;" border="0" cellpadding="2" cellspacing="2">
+<table style="text-align: left;" border="0" cellpadding="2" cellspacing="2">
 <tbody>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
        <code>exp(A)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9141,8 +9142,8 @@ fn(A) is one of:
       base-e exponential: <i>e<sup>&nbsp;x</sup></i>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
        <code>exp2(A)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9152,8 +9153,8 @@ fn(A) is one of:
       base-2 exponential: <i>2<sup>&nbsp;x</sup></i>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
        <code>exp10(A)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9163,8 +9164,8 @@ fn(A) is one of:
       base-10 exponential: <i>10<sup>&nbsp;x</sup></i>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
       <code>trunc_exp(A)</code>
     </td>
     <td style="vertical-align: top;">
@@ -9176,7 +9177,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
        <code>log(A)</code><sub>&nbsp;</sub>
     </td>
     <td style="vertical-align: top;">
@@ -9187,7 +9188,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
        <code>log2(A)</code><sub>&nbsp;</sub>
     </td>
     <td style="vertical-align: top;">
@@ -9198,7 +9199,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
        <code>log10(A)</code><sub>&nbsp;</sub>
     </td>
     <td style="vertical-align: top;">
@@ -9209,7 +9210,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
       <code>trunc_log(A)</code>
     </td>
     <td style="vertical-align: top;">
@@ -9220,8 +9221,8 @@ fn(A) is one of:
       truncated to avoid &plusmn;infinity &nbsp; <font size=-1>(only for <i>float</i> and <i>double</i> elements)</font>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
        <code>pow(A, p)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9231,8 +9232,8 @@ fn(A) is one of:
       raise to the power of p: <i>x<sup><small>&nbsp;p</small></sup></i>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
       <code>square(A)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9242,8 +9243,8 @@ fn(A) is one of:
       square: <i>x<sup><small>&nbsp;2</small></sup></i>
     </td>
   </tr>
-  <tr>
-    <td style="vertical-align: top;">
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
        <code>sqrt(A)</code><sup>&nbsp;</sup>
     </td>
     <td style="vertical-align: top;">
@@ -9254,7 +9255,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
       <code>floor(A)</code>
     </td>
     <td style="vertical-align: top;">
@@ -9265,7 +9266,7 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
       <code>ceil(A)</code>
     </td>
     <td style="vertical-align: top;">
@@ -9276,18 +9277,29 @@ fn(A) is one of:
     </td>
   </tr>
   <tr>
-    <td style="vertical-align: top;">
+    <td style="vertical-align: top; text-align: right;">
       <code>round(A)</code>
     </td>
     <td style="vertical-align: top;">
       &nbsp;
     </td>
     <td style="vertical-align: top;">
-      round to nearest integer, away from zero
+      round to nearest integer, with halfway cases rounded away from zero
     </td>
   </tr>
   <tr>
+    <td style="vertical-align: top; text-align: right;">
+      <code>trunc(A)</code>
+    </td>
     <td style="vertical-align: top;">
+      &nbsp;
+    </td>
+    <td style="vertical-align: top;">
+      round to nearest integer, towards zero
+    </td>
+  </tr>
+  <tr style="background-color: #F5F5F5;">
+    <td style="vertical-align: top; text-align: right;">
       <code>sign(A)</code>
     </td>
     <td style="vertical-align: top;">
@@ -9299,9 +9311,9 @@ fn(A) is one of:
       <ul>
       <table border="0" cellpadding="0" cellspacing="0">
       <tbody>
-      <tr><td>&#9127;&nbsp;</td><td style="text-align: right;">&minus;1</td><td>&nbsp;if <i>a</i> &lt; 0</td></tr>
-      <tr><td>&#9128;&nbsp;</td><td style="text-align: right;">0</td><td>&nbsp;if <i>a</i> = 0</td></tr>
-      <tr><td>&#9129;&nbsp;</td><td style="text-align: right;">+1</td><td>&nbsp;if <i>a</i> &gt; 0</td></tr>
+      <tr><td>              </td><td>&#9127;&nbsp;</td><td style="text-align: right;">&minus;1</td><td>&nbsp;if <i>a</i> &lt; 0</td></tr>
+      <tr><td>b&nbsp;=&nbsp;</td><td>&#9128;&nbsp;</td><td style="text-align: right;">       0</td><td>&nbsp;if <i>a</i> =    0</td></tr>
+      <tr><td>              </td><td>&#9129;&nbsp;</td><td style="text-align: right;">      +1</td><td>&nbsp;if <i>a</i> &gt; 0</td></tr>
       </tbody>
       </table>
       </ul>
@@ -15082,6 +15094,7 @@ List of additions and changes for each version:
 <ul>
 <li>added <a href="#conv2">conv2()</a> for 2D convolution</li>
 <li>added stand-alone <a href="#kmeans">kmeans()</a> function for clustering data</li>
+<li>added <a href="#misc_fns">trunc()</a></li>
 <li>extended <a href="#conv">conv()</a> to optionally provide central convolution</li>
 <li>faster handling of multiply-and-accumulate by <a href="#accu">accu()</a></li>
 </ul>
