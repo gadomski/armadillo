@@ -8,24 +8,24 @@ Contents
 
  1: Introduction
  2: Citation Details
- 3: Requirements
- 
- 4: Linux and Mac OS X: Installation
- 5: Linux and Mac OS X: Compiling & Linking
- 
- 6: Windows: Installation
- 7: Windows: Compiling & Linking
- 
- 8: Support for OpenBLAS, Intel MKL and AMD ACML
- 9: Support for ATLAS
- 
-10: Documentation / API Reference Manual
-11: MEX Interface to Octave
-12: Bug Reports and Frequently Asked Questions
+ 3: Licenses and Support
 
-13: License
-14: Developers and Contributors
-15: Related Software
+ 4: Requirements
+
+ 5: Linux and Mac OS X: Installation
+ 6: Linux and Mac OS X: Compiling & Linking
+
+ 7: Windows: Installation
+ 8: Windows: Compiling & Linking
+
+ 9: Support for OpenBLAS, Intel MKL and AMD ACML
+10: Support for ATLAS
+
+11: Documentation / API Reference Manual
+12: MEX Interface to Octave
+
+13: Bug Reports and Frequently Asked Questions
+14: Related Software
 
 
 
@@ -35,6 +35,7 @@ Contents
 
 Armadillo is a high quality C++ linear algebra library,
 aiming towards a good balance between speed and ease of use.
+
 It's useful for algorithm development directly in C++,
 and/or quick conversion of research code into production environments.
 The syntax (API) is deliberately similar to Matlab.
@@ -51,9 +52,8 @@ combines several operations (at compile time) to increase efficiency.
 The library can be used for machine learning, pattern recognition,
 signal processing, bioinformatics, statistics, econometrics, etc.
 
-Armadillo is primarily developed at Data61 / NICTA (Australia),
-with contributions from around the world.  More information
-about Data61 can be obtained from http://data61.csiro.au
+Armadillo is primarily developed at Data61 / NICTA (Australia).
+For information about Data61 see http://data61.csiro.au
 
 Main developers:
   Conrad Sanderson - http://conradsanderson.id.au
@@ -75,7 +75,33 @@ development and maintenance of the library.
 
 
 
-3: Requirements
+3: Licenses and Support
+=======================
+
+Armadillo is available under 2 licenses:
+
+ - open source license (with no support)
+ - commercial license  (with technical support)
+
+The open source edition uses the Mozilla Public License v2.0 (MPL),
+unless specified otherwise. See the "LICENSE.txt" file for license details.
+
+The MPL license requirements state that if you distribute any part
+of the library in executable or object form, then you must tell the
+recipients how to obtain a copy of the library source code
+at a charge no more than the cost of distribution to the recipient;
+this applies to both original and modified versions of the library.
+Any modifications to the library are automatically licensed under the MPL.
+
+The commercial license does not have the above requirements,
+and comes with technical support.
+
+To obtain more information about the commercial license, 
+please contact Conrad Sanderson:  http://conradsanderson.id.au
+
+
+
+4: Requirements
 ===============
 
 Armadillo makes extensive use of template meta-programming, recursive templates
@@ -97,11 +123,11 @@ For example, for GCC and Clang compilers use -O2 or -O3
 
 
 
-4: Linux and Mac OS X: Installation
+5: Linux and Mac OS X: Installation
 ===================================
 
 You can install Armadillo on your system using the procedure detailed below,
-or use Armadillo without installation (detailed in section 5).
+or use Armadillo without installation (detailed in section 6).
 
 Installation procedure:
 
@@ -178,7 +204,7 @@ Installation procedure:
 
 
 
-5: Linux and Mac OS X: Compiling & Linking
+6: Linux and Mac OS X: Compiling & Linking
 ==========================================
 
 The "examples" directory contains several quick example programs
@@ -214,7 +240,7 @@ Notes:
   Caveat: only SuperLU version 4.3 can be used!
   
 
-6: Windows: Installation
+7: Windows: Installation
 ========================
 
 The installation is comprised of 3 steps:
@@ -244,7 +270,7 @@ The installation is comprised of 3 steps:
 
 
 
-7: Windows: Compiling & Linking
+8: Windows: Compiling & Linking
 ===============================
 
 Within the "examples" folder, we have included an MSVC project named "example1_win64"
@@ -272,7 +298,7 @@ Faster and/or alternative implementations of BLAS and LAPACK are available:
   http://icl.cs.utk.edu/lapack-for-windows/lapack/
 
 The OpenBLAS, MKL and ACML libraries are generally the fastest.
-See section 8 for more info on making Armadillo use these libraries.
+See section 9 for more info on making Armadillo use these libraries.
 
 For better performance, we recommend the following high-quality C++ compilers:
   GCC from MinGW:     http://www.mingw.org/
@@ -295,7 +321,7 @@ such as Mac OS X, or various Linux-based systems:
 
 
 
-8: Support for OpenBLAS, Intel MKL and AMD ACML
+9: Support for OpenBLAS, Intel MKL and AMD ACML
 ===============================================
 
 Armadillo can use OpenBLAS, or Intel Math Kernel Library (MKL),
@@ -343,7 +369,7 @@ the lines containing:
 
 
 
-9: Support for ATLAS
+10: Support for ATLAS
 ====================
 
 Armadillo can use the ATLAS library for faster versions of
@@ -360,7 +386,7 @@ remove the old version and use the standard LAPACK library.
 
 
 
-10: Documentation / API Reference Manual
+11: Documentation / API Reference Manual
 ========================================
 
 A reference manual (documentation of functions and classes) is available at:
@@ -372,7 +398,7 @@ which can be viewed with a web browser.
 
 
 
-11: MEX Interface to Octave
+12: MEX Interface to Octave
 ===========================
 
 The "mex_interface" folder contains examples of how to interface
@@ -380,7 +406,7 @@ Octave with C++ code that uses Armadillo matrices.
 
 
 
-12: Bug Reports and Frequently Asked Questions
+13: Bug Reports and Frequently Asked Questions
 ==============================================
 
 Answers to frequently asked questions can be found at:
@@ -402,51 +428,7 @@ to the developers.  The developers' contact details are at:
 
 
 
-13: License
-===========
-
-Unless specified otherwise, the Mozilla Public License v2.0 is used.
-See the "LICENSE.txt" file for license details.
-
-The file "include/armadillo_bits/fft_engine.hpp" is licensed under
-both the Mozilla Public License v2.0 and a 3-clause BSD license.
-See the file for license details.
-
-The file "include/armadillo_bits/include_superlu.hpp"
-is licensed under both the Mozilla Public License v2.0 and
-a 3-clause BSD license.  See the file for license details.
-
-
-
-14: Developers and Contributors
-===============================
-
-Main sponsoring organisation:
-- Data61 / NICTA
-  http://data61.csiro.au
-  http://nicta.com.au
-
-Main developers:
-- Conrad Sanderson - http://conradsanderson.id.au
-- Ryan Curtin      - http://www.ratml.org
-
-Notable contributors:
-- Matthew Amidon
-- Dimitrios Bouzas
-- Ian Cullinan
-- Clement Creusot
-- Alexandre Drouin
-- Michael McNeil Forbes
-- Szabolcs Horvat
-- Keith O'Hara
-- James Sanders
-- Eric Jon Sundstrom
-- Arnold Wiliem
-- George Yammine
-
-
-
-15: Related Software
+14: Related Software
 ====================
 
 * MLPACK: C++ library for machine learning and pattern recognition, built on top of Armadillo.
