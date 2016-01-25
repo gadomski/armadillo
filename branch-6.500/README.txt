@@ -10,7 +10,7 @@ Contents
  2: Citation Details
  3: Licenses and Support
 
- 4: Requirements
+ 4: Dependencies
 
  5: Linux and Mac OS X: Installation
  6: Linux and Mac OS X: Compiling & Linking
@@ -87,10 +87,10 @@ The open source edition uses the Mozilla Public License v2.0 (MPL),
 unless specified otherwise. See the "LICENSE.txt" file for license details.
 
 The MPL license requirements state that if you distribute any part
-of the library in executable or object form, then you must tell the
-recipients how to obtain a copy of the library source code
-at a charge no more than the cost of distribution to the recipient;
-this applies to both original and modified versions of the library.
+of the library in executable form (including software & hardware products),
+then you must tell the recipients how to obtain a copy of the library source code
+at a charge no more than the cost of distribution to the recipient.
+The requirements apply to both original and modified versions of the library.
 Any modifications to the library are automatically licensed under the MPL.
 
 The commercial license does not have the above requirements,
@@ -101,7 +101,7 @@ please contact Conrad Sanderson:  http://conradsanderson.id.au
 
 
 
-4: Requirements
+4: Dependencies
 ===============
 
 Armadillo makes extensive use of template meta-programming, recursive templates
