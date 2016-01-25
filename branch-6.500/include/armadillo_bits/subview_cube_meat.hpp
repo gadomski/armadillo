@@ -1,4 +1,4 @@
-// Copyright (C) 2008-2015 National ICT Australia (NICTA)
+// Copyright (C) 2008-2016 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1888,6 +1888,19 @@ subview_cube<eT>::plus_inplace(Mat<eT>& out, const subview_cube<eT>& in)
   
   if(in_n_slices == 1)
     {
+    if( (arma_config::debug) && ((out_n_rows != in_n_rows) || (out_n_cols != in_n_cols)) )
+      {
+      std::stringstream tmp;
+      
+      tmp
+        << "in-place addition: "
+        << out_n_rows << 'x' << out_n_cols << " output matrix is incompatible with "
+        <<  in_n_rows << 'x' <<  in_n_cols << 'x' << in_n_slices << " cube interpreted as "
+        <<  in_n_rows << 'x' <<  in_n_cols << " matrix";
+      
+      arma_stop(tmp.str());
+      }
+    
     for(uword col=0; col < in_n_cols; ++col)
       {
       arrayops::inplace_plus( out.colptr(col), in.slice_colptr(0, col), in_n_rows );
@@ -1976,6 +1989,19 @@ subview_cube<eT>::minus_inplace(Mat<eT>& out, const subview_cube<eT>& in)
   
   if(in_n_slices == 1)
     {
+    if( (arma_config::debug) && ((out_n_rows != in_n_rows) || (out_n_cols != in_n_cols)) )
+      {
+      std::stringstream tmp;
+      
+      tmp
+        << "in-place subtraction: "
+        << out_n_rows << 'x' << out_n_cols << " output matrix is incompatible with "
+        <<  in_n_rows << 'x' <<  in_n_cols << 'x' << in_n_slices << " cube interpreted as "
+        <<  in_n_rows << 'x' <<  in_n_cols << " matrix";
+      
+      arma_stop(tmp.str());
+      }
+    
     for(uword col=0; col < in_n_cols; ++col)
       {
       arrayops::inplace_minus( out.colptr(col), in.slice_colptr(0, col), in_n_rows );
@@ -2064,6 +2090,19 @@ subview_cube<eT>::schur_inplace(Mat<eT>& out, const subview_cube<eT>& in)
   
   if(in_n_slices == 1)
     {
+    if( (arma_config::debug) && ((out_n_rows != in_n_rows) || (out_n_cols != in_n_cols)) )
+      {
+      std::stringstream tmp;
+      
+      tmp
+        << "in-place element-wise multiplication: "
+        << out_n_rows << 'x' << out_n_cols << " output matrix is incompatible with "
+        <<  in_n_rows << 'x' <<  in_n_cols << 'x' << in_n_slices << " cube interpreted as "
+        <<  in_n_rows << 'x' <<  in_n_cols << " matrix";
+      
+      arma_stop(tmp.str());
+      }
+    
     for(uword col=0; col < in_n_cols; ++col)
       {
       arrayops::inplace_mul( out.colptr(col), in.slice_colptr(0, col), in_n_rows );
@@ -2152,6 +2191,19 @@ subview_cube<eT>::div_inplace(Mat<eT>& out, const subview_cube<eT>& in)
   
   if(in_n_slices == 1)
     {
+    if( (arma_config::debug) && ((out_n_rows != in_n_rows) || (out_n_cols != in_n_cols)) )
+      {
+      std::stringstream tmp;
+      
+      tmp
+        << "in-place element-wise division: "
+        << out_n_rows << 'x' << out_n_cols << " output matrix is incompatible with "
+        <<  in_n_rows << 'x' <<  in_n_cols << 'x' << in_n_slices << " cube interpreted as "
+        <<  in_n_rows << 'x' <<  in_n_cols << " matrix";
+      
+      arma_stop(tmp.str());
+      }
+    
     for(uword col=0; col < in_n_cols; ++col)
       {
       arrayops::inplace_div( out.colptr(col), in.slice_colptr(0, col), in_n_rows );
