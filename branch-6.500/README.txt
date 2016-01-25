@@ -370,7 +370,7 @@ the lines containing:
 
 
 10: Support for ATLAS
-====================
+=====================
 
 Armadillo can use the ATLAS library for faster versions of
 certain LAPACK and BLAS functions. Not all ATLAS functions are
