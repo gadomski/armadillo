@@ -10,7 +10,7 @@ Contents
  2: Citation Details
  3: Licenses and Support
 
- 4: Dependencies
+ 4: Requirements
 
  5: Linux and Mac OS X: Installation
  6: Linux and Mac OS X: Compiling & Linking
@@ -22,7 +22,7 @@ Contents
 10: Support for ATLAS
 
 11: Documentation / API Reference Manual
-12: MEX Interface to Octave
+12: MEX Interface to Octave/Matlab
 
 13: Bug Reports and Frequently Asked Questions
 14: Related Software
@@ -101,7 +101,7 @@ please contact Conrad Sanderson:  http://conradsanderson.id.au
 
 
 
-4: Dependencies
+4: Requirements
 ===============
 
 Armadillo makes extensive use of template meta-programming, recursive templates
@@ -143,8 +143,7 @@ Installation procedure:
   You can download it from http://www.cmake.org
   or (preferably) install it using your package manager.
   
-  On Linux-based systems, you can get CMake through
-  PackageKit, yum, dnf, apt, aptitude, ...
+  On Linux-based systems, you can get CMake using yum, dnf, apt, aptitude, ...
   
   On Mac OS X systems, you can get CMake through MacPorts or Homebrew.
   
@@ -162,7 +161,8 @@ Installation procedure:
   For example, when installing the "lapack" package, also install
   the "lapack-devel" or "lapack-dev" package.
   
-  Caveat: for better performance, we recommend using the multi-threaded
+  Caveat:
+  For better performance, we recommend using the multi-threaded
   OpenBLAS library instead of standard BLAS.
   See http://xianyi.github.com/OpenBLAS/
   
@@ -221,7 +221,7 @@ or you're getting linking errors, compile along these lines:
   
 The above command line assumes that you have unpacked the armadillo archive into /home/blah/
 You will need to adjust this for later versions of Armadillo,
-and/or if you have unpacked into a different directory.
+and/or if you have unpacked the armadillo archive into a different directory.
 
 Notes:
 
@@ -238,7 +238,8 @@ Notes:
   
 * If you have SuperLU present, also link with it by adding -lsuperlu to the command line
   Caveat: only SuperLU version 4.3 can be used!
-  
+
+
 
 7: Windows: Installation
 ========================
@@ -398,11 +399,11 @@ which can be viewed with a web browser.
 
 
 
-12: MEX Interface to Octave
-===========================
+12: MEX Interface to Octave/Matlab
+==================================
 
 The "mex_interface" folder contains examples of how to interface
-Octave with C++ code that uses Armadillo matrices.
+Octave/Matlab with C++ code that uses Armadillo matrices.
 
 
 
