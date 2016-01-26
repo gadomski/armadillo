@@ -1461,7 +1461,7 @@ inline
 eT&
 subview_cube<eT>::operator()(const uword i)
   {
-  arma_debug_check( (i >= n_elem), "subview_cube::operator(): index out of bounds");
+  arma_debug_check( (i >= n_elem), "subview_cube::operator(): index out of bounds" );
   
   const uword in_slice = i / n_elem_slice;
   const uword offset   = in_slice * n_elem_slice;
@@ -1482,7 +1482,7 @@ inline
 eT
 subview_cube<eT>::operator()(const uword i) const
   {
-  arma_debug_check( (i >= n_elem), "subview_cube::operator(): index out of bounds");
+  arma_debug_check( (i >= n_elem), "subview_cube::operator(): index out of bounds" );
   
   const uword in_slice = i / n_elem_slice;
   const uword offset   = in_slice * n_elem_slice;
@@ -1503,7 +1503,7 @@ arma_inline
 eT&
 subview_cube<eT>::operator()(const uword in_row, const uword in_col, const uword in_slice)
   {
-  arma_debug_check( ( (in_row >= n_rows) || (in_col >= n_cols) || (in_slice >= n_slices) ), "subview_cube::operator(): location out of bounds");
+  arma_debug_check( ( (in_row >= n_rows) || (in_col >= n_cols) || (in_slice >= n_slices) ), "subview_cube::operator(): location out of bounds" );
   
   const uword index = (in_slice + aux_slice1)*m.n_elem_slice + (in_col + aux_col1)*m.n_rows + aux_row1 + in_row;
   
@@ -1517,7 +1517,7 @@ arma_inline
 eT
 subview_cube<eT>::operator()(const uword in_row, const uword in_col, const uword in_slice) const
   {
-  arma_debug_check( ( (in_row >= n_rows) || (in_col >= n_cols) || (in_slice >= n_slices) ), "subview_cube::operator(): location out of bounds");
+  arma_debug_check( ( (in_row >= n_rows) || (in_col >= n_cols) || (in_slice >= n_slices) ), "subview_cube::operator(): location out of bounds" );
   
   const uword index = (in_slice + aux_slice1)*m.n_elem_slice + (in_col + aux_col1)*m.n_rows + aux_row1 + in_row;
   
