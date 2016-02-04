@@ -81,7 +81,7 @@ development and maintenance of the library.
 The open source edition uses the Mozilla Public License v2.0 (MPL),
 unless specified otherwise. See the "LICENSE.txt" file for details.
 
-Technical support, and non-open source licenses, are available for purchase.
+Technical support and non-open source licenses are available for purchase.
 For more information, please contact Conrad Sanderson:
 http://conradsanderson.id.au
 
