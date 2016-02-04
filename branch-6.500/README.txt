@@ -8,7 +8,7 @@ Contents
 
  1: Introduction
  2: Citation Details
- 3: Licenses and Support
+ 3: Support and Licenses
 
  4: Requirements
 
@@ -75,29 +75,15 @@ development and maintenance of the library.
 
 
 
-3: Licenses and Support
+3: Support and Licenses
 =======================
-
-Armadillo is available under 2 licenses:
-
- - open source license (with no support)
- - commercial license  (with technical support)
 
 The open source edition uses the Mozilla Public License v2.0 (MPL),
 unless specified otherwise. See the "LICENSE.txt" file for license details.
 
-The MPL license requirements state that if you distribute any part
-of the library in executable form (including software & hardware products),
-then you must tell the recipients how to obtain a copy of the library source code
-at a charge no more than the cost of distribution to the recipient.
-The requirements apply to both original and modified versions of the library.
-Any modifications to the library are automatically licensed under the MPL.
-
-The commercial license does not have the above requirements,
-and comes with technical support.
-
-To obtain more information about the commercial license, 
-please contact Conrad Sanderson:  http://conradsanderson.id.au
+Technical support, and non-open source licenses, are available for purchase.
+For more information, please contact Conrad Sanderson:
+http://conradsanderson.id.au
 
 
 
