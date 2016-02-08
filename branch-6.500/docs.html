@@ -413,15 +413,14 @@ Technical Report, NICTA, 2010.
 <tr style="background-color: #F5F5F5;"><td><a href="#null">null</a></td><td>&nbsp;</td><td>orthonormal basis of null space</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#orth">orth</a></td><td>&nbsp;</td><td>orthonormal basis of range space</td></tr>
 <tr><td><a href="#pinv">pinv</a></td><td>&nbsp;</td><td>pseudo-inverse</td></tr>
-<tr><td><a href="#princomp">princomp</a></td><td>&nbsp;</td><td>principal component analysis</td></tr>
 <tr><td><a href="#qr">qr&nbsp;&nbsp;</a></td><td>&nbsp;</td><td>QR decomposition</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#qr_econ">qr_econ</a></td><td>&nbsp;</td><td>economical QR decomposition</td></tr>
+<tr><td><a href="#qr_econ">qr_econ</a></td><td>&nbsp;</td><td>economical QR decomposition</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#qz">qz&nbsp;&nbsp;</a></td><td>&nbsp;</td><td>generalised Schur decomposition</td></tr>
 <tr style="background-color: #F5F5F5;"><td><a href="#schur">schur</a></td><td>&nbsp;</td><td>Schur decomposition</td></tr>
-<tr><td><a href="#solve">solve</a></td><td>&nbsp;</td><td>solve systems of linear equations</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#solve">solve</a></td><td>&nbsp;</td><td>solve systems of linear equations</td></tr>
 <tr><td><a href="#svd">svd</a></td><td>&nbsp;</td><td>singular value decomposition</td></tr>
 <tr><td><a href="#svd_econ">svd_econ</a></td><td>&nbsp;</td><td>economical singular value decomposition</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#syl">syl</a></td><td>&nbsp;</td><td>Sylvester equation solver</td></tr>
+<tr><td><a href="#syl">syl</a></td><td>&nbsp;</td><td>Sylvester equation solver</td></tr>
 </tbody>
 </table>
 </ul>
@@ -466,8 +465,9 @@ Technical Report, NICTA, 2010.
 <tr style="background-color: #F5F5F5;"><td><a href="#cor">cor</a></td><td>&nbsp;</td><td>correlation</td></tr>
 <tr><td><a href="#hist">hist</a></td><td>&nbsp;</td><td>histogram of counts</td></tr>
 <tr><td><a href="#histc">histc</a></td><td>&nbsp;</td><td>histogram of counts with user specified edges</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#running_stat">running_stat</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled one dimensional process/signal</td></tr>
-<tr style="background-color: #F5F5F5;"><td><a href="#running_stat_vec">running_stat_vec</a></td><td>&nbsp;</td><td>running statistics of a continuously sampled multi-dimensional process/signal</td></tr>
+<tr><td><a href="#princomp">princomp</a></td><td>&nbsp;</td><td>principal component analysis</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#running_stat">running_stat</a></td><td>&nbsp;</td><td>running statistics of one dimensional process/signal</td></tr>
+<tr style="background-color: #F5F5F5;"><td><a href="#running_stat_vec">running_stat_vec</a></td><td>&nbsp;</td><td>running statistics of multi-dimensional process/signal</td></tr>
 <tr><td><a href="#kmeans">kmeans</a></td><td>&nbsp;</td><td>cluster data using k-means algorithm</td></tr>
 <tr><td><a href="#gmm_diag">gmm_diag</a></td><td>&nbsp;</td><td>model data as a Gaussian Mixture Model (GMM)</td></tr>
 </tbody>
@@ -10051,71 +10051,6 @@ See also:
 </ul>
 
 <div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
-<a name="princomp"></a>
-<b>mat coeff = princomp( mat X )</b>
-<br><b>cx_mat coeff = princomp( cx_mat X )</b><br>
-
-<br><b>princomp( mat coeff, mat X )</b>
-<br><b>princomp( cx_mat coeff, cx_mat X )</b><br>
-
-<br><b>princomp( mat coeff, mat score, mat X )</b>
-<br><b>princomp( cx_mat coeff, cx_mat score, cx_mat X )</b><br>
-
-<br><b>princomp( mat coeff, mat score, vec latent, mat X )</b>
-<br><b>princomp( cx_mat coeff, cx_mat score, vec latent, cx_mat X )</b><br>
-
-<br><b>princomp( mat coeff, mat score, vec latent, vec tsquared, mat X )</b>
-<br><b>princomp( cx_mat coeff, cx_mat score, vec latent, cx_vec tsquared, cx_mat X )</b><br>
-<ul>
-<li>Principal component analysis of matrix <i>X</i></li><br>
-<li>Each row of <i>X</i> is an observation and each column is a variable</li><br>
-<li>output objects:
-<ul>
-<li><i>coeff</i>: principal component coefficients</li>
-<li><i>score</i>: projected data</li>
-<li><i>latent</i>: eigenvalues of the covariance matrix of <i>X</i></li>
-<li><i>tsquared</i>: Hotteling's statistic for each sample</li>
-</ul>
-</li>
-<br>
-<li>
-The computation is based on singular value decomposition
-</li>
-<br>
-<li>If the decomposition fails:
-<ul>
-<li><i>coeff = princomp(X)</i> resets <i>coeff</i> and throws a <i>std::runtime_error</i> exception</li>
-<li>remaining forms of <i>princomp()</i> reset all output matrices and return a bool set to <i>false</i> (exception is not thrown)</li>
-</ul>
-</li>
-<br>
-<li>
-Examples:
-<ul>
-<pre>
-mat A = randu&lt;mat&gt;(5,4);
-
-mat coeff;
-mat score;
-vec latent;
-vec tsquared;
-
-princomp(coeff, score, latent, tsquared, A);
-</pre>
-</ul>
-</li>
-<br>
-<li>
-See also:
-<ul>
-<li><a href="http://en.wikipedia.org/wiki/Principal_component_analysis">principal components analysis in Wikipedia</a></li>
-<li><a href="http://mathworld.wolfram.com/PrincipalComponentAnalysis.html">principal components analysis in MathWorld</a></li>
-</ul>
-</li>
-<br>
-</ul>
-
-<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
 <a name="qr"></a>
 <b>qr( Q, R, X )</b>
 <ul>
@@ -11634,6 +11569,71 @@ uvec h = histc(v, linspace&lt;vec&gt;(-2,2,11));
 <li><a href="#hist">hist()</a></li>
 <li><a href="#stats_fns">statistics functions</a></li>
 <li><a href="#conv_to">conv_to()</a></li>
+</ul>
+</li>
+<br>
+</ul>
+
+<div class="pagebreak"></div><div class="noprint"><hr class="greyline"><br></div>
+<a name="princomp"></a>
+<b>mat coeff = princomp( mat X )</b>
+<br><b>cx_mat coeff = princomp( cx_mat X )</b><br>
+
+<br><b>princomp( mat coeff, mat X )</b>
+<br><b>princomp( cx_mat coeff, cx_mat X )</b><br>
+
+<br><b>princomp( mat coeff, mat score, mat X )</b>
+<br><b>princomp( cx_mat coeff, cx_mat score, cx_mat X )</b><br>
+
+<br><b>princomp( mat coeff, mat score, vec latent, mat X )</b>
+<br><b>princomp( cx_mat coeff, cx_mat score, vec latent, cx_mat X )</b><br>
+
+<br><b>princomp( mat coeff, mat score, vec latent, vec tsquared, mat X )</b>
+<br><b>princomp( cx_mat coeff, cx_mat score, vec latent, cx_vec tsquared, cx_mat X )</b><br>
+<ul>
+<li>Principal component analysis of matrix <i>X</i></li><br>
+<li>Each row of <i>X</i> is an observation and each column is a variable</li><br>
+<li>output objects:
+<ul>
+<li><i>coeff</i>: principal component coefficients</li>
+<li><i>score</i>: projected data</li>
+<li><i>latent</i>: eigenvalues of the covariance matrix of <i>X</i></li>
+<li><i>tsquared</i>: Hotteling's statistic for each sample</li>
+</ul>
+</li>
+<br>
+<li>
+The computation is based on singular value decomposition
+</li>
+<br>
+<li>If the decomposition fails:
+<ul>
+<li><i>coeff = princomp(X)</i> resets <i>coeff</i> and throws a <i>std::runtime_error</i> exception</li>
+<li>remaining forms of <i>princomp()</i> reset all output matrices and return a bool set to <i>false</i> (exception is not thrown)</li>
+</ul>
+</li>
+<br>
+<li>
+Examples:
+<ul>
+<pre>
+mat A = randu&lt;mat&gt;(5,4);
+
+mat coeff;
+mat score;
+vec latent;
+vec tsquared;
+
+princomp(coeff, score, latent, tsquared, A);
+</pre>
+</ul>
+</li>
+<br>
+<li>
+See also:
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Principal_component_analysis">principal components analysis in Wikipedia</a></li>
+<li><a href="http://mathworld.wolfram.com/PrincipalComponentAnalysis.html">principal components analysis in MathWorld</a></li>
 </ul>
 </li>
 <br>
