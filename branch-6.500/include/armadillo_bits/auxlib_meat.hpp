@@ -404,7 +404,7 @@ auxlib::inv_sym(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
 template<typename eT, typename T1>
 inline
 bool
-auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
+auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X)
   {
   arma_extra_debug_sigprint();
   
@@ -418,7 +418,7 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
     
     arma_debug_assert_blas_size(out);
     
-    char     uplo = (layout == 0) ? 'U' : 'L';
+    char     uplo = 'L';
     blas_int n    = blas_int(out.n_rows);
     blas_int info = 0;
     
@@ -430,14 +430,7 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
     arma_extra_debug_print("lapack::potri()");
     lapack::potri(&uplo, &n, out.memptr(), &n, &info);
     
-    if(layout == 0)
-      {
-      out = symmatu(out);
-      }
-    else
-      {
-      out = symmatl(out);
-      }
+    out = symmatl(out);
       
     return (info == 0);
     }
@@ -445,7 +438,6 @@ auxlib::inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout)
     {
     arma_ignore(out);
     arma_ignore(X);
-    arma_ignore(layout);
     arma_stop("inv_sympd(): use of LAPACK must be enabled");
     return false;
     }

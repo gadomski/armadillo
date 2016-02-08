@@ -63,7 +63,7 @@ class auxlib
   // inv_sympd
   
   template<typename eT, typename T1>
-  inline static bool inv_sympd(Mat<eT>& out, const Base<eT,T1>& X, const uword layout);
+  inline static bool inv_sympd(Mat<eT>& out, const Base<eT,T1>& X);
   
   
   //

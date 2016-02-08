@@ -143,7 +143,7 @@ op_inv_sympd::apply(Mat<typename T1::elem_type>& out, const Op<T1,op_inv_sympd>&
   {
   arma_extra_debug_sigprint();
   
-  const bool status = auxlib::inv_sympd(out, X.m, X.aux_uword_a);
+  const bool status = auxlib::inv_sympd(out, X.m);
   
   if(status == false)
     {
