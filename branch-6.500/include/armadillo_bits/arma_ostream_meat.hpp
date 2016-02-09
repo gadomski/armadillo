@@ -1,4 +1,4 @@
-// Copyright (C) 2008-2015 National ICT Australia (NICTA)
+// Copyright (C) 2008-2016 National ICT Australia (NICTA)
 // 
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -285,13 +285,17 @@ arma_ostream::print_elem_zero(std::ostream& o, const bool modify)
   {
   if(modify == true)
     {
-    const std::streamsize orig_precision = o.precision();
+    const ios::fmtflags   save_flags     = o.flags();
+    const std::streamsize save_precision = o.precision();
     
+    o.unsetf(ios::scientific);
+    o.setf(ios::fixed);
     o.precision(0);
     
     o << eT(0);
     
-    o.precision(orig_precision);
+    o.flags(save_flags);
+    o.precision(save_precision);
     }
   else
     {
